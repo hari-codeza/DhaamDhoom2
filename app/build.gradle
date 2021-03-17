@@ -16,14 +16,26 @@ repositories {
 
 android {
 
-    compileSdkVersion 29
+    signingConfigs {
+        debug {
+            storeFile file('D:\\Projects\\AndroidLibrary\\project.jks')
+            storePassword 'project'
+            keyAlias 'project'
+            keyPassword 'project'
+        }
+    }
+    compileSdkVersion 30
+    buildToolsVersion '30.0.0'
+    ndkVersion '21.3.6528147'
+
     defaultConfig {
         applicationId "com.dinosoftlabs.tictic"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 22
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     compileOptions {
@@ -42,7 +54,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 
 }
 
