@@ -6,22 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
-
-import com.kyadav.DhaamDhoom.Discover.Discover_F;
-import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.OnBackPressListener;
-import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
-import com.kyadav.DhaamDhoom.Profile.Profile_Tab_F;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.Video_Recording.Video_Recoder_A;
-import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
-import com.google.android.material.tabs.TabLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Handler;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -33,10 +17,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kyadav.DhaamDhoom.Accounts.Login_A;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.tabs.TabLayout;
+import com.kyadav.DhaamDhoom.Accounts.LoginSelectionActivity;
+import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
+import com.kyadav.DhaamDhoom.Discover.Discover_F;
 import com.kyadav.DhaamDhoom.Home.Home_F;
-import com.kyadav.DhaamDhoom.Inbox.Inbox_F;
+import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.OnBackPressListener;
+import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.kyadav.DhaamDhoom.Profile.Profile_Tab_F;
 import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
+import com.kyadav.DhaamDhoom.Video_Recording.Video_Recoder_A;
 
 
 public class MainMenuFragment extends RootFragment implements View.OnClickListener {
@@ -265,7 +263,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                 }else {
 
-                    Intent intent = new Intent(getActivity(), Login_A.class);
+                    Intent intent = new Intent(getActivity(), LoginSelectionActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                 }
@@ -285,7 +283,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                 }else {
 
-                    Intent intent = new Intent(getActivity(), Login_A.class);
+                    Intent intent = new Intent(getActivity(), LoginSelectionActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                 }
@@ -361,7 +359,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                     break;
 
                 case 3:
-                    result = new Inbox_F();
+                    result = new BlankFragment();//result = new Inbox_F();
                     break;
 
                 case 4:

@@ -24,7 +24,7 @@
         android:required="false" />
 
     <application
-        android:name="com.kyadav.DhaamDhoom.SimpleClasses.TicTic"
+        android:name=".SimpleClasses.TicTic"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,23 +37,25 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
-        <activity android:name="com.kyadav.DhaamDhoom.SoundLists.VideoSound_A" />
+        <activity android:name=".Accounts.LoginPhoneAuthActivity"></activity>
+        <activity android:name=".Accounts.LoginSelectionActivity" />
+        <activity android:name=".SoundLists.VideoSound_A" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.Video_Recording.GalleryVideos.GalleryVideos_A"
+            android:name=".Video_Recording.GalleryVideos.GalleryVideos_A"
             android:screenOrientation="portrait"
             android:theme="@style/white_status"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A"
+            android:name=".Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.Accounts.Login_A"
+            android:name=".Accounts.Login_A"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.Splash_A"
+            android:name=".Splash_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
@@ -63,14 +65,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity"
+            android:name=".Main_Menu.MainMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/transparent_status"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.WatchVideos.WatchVideos_F"
-            android:parentActivityName="com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity"
+            android:name=".WatchVideos.WatchVideos_F"
+            android:parentActivityName=".Main_Menu.MainMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/transparent_status"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
@@ -108,20 +110,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.kyadav.DhaamDhoom.Video_Recording.Video_Recoder_A"
+            android:name=".Video_Recording.Video_Recoder_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.Video_Recording.Preview_Video_A"
+            android:name=".Video_Recording.Preview_Video_A"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.Video_Recording.Post_Video_A"
+            android:name=".Video_Recording.Post_Video_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.kyadav.DhaamDhoom.SoundLists.SoundList_Main_A"
+            android:name=".SoundLists.SoundList_Main_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
@@ -146,14 +148,14 @@
         </provider>
 
         <service
-            android:name="com.kyadav.DhaamDhoom.Services.Upload_Service"
+            android:name=".Services.Upload_Service"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="startservice" />
             </intent-filter>
         </service>
-        <service android:name="com.kyadav.DhaamDhoom.Firebase_Notification.Notification_Receive">
+        <service android:name=".Firebase_Notification.Notification_Receive">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
