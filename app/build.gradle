@@ -29,7 +29,7 @@ android {
     ndkVersion '21.3.6528147'
 
     defaultConfig {
-        applicationId "com.kyadav.DhaamDhoom"
+        applicationId "com.dinosoftlabs.tictic"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 22
