@@ -14,12 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-import androidx.exifinterface.media.ExifInterface;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.FileProvider;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +23,12 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.kyadav.DhaamDhoom.Main_Menu.MainMenuFragment;
-import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
-import com.kyadav.DhaamDhoom.SimpleClasses.API_CallBack;
-import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
-import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
-import com.kyadav.DhaamDhoom.SimpleClasses.Fragment_Callback;
-import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -46,6 +37,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kyadav.DhaamDhoom.Main_Menu.MainMenuFragment;
+import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.API_CallBack;
+import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
+import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
+import com.kyadav.DhaamDhoom.SimpleClasses.Fragment_Callback;
+import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -100,27 +100,33 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         view.findViewById(R.id.upload_pic_btn).setOnClickListener(this);
 
 
-
-        profile_image=view.findViewById(R.id.profile_image);
-        firstname_edit=view.findViewById(R.id.firstname_edit);
-        lastname_edit=view.findViewById(R.id.lastname_edit);
-        user_bio_edit=view.findViewById(R.id.user_bio_edit);
-
-
-        firstname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name,""));
-        lastname_edit.setText(Variables.sharedPreferences.getString(Variables.l_name,""));
-
-        Picasso.with(context)
-                .load(Variables.sharedPreferences.getString(Variables.u_pic,""))
-                .placeholder(R.drawable.profile_image_placeholder)
-                .resize(200,200)
-                .centerCrop()
-                .into(profile_image);
+        profile_image = view.findViewById(R.id.profile_image);
+        firstname_edit = view.findViewById(R.id.firstname_edit);
+        lastname_edit = view.findViewById(R.id.lastname_edit);
+        user_bio_edit = view.findViewById(R.id.user_bio_edit);
 
 
-        male_btn=view.findViewById(R.id.male_btn);
-        female_btn=view.findViewById(R.id.female_btn);
+        firstname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name, ""));
+        lastname_edit.setText(Variables.sharedPreferences.getString(Variables.l_name, ""));
 
+        if (Variables.sharedPreferences.getString(Variables.u_pic, "") == null || Variables.sharedPreferences.getString(Variables.u_pic, "").isEmpty()) {
+            Picasso.with(context)
+                    .load(R.drawable.profile_image_placeholder)
+                    .placeholder(R.drawable.profile_image_placeholder)
+                    .resize(200, 200)
+                    .centerCrop()
+                    .into(profile_image);
+        } else {
+            Picasso.with(context)
+                    .load(Variables.sharedPreferences.getString(Variables.u_pic, ""))
+                    .placeholder(R.drawable.profile_image_placeholder)
+                    .resize(200, 200)
+                    .centerCrop()
+                    .into(profile_image);
+        }
+
+        male_btn = view.findViewById(R.id.male_btn);
+        female_btn = view.findViewById(R.id.female_btn);
 
 
         Call_Api_For_User_Details();
