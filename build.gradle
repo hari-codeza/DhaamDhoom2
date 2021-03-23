@@ -5,14 +5,13 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.fabric.io/public' }
-
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.27.1'
+        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta02'
     }
 
 }
@@ -21,9 +20,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url  "https://giphy.bintray.com/giphy-sdk" }
-        maven { url 'https://jitpack.io' }
-
+        maven { url "http://dl.bintray.com/populov/maven" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
+        mavenCentral()
     }
 }
 

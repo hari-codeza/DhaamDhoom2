@@ -7,17 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
-import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
-import com.kyadav.DhaamDhoom.SimpleClasses.Fragment_Callback;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.SparseArray;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -34,6 +23,15 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kyadav.DhaamDhoom.Following.Following_F;
 import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
@@ -41,6 +39,9 @@ import com.kyadav.DhaamDhoom.Profile.Liked_Videos.Liked_Video_F;
 import com.kyadav.DhaamDhoom.Profile.UserVideos.UserVideo_F;
 import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.See_Full_Image_F;
+import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
+import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
+import com.kyadav.DhaamDhoom.SimpleClasses.Fragment_Callback;
 import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
 import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.squareup.picasso.Picasso;
@@ -436,27 +437,33 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         try {
             JSONObject jsonObject=new JSONObject(responce);
             String code=jsonObject.optString("code");
-            if(code.equals("200")){
-                JSONArray msgArray=jsonObject.getJSONArray("msg");
+            if(code.equals("200")) {
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
 
-                JSONObject data=msgArray.getJSONObject(0);
-                JSONObject user_info=data.optJSONObject("user_info");
+                JSONObject data = msgArray.getJSONObject(0);
+                JSONObject user_info = data.optJSONObject("user_info");
                 username.setText(user_info.optString("first_name"));
 
-                Profile_F.pic_url=user_info.optString("profile_pic");
-                Picasso.with(context)
-                        .load(Profile_F.pic_url)
-                        .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                        .resize(200,200).centerCrop().into(imageView);
+                Profile_F.pic_url = user_info.optString("profile_pic");
+                if (Profile_F.pic_url == null || Profile_F.pic_url.trim().isEmpty()) {
+                    Picasso.with(context)
+                            .load(R.drawable.profile_image_placeholder)
+                            .resize(200, 200).centerCrop().into(imageView);
+                } else {
+                    Picasso.with(context)
+                            .load(Profile_F.pic_url)
+                            .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
+                            .resize(200, 200).centerCrop().into(imageView);
+                }
+
 
                 follow_count_txt.setText(data.optString("total_following"));
                 fans_count_txt.setText(data.optString("total_fans"));
                 heart_count_txt.setText(data.optString("total_heart"));
 
 
-
-                JSONArray user_videos=data.getJSONArray("user_videos");
-                if(!user_videos.toString().equals("["+"0"+"]")){
+                JSONArray user_videos = data.getJSONArray("user_videos");
+                if (!user_videos.toString().equals("[" + "0" + "]")) {
                     video_count_txt.setText(user_videos.length()+" Videos");
                     create_popup_layout.setVisibility(View.GONE);
 
@@ -602,6 +609,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         editor.putBoolean(Variables.islogin,false);
         editor.commit();
         getActivity().finish();
+        FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getActivity(), MainMenuActivity.class));
     }
 

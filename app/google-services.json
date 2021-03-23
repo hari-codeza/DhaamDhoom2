@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "309759904485",
-    "firebase_url": "https://dhaamdhoom-102c9.firebaseio.com",
-    "project_id": "dhaamdhoom-102c9",
-    "storage_bucket": "dhaamdhoom-102c9.appspot.com"
+    "project_number": "790939580759",
+    "firebase_url": "https://dhaam-dhoom-default-rtdb.firebaseio.com",
+    "project_id": "dhaam-dhoom",
+    "storage_bucket": "dhaam-dhoom.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:309759904485:android:62660399e811060086e20c",
+        "mobilesdk_app_id": "1:790939580759:android:b1f900ac73b62b9ef92612",
         "android_client_info": {
-          "package_name": "com.dinosoftlabs.tictic"
+          "package_name": "com.kyadav.DhaamDhoom"
         }
       },
       "oauth_client": [
         {
-          "client_id": "309759904485-jc5mndab3fbrbluj9lru1euc5uaesokn.apps.googleusercontent.com",
+          "client_id": "790939580759-7vqqp0dibhihl4gcr4upqq22rfihh20b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCEhTvStHA9TYCIr0UOTI7ohKVtEP70hf8"
+          "current_key": "AIzaSyCZEiWGH9YBoEv3NM2WpJEz54FbWnfCoOw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "309759904485-jc5mndab3fbrbluj9lru1euc5uaesokn.apps.googleusercontent.com",
+              "client_id": "790939580759-7vqqp0dibhihl4gcr4upqq22rfihh20b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

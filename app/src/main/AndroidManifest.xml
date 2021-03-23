@@ -24,7 +24,7 @@
         android:required="false" />
 
     <application
-        android:name=".SimpleClasses.TicTic"
+        android:name=".DhaamDhoomApplication"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,6 +37,13 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
+        <meta-data
+            android:name="firebase_crash_collection_enabled"
+            android:value="${crashlyticsEnabled}" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsEnabled}" />
+
         <activity android:name=".Accounts.LoginPhoneAuthActivity"></activity>
         <activity android:name=".Accounts.LoginSelectionActivity" />
         <activity android:name=".SoundLists.VideoSound_A" />
