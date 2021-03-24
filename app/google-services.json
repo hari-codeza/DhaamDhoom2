@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "790939580759-1fvhkcj83hbdkbgontcgo4l5vp768f3q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyadav.DhaamDhoom",
+            "certificate_hash": "4b5a90f07b264a9ae1ba7861618976f793730895"
+          }
+        },
+        {
+          "client_id": "790939580759-617rj3htihp1e3itofsoggj2v2k6smji.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyadav.DhaamDhoom",
+            "certificate_hash": "5d976afa981b461a213a3d6a2092c9b0d1251716"
+          }
+        },
+        {
           "client_id": "790939580759-7vqqp0dibhihl4gcr4upqq22rfihh20b.apps.googleusercontent.com",
           "client_type": 3
         }

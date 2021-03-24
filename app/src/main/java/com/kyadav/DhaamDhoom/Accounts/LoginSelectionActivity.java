@@ -81,6 +81,7 @@ public class LoginSelectionActivity extends AppCompatActivity {
                 .build();
 
         sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
+        printKeyHash();
     }
 
     public void loginWithPhone(View view) {

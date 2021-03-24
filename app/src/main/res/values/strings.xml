@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Dhaam Dhoom</string>
 
-    <string name="facebook_app_id">603185710333006</string>
-    <string name="fb_login_protocol_scheme">fb603185710333006</string>
+    <string name="facebook_app_id">296621488560838</string>
+    <string name="fb_login_protocol_scheme">fb296621488560838</string>
     <string name="ad_app_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="my_Interstitial_Add">ca-app-pub-3940256099942544/1033173712</string>
     <string name="banner_ad">ca-app-pub-3940256099942544/6300978111</string>

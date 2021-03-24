@@ -98,7 +98,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity" />
+                android:value="com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity" />
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"

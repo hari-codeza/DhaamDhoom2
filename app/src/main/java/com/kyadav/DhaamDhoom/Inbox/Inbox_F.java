@@ -5,22 +5,18 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
-import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
-import com.kyadav.DhaamDhoom.R;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
+import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,9 +65,11 @@ public class Inbox_F extends RootFragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_inbox, container, false);
         context=getContext();
-
-        root_ref= FirebaseDatabase.getInstance().getReference();
-
+        try {
+            root_ref = FirebaseDatabase.getInstance().getReference();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         pbar=view.findViewById(R.id.pbar);
         inbox_list=view.findViewById(R.id.inboxlist);
