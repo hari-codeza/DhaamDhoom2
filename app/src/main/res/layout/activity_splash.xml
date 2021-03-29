@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Splash_A">
+    tools:context="com.kyadav.DhaamDhoom.Splash_A">
 
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/splash"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
 
 </RelativeLayout>

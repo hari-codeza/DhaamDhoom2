@@ -237,7 +237,8 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:id="@+id/sound_image"
-                    android:src="@drawable/ic_round_music"/>
+                    android:src="@drawable/ic_round_music"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
