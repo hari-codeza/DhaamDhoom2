@@ -37,6 +37,8 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
+        <activity android:name=".Accounts.RegistrationCompleteActivity"></activity>
+
         <meta-data
             android:name="firebase_crash_collection_enabled"
             android:value="${crashlyticsEnabled}" />
@@ -44,7 +46,7 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${crashlyticsEnabled}" />
 
-        <activity android:name=".Accounts.LoginPhoneAuthActivity"></activity>
+        <activity android:name=".Accounts.LoginPhoneAuthActivity" />
         <activity android:name=".Accounts.LoginSelectionActivity" />
         <activity android:name=".SoundLists.VideoSound_A" />
         <activity

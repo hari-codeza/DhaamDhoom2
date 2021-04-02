@@ -231,7 +231,7 @@
                 android:layout_marginRight="5dp"
                 android:orientation="vertical"
                 android:id="@+id/sound_image_layout"
-                android:background="@drawable/ic_black_disk"
+                android:background="@drawable/ic_black_disc"
                 android:layout_marginBottom="70dp"
                 android:gravity="center">
 

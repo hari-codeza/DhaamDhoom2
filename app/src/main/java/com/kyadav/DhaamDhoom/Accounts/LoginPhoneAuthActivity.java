@@ -173,10 +173,33 @@ public class LoginPhoneAuthActivity extends AppCompatActivity {
                         iosDialog.hide();
                         if (task.isSuccessful()) {
                             FirebaseUser cUser = task.getResult().getUser();
-                            String pic_url = "https://graph.facebook.com/picture?width=500&width=500";
+                            if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                                JSONObject parameters = new JSONObject();
+                                try {
 
-                            //String id = Profile.getCurrentProfile().getId();
-                            Call_Api_For_Signup(cUser.getPhoneNumber(), cUser.getDisplayName(), "", cUser.getPhotoUrl() == null ? null : cUser.getPhotoUrl().toString(), "Default");
+                                    parameters.put("fb_id", cUser.getPhoneNumber());
+                                    parameters.put("first_name", "" + cUser.getDisplayName());
+                                    parameters.put("last_name", "" + "");
+                                    parameters.put("profile_pic", cUser.getPhotoUrl() == null ? null : cUser.getPhotoUrl().toString());
+                                    parameters.put("gender", "n");
+                                    parameters.put("version", BuildConfig.VERSION_NAME);
+                                    parameters.put("signup_type", "Defualt");
+                                    parameters.put("device", Variables.device);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent it=new Intent(getApplicationContext(),RegistrationCompleteActivity.class);
+                                        it.putExtra("parameters",parameters.toString());
+                                startActivity(it);
+                                finish();
+                            }else {
+                                String pic_url = "https://graph.facebook.com/picture?width=500&width=500";
+
+                                //String id = Profile.getCurrentProfile().getId();
+                                Call_Api_For_Signup(cUser.getPhoneNumber(), cUser.getDisplayName(), "", cUser.getPhotoUrl() == null ? null : cUser.getPhotoUrl().toString(), "Default");
+                            }
                         } else {
                             if (task.getException() != null) {
                                 Toast.makeText(getApplicationContext(), "Authentication failed !",
@@ -210,7 +233,7 @@ public class LoginPhoneAuthActivity extends AppCompatActivity {
             parameters.put("first_name", "" + f_name);
             parameters.put("last_name", "" + l_name);
             parameters.put("profile_pic", picture);
-            parameters.put("gender", "m");
+            parameters.put("gender", "n");
             parameters.put("version", appversion);
             parameters.put("signup_type", singnup_type);
             parameters.put("device", Variables.device);

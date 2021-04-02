@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -38,6 +40,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kyadav.DhaamDhoom.BuildConfig;
 import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
 import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
@@ -131,7 +134,7 @@ public class LoginSelectionActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull final Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             iosDialog.show();
                             final String id = Profile.getCurrentProfile().getId();
@@ -145,24 +148,48 @@ public class LoginSelectionActivity extends AppCompatActivity {
                                     String fname = "" + user.optString("first_name");
                                     String lname = "" + user.optString("last_name");
 
-
+                                    String gender = ""+user.optString("gender","");
+                                    gender=gender.equalsIgnoreCase("male")?"m":gender.equalsIgnoreCase("female")?"f":gender;
                                     if (fname.equals("") || fname.equals("null"))
                                         fname = getResources().getString(R.string.app_name);
 
                                     if (lname.equals("") || lname.equals("null"))
                                         lname = "";
+                                    if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                                        JSONObject parameters = new JSONObject();
+                                        try {
 
-                                    Call_Api_For_Signup("" + id, fname
-                                            , lname,
-                                            "https://graph.facebook.com/" + id + "/picture?width=500&width=500",
-                                            "facebook");
+                                            parameters.put("fb_id", id);
+                                            parameters.put("first_name", "" + fname);
+                                            parameters.put("last_name", "" + lname);
+                                            parameters.put("profile_pic","https://graph.facebook.com/" + id + "/picture?width=500&width=500");
+                                            parameters.put("gender", gender);
+                                            parameters.put("version", BuildConfig.VERSION_NAME);
+                                            parameters.put("signup_type", "Defualt");
+                                            parameters.put("device", Variables.device);
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Intent it=new Intent(getApplicationContext(),RegistrationCompleteActivity.class);
+                                        it.putExtra("parameters",parameters.toString());
+                                        startActivity(it);
+                                        finish();
+                                    }else {
+                                        Call_Api_For_Signup("" + id, fname
+                                                , lname,
+                                                "https://graph.facebook.com/" + id + "/picture?width=500&width=500",
+                                                gender,
+                                                "facebook");
+                                    }
 
                                 }
                             });
 
                             // here is the request to facebook sdk for which type of info we have required
                             Bundle parameters = new Bundle();
-                            parameters.putString("fields", "last_name,first_name,email");
+                            parameters.putString("fields", "last_name,first_name,email,gender");
                             request.setParameters(parameters);
                             request.executeAsync();
                         } else {
@@ -197,7 +224,6 @@ public class LoginSelectionActivity extends AppCompatActivity {
             String id = account.getId();
             String fname = "" + account.getGivenName();
             String lname = "" + account.getFamilyName();
-
             String pic_url;
             if (account.getPhotoUrl() != null) {
                 pic_url = account.getPhotoUrl().toString();
@@ -211,7 +237,7 @@ public class LoginSelectionActivity extends AppCompatActivity {
 
             if (lname.equals("") || lname.equals("null"))
                 lname = "User";
-            Call_Api_For_Signup(id, fname, lname, pic_url, "gmail");
+            Call_Api_For_Signup(id, fname, lname, pic_url,"null", "gmail");
 
 
         } else {
@@ -230,7 +256,6 @@ public class LoginSelectionActivity extends AppCompatActivity {
                 String id = account.getId();
                 String fname = "" + account.getGivenName();
                 String lname = "" + account.getFamilyName();
-
                 // if we do not get the picture of user then we will use default profile picture
 
                 String pic_url;
@@ -247,10 +272,27 @@ public class LoginSelectionActivity extends AppCompatActivity {
                 if (lname.equals("") || lname.equals("null"))
                     lname = "";
 
-                Call_Api_For_Signup(id, fname, lname, pic_url, "gmail");
+                    JSONObject parameters = new JSONObject();
+                    try {
+
+                        parameters.put("fb_id", id);
+                        parameters.put("first_name", "" + fname);
+                        parameters.put("last_name", "" + lname);
+                        parameters.put("profile_pic","https://graph.facebook.com/" + id + "/picture?width=500&width=500");
+                        parameters.put("gender", "");
+                        parameters.put("version", BuildConfig.VERSION_NAME);
+                        parameters.put("signup_type", "Defualt");
+                        parameters.put("device", Variables.device);
 
 
-            }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Intent it=new Intent(getApplicationContext(),RegistrationCompleteActivity.class);
+                    it.putExtra("parameters",parameters.toString());
+                    startActivity(it);
+                    finish();
+                }
         } catch (ApiException e) {
             Log.w("Error message", "signInResult:failed code=" + e.getStatusCode());
         }
@@ -263,16 +305,9 @@ public class LoginSelectionActivity extends AppCompatActivity {
                                      String f_name,
                                      String l_name,
                                      String picture,
+                                     String gender,
                                      String singnup_type) {
 
-
-        PackageInfo packageInfo = null;
-        try {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String appversion = packageInfo.versionName;
 
         JSONObject parameters = new JSONObject();
         try {
@@ -281,8 +316,8 @@ public class LoginSelectionActivity extends AppCompatActivity {
             parameters.put("first_name", "" + f_name);
             parameters.put("last_name", "" + l_name);
             parameters.put("profile_pic", picture);
-            parameters.put("gender", "m");
-            parameters.put("version", appversion);
+            parameters.put("gender", gender);
+            parameters.put("version", BuildConfig.VERSION_NAME);
             parameters.put("signup_type", singnup_type);
             parameters.put("device", Variables.device);
 
@@ -358,5 +393,8 @@ public class LoginSelectionActivity extends AppCompatActivity {
         }
     }
 
+    public void termsPrivacyOnClick(View view){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Variables.privacy_policy)));
+    }
 
 }

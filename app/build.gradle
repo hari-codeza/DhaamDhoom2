@@ -10,6 +10,12 @@ android {
             keyAlias 'DhaamDhoom'
             keyPassword 'DhaamDhoom'
         }
+        debug {
+            storeFile file('E:\\Veera\\DhaamDhoom\\DhaamDhoom.jks')
+            storePassword 'DhaamDhoom'
+            keyAlias 'DhaamDhoom'
+            keyPassword 'DhaamDhoom'
+        }
     }
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
@@ -33,6 +39,7 @@ android {
         debug {
             ext.firebaseCrashlytics = false
             manifestPlaceholders = [crashlyticsEnabled: false]
+            signingConfig signingConfigs.debug
         }
         release {
 
@@ -44,6 +51,7 @@ android {
             manifestPlaceholders = [crashlyticsEnabled: true]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

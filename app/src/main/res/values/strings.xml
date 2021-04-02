@@ -1,15 +1,24 @@
 <resources>
-    <string name="app_name">Dhaam Dhoom</string>
+    <string name="app_name" translatable="false">Dhaam Dhoom</string>
+    <string name="facebook_app_id" translatable="false">296621488560838</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb296621488560838</string>
+    <string name="ad_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="my_Interstitial_Add" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="banner_ad" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="facebook_app_id">296621488560838</string>
-    <string name="fb_login_protocol_scheme">fb296621488560838</string>
-    <string name="ad_app_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="my_Interstitial_Add">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="banner_ad">ca-app-pub-3940256099942544/6300978111</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
     <string name="login_with_phone_number">Login with Phone Number</string>
+    <string name="agree_terms_policy">By Logging in you agree with Terms of use &amp; privacy policy</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="transgender">Transgender</string>
+    <string name="select_gender">Select Your Gender</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="enter_age">Enter Age</string>
+    <string name="save_continue">Save &amp; Continue</string>
+
 </resources>

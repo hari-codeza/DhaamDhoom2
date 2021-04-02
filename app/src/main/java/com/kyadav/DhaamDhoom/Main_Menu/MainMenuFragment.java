@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kyadav.DhaamDhoom.Accounts.LoginSelectionActivity;
+import com.kyadav.DhaamDhoom.Accounts.RegistrationCompleteActivity;
 import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
 import com.kyadav.DhaamDhoom.Discover.Discover_F;
 import com.kyadav.DhaamDhoom.Home.Home_F;
@@ -263,7 +264,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                 }else {
 
-                    Intent intent = new Intent(getActivity(), LoginSelectionActivity.class);
+                    Intent intent = new Intent(getActivity(), RegistrationCompleteActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                 }

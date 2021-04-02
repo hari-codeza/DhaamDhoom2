@@ -118,11 +118,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_margin="20dp"
         android:gravity="center"
         android:paddingTop="15dp"
-        android:text="By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy."
-        android:textColor="@color/primaryDark" />
+        android:text="@string/agree_terms_policy"
+        android:textColor="@color/primaryDark"
+        android:onClick="termsPrivacyOnClick"
+        android:fontFamily="@font/baskerville"/>
 </FrameLayout>
