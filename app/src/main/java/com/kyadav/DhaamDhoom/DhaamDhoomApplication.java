@@ -2,6 +2,7 @@ package com.kyadav.DhaamDhoom;
 
 import android.app.Application;
 
+import com.firebase.client.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -16,6 +17,7 @@ public class DhaamDhoomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseApp.initializeApp(this);
+        Firebase.setAndroidContext(this);
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(!BuildConfig.DEBUG);
     }

@@ -66,7 +66,7 @@ public class Inbox_F extends RootFragment {
         view= inflater.inflate(R.layout.fragment_inbox, container, false);
         context=getContext();
         try {
-            root_ref = FirebaseDatabase.getInstance().getReference();
+            root_ref = FirebaseDatabase.getInstance().getReference().getRoot();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

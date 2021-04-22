@@ -30,6 +30,7 @@ import com.kyadav.DhaamDhoom.Accounts.RegistrationCompleteActivity;
 import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
 import com.kyadav.DhaamDhoom.Discover.Discover_F;
 import com.kyadav.DhaamDhoom.Home.Home_F;
+import com.kyadav.DhaamDhoom.Inbox.Inbox_F;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.OnBackPressListener;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.kyadav.DhaamDhoom.Profile.Profile_Tab_F;
@@ -360,7 +361,8 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                     break;
 
                 case 3:
-                    result = new BlankFragment();//result = new Inbox_F();
+                    //result = new BlankFragment();
+                    result = new Inbox_F();
                     break;
 
                 case 4:

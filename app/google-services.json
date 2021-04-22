@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "790939580759-ff1gkbd87vjss5gehh91n5o5n9a5k4u8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyadav.DhaamDhoom",
+            "certificate_hash": "3d1dc32f681f7efdd0c89494d47aada83e7b88ad"
+          }
+        },
+        {
           "client_id": "790939580759-7vqqp0dibhihl4gcr4upqq22rfihh20b.apps.googleusercontent.com",
           "client_type": 3
         }
