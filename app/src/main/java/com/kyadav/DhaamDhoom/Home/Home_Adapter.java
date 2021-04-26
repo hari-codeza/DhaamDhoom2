@@ -110,18 +110,22 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
         }
 
+        if(item.Disliked.equals("1")){
+            holder.dislike_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_dislike_fill));
+        }
+       else {
+            holder.dislike_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_dislike));
+        }
+
 
         holder.like_txt.setText(item.like_count);
+        holder.dislike_txt.setText(item.Dis_like_count);
         holder.comment_txt.setText(item.video_comment_count);
-
-
 
         }catch (Exception e){
 
         }
    }
-
-
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
@@ -129,9 +133,9 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         TextView username,desc_txt,sound_name;
         ImageView user_pic,sound_image;
 
-        LinearLayout like_layout,comment_layout,shared_layout,sound_image_layout;
-        ImageView like_image,comment_image;
-        TextView like_txt,comment_txt;
+        LinearLayout like_layout,dislike_layout,comment_layout,shared_layout,sound_image_layout;
+        ImageView like_image,dislike_image,comment_image;
+        TextView like_txt,dislike_txt,comment_txt;
 
 
         public CustomViewHolder(View view) {
@@ -147,6 +151,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             like_layout=view.findViewById(R.id.like_layout);
             like_image=view.findViewById(R.id.like_image);
             like_txt=view.findViewById(R.id.like_txt);
+
+            dislike_layout=view.findViewById(R.id.dislike_layout);
+            dislike_image=view.findViewById(R.id.dislike_image);
+            dislike_txt=view.findViewById(R.id.dislike_txt);
 
 
             desc_txt=view.findViewById(R.id.desc_txt);
@@ -188,6 +196,14 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
 
             like_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    listener.onItemClick(postion,item,v);
+                }
+            });
+
+            dislike_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

@@ -738,8 +738,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         data_list.add(position,home_get_set);
         adapter.notifyDataSetChanged();
 
-
-        Functions.Call_Api_For_like_video(this, home_get_set.video_id,action ,new API_CallBack() {
+        Functions.Call_Api_For_like_video(this, home_get_set.video_id,action,true,new API_CallBack() {
 
             @Override
             public void ArrayData(ArrayList arrayList) {
@@ -757,10 +756,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             }
         });
     }
-
-
-
-
 
     public boolean check_permissions() {
 

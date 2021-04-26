@@ -88,6 +88,35 @@
                         android:textStyle="bold"/>
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/dislike_layout"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="20dp">
+
+                    <ImageView
+                        android:id="@+id/dislike_image"
+                        android:layout_width="32dp"
+                        android:layout_height="37dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_dislike" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="likes"
+                        android:id="@+id/dislike_txt"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="3"
+                        android:textSize="13dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
 
 
                 <LinearLayout

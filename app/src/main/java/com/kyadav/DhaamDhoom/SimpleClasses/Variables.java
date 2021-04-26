@@ -67,6 +67,7 @@ public class Variables {
     public static String showAllVideos = domain + "showAllVideos";
     public static String showMyAllVideos = domain + "showMyAllVideos";
     public static String likeDislikeVideo = domain + "likeDislikeVideo";
+    public static String DislikeVideo = domain + "DislikeVideo";
     public static String updateVideoView = domain + "updateVideoView";
     public static String allSounds = domain + "allSounds";
     public static String fav_sound = domain + "fav_sound";

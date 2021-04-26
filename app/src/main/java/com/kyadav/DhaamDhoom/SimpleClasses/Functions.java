@@ -14,8 +14,6 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-
-import androidx.core.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -24,11 +22,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
-import com.kyadav.DhaamDhoom.Comments.Comment_Get_Set;
-import com.kyadav.DhaamDhoom.R;
 import com.gmail.samehadar.iosdialog.CamomileSpinner;
 import com.googlecode.mp4parser.authoring.Track;
+import com.kyadav.DhaamDhoom.Comments.Comment_Get_Set;
+import com.kyadav.DhaamDhoom.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +49,10 @@ import java.util.Arrays;
 public class Functions {
 
 
+    public static Dialog dialog;
+    public static Dialog indeterminant_dialog;
+    public static Dialog determinant_dialog;
+    public static ProgressBar determinant_progress;
 
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -61,69 +65,61 @@ public class Functions {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
-
-    public static void Show_Alert(Context context,String title,String Message){
-       new  AlertDialog.Builder(context)
-               .setTitle(title)
-               .setMessage(Message)
-               .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       dialog.dismiss();
-                   }
-               }).show();
+    public static void Show_Alert(Context context, String title, String Message) {
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(Message)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
-
-    public static Dialog dialog;
-    public static void Show_loader(Context context,boolean outside_touch, boolean cancleable) {
+    public static void Show_loader(Context context, boolean outside_touch, boolean cancleable) {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.item_dialog_loading_view);
         dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.d_round_white_background));
 
 
-        CamomileSpinner loader=dialog.findViewById(R.id.loader);
+        CamomileSpinner loader = dialog.findViewById(R.id.loader);
         loader.start();
 
 
-        if(!outside_touch)
+        if (!outside_touch)
             dialog.setCanceledOnTouchOutside(false);
 
-        if(!cancleable)
+        if (!cancleable)
             dialog.setCancelable(false);
 
         dialog.show();
     }
 
-    public static void cancel_loader(){
-        if(dialog!=null){
+    public static void cancel_loader() {
+        if (dialog != null) {
             dialog.cancel();
         }
     }
-
-
-
 
     public static float dpToPx(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
-    public static boolean isMyServiceRunning(Context context,Class<?> serviceClass) {
+    public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
+                Log.i("isMyServiceRunning?", true + "");
                 return true;
             }
         }
-        Log.i ("isMyServiceRunning?", false+"");
+        Log.i("isMyServiceRunning?", false + "");
         return false;
     }
 
-
-    public static void Share_through_app(final Activity activity,final String link){
+    public static void Share_through_app(final Activity activity, final String link) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -137,17 +133,16 @@ public class Functions {
         }).start();
     }
 
-
-    public static Bitmap Uri_to_bitmap(Activity activity,Uri uri){
+    public static Bitmap Uri_to_bitmap(Activity activity, Uri uri) {
         InputStream imageStream = null;
         try {
-            imageStream =activity.getContentResolver().openInputStream(uri);
+            imageStream = activity.getContentResolver().openInputStream(uri);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
 
-        String path=uri.getPath();
+        String path = uri.getPath();
         Matrix matrix = new Matrix();
         ExifInterface exif = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -176,26 +171,27 @@ public class Functions {
     }
 
 
+    // Bottom is all the Apis which is mostly used in app we have add it
+    // just one time and whenever we need it we will call it
 
-    public static String Bitmap_to_base64(Activity activity,Bitmap imagebitmap){
+    public static String Bitmap_to_base64(Activity activity, Bitmap imagebitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imagebitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-        byte[] byteArray = baos .toByteArray();
-        String base64= Base64.encodeToString(byteArray, Base64.DEFAULT);
+        byte[] byteArray = baos.toByteArray();
+        String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return base64;
     }
 
-
-    public static String Uri_to_base64(Activity activity, Uri uri){
+    public static String Uri_to_base64(Activity activity, Uri uri) {
         InputStream imageStream = null;
         try {
-            imageStream =activity.getContentResolver().openInputStream(uri);
+            imageStream = activity.getContentResolver().openInputStream(uri);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
 
-        String path=uri.getPath();
+        String path = uri.getPath();
         Matrix matrix = new Matrix();
         ExifInterface exif = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -222,12 +218,10 @@ public class Functions {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-        byte[] byteArray = baos .toByteArray();
-        String base64= Base64.encodeToString(byteArray, Base64.DEFAULT);
+        byte[] byteArray = baos.toByteArray();
+        String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return base64;
     }
-
-
 
     public static double correctTimeToSyncSample(Track track, double cutHere, boolean next) {
         double[] timeOfSyncSamples = new double[track.getSyncSamples().length];
@@ -257,48 +251,45 @@ public class Functions {
         return timeOfSyncSamples[timeOfSyncSamples.length - 1];
     }
 
-
-
-
-
-
-
-    // Bottom is all the Apis which is mostly used in app we have add it
-    // just one time and whenever we need it we will call it
-
     public static void Call_Api_For_like_video(final Activity activity,
-                                               String video_id,String action,
+                                               String video_id, String action, boolean like_call,
                                                final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("video_id",video_id);
-            parameters.put("action",action);
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("video_id", video_id);
+            parameters.put("action", action);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        ApiRequest.Call_Api(activity, Variables.likeDislikeVideo, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                api_callBack.OnSuccess(resp);
-            }
-        });
-
+        if (like_call) {
+            ApiRequest.Call_Api(activity, Variables.likeDislikeVideo, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    api_callBack.OnSuccess(resp);
+                }
+            });
+        } else {
+            ApiRequest.Call_Api(activity, Variables.DislikeVideo, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    api_callBack.OnSuccess(resp);
+                }
+            });
+        }
 
 
     }
 
-
-    public static void Call_Api_For_Send_Comment(final Activity activity, String video_id,String comment ,final API_CallBack api_callBack) {
+    public static void Call_Api_For_Send_Comment(final Activity activity, String video_id, String comment, final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("video_id",video_id);
-            parameters.put("comment",comment);
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("video_id", video_id);
+            parameters.put("comment", comment);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -308,26 +299,26 @@ public class Functions {
             @Override
             public void Responce(String resp) {
 
-                ArrayList<Comment_Get_Set> arrayList=new ArrayList<>();
+                ArrayList<Comment_Get_Set> arrayList = new ArrayList<>();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")){
-                        JSONArray msgArray=response.getJSONArray("msg");
-                        for (int i=0;i<msgArray.length();i++) {
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = response.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
                             JSONObject itemdata = msgArray.optJSONObject(i);
-                            Comment_Get_Set item=new Comment_Get_Set();
-                            item.fb_id=itemdata.optString("fb_id");
+                            Comment_Get_Set item = new Comment_Get_Set();
+                            item.fb_id = itemdata.optString("fb_id");
 
-                            JSONObject user_info=itemdata.optJSONObject("user_info");
-                            item.first_name=user_info.optString("first_name");
-                            item.last_name=user_info.optString("last_name");
-                            item.profile_pic=user_info.optString("profile_pic");
+                            JSONObject user_info = itemdata.optJSONObject("user_info");
+                            item.first_name = user_info.optString("first_name");
+                            item.last_name = user_info.optString("last_name");
+                            item.profile_pic = user_info.optString("profile_pic");
 
 
-                            item.video_id=itemdata.optString("id");
-                            item.comments=itemdata.optString("comments");
-                            item.created=itemdata.optString("created");
+                            item.video_id = itemdata.optString("id");
+                            item.comments = itemdata.optString("comments");
+                            item.created = itemdata.optString("created");
 
 
                             arrayList.add(item);
@@ -335,8 +326,8 @@ public class Functions {
 
                         api_callBack.ArrayData(arrayList);
 
-                    }else {
-                        Toast.makeText(activity, ""+response.optString("msg"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -354,7 +345,7 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-             parameters.put("video_id",video_id);
+            parameters.put("video_id", video_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -362,26 +353,26 @@ public class Functions {
         ApiRequest.Call_Api(activity, Variables.showVideoComments, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
-                ArrayList<Comment_Get_Set> arrayList=new ArrayList<>();
+                ArrayList<Comment_Get_Set> arrayList = new ArrayList<>();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")){
-                        JSONArray msgArray=response.getJSONArray("msg");
-                        for (int i=0;i<msgArray.length();i++) {
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = response.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
                             JSONObject itemdata = msgArray.optJSONObject(i);
-                            Comment_Get_Set item=new Comment_Get_Set();
-                            item.fb_id=itemdata.optString("fb_id");
+                            Comment_Get_Set item = new Comment_Get_Set();
+                            item.fb_id = itemdata.optString("fb_id");
 
-                            JSONObject user_info=itemdata.optJSONObject("user_info");
-                            item.first_name=user_info.optString("first_name");
-                            item.last_name=user_info.optString("last_name");
-                            item.profile_pic=user_info.optString("profile_pic");
+                            JSONObject user_info = itemdata.optJSONObject("user_info");
+                            item.first_name = user_info.optString("first_name");
+                            item.last_name = user_info.optString("last_name");
+                            item.profile_pic = user_info.optString("profile_pic");
 
 
-                            item.video_id=itemdata.optString("id");
-                            item.comments=itemdata.optString("comments");
-                            item.created=itemdata.optString("created");
+                            item.video_id = itemdata.optString("id");
+                            item.comments = itemdata.optString("comments");
+                            item.created = itemdata.optString("created");
 
 
                             arrayList.add(item);
@@ -389,8 +380,8 @@ public class Functions {
 
                         api_callBack.ArrayData(arrayList);
 
-                    }else {
-                        Toast.makeText(activity, ""+response.optString("msg"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -402,59 +393,54 @@ public class Functions {
 
     }
 
-
     public static void Call_Api_For_update_view(final Activity activity,
-                                               String video_id) {
+                                                String video_id) {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("id",video_id);
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("id", video_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ApiRequest.Call_Api(activity,Variables.updateVideoView, parameters,null);
+        ApiRequest.Call_Api(activity, Variables.updateVideoView, parameters, null);
 
 
     }
-
-
 
     public static void Call_Api_For_Follow_or_unFollow
             (final Activity activity,
              String fb_id,
              String followed_fb_id,
-            String status,
-            final API_CallBack api_callBack) {
+             String status,
+             final API_CallBack api_callBack) {
 
-        Functions.Show_loader(activity,false,false);
+        Functions.Show_loader(activity, false, false);
 
 
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("fb_id", fb_id);
-            parameters.put("followed_fb_id",followed_fb_id);
-            parameters.put("status",status);
+            parameters.put("followed_fb_id", followed_fb_id);
+            parameters.put("status", status);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-          ApiRequest.Call_Api(activity, Variables.follow_users, parameters, new Callback() {
+        ApiRequest.Call_Api(activity, Variables.follow_users, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")){
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
                         api_callBack.OnSuccess(response.toString());
 
-                    }
-
-                    else {
-                        Toast.makeText(activity, ""+response.optString("msg"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
@@ -467,11 +453,10 @@ public class Functions {
 
     }
 
-
     public static void Call_Api_For_Get_User_data
             (final Activity activity,
              String fb_id,
-            final API_CallBack api_callBack) {
+             final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -481,22 +466,20 @@ public class Functions {
             e.printStackTrace();
         }
 
-        Log.d("resp",parameters.toString());
+        Log.d("resp", parameters.toString());
 
         ApiRequest.Call_Api(activity, Variables.get_user_data, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")){
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
                         api_callBack.OnSuccess(response.toString());
 
-                    }
-
-                    else {
-                        Toast.makeText(activity, ""+response.optString("msg"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
@@ -507,9 +490,6 @@ public class Functions {
         });
 
     }
-
-
-
 
     public static void Call_Api_For_Delete_Video
             (final Activity activity,
@@ -530,20 +510,18 @@ public class Functions {
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")){
-                        if(api_callBack!=null)
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
+                        if (api_callBack != null)
                             api_callBack.OnSuccess(response.toString());
 
-                    }
-
-                    else {
-                        Toast.makeText(activity, ""+response.optString("msg"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
-                    if(api_callBack!=null)
+                    if (api_callBack != null)
                         api_callBack.OnFail(e.toString());
                     e.printStackTrace();
                 }
@@ -552,83 +530,68 @@ public class Functions {
         });
 
 
-
     }
 
-
-
-
-
-
-
-    public static Dialog indeterminant_dialog;
     public static void Show_indeterminent_loader(Context context, boolean outside_touch, boolean cancleable) {
 
         indeterminant_dialog = new Dialog(context);
         indeterminant_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         indeterminant_dialog.setContentView(R.layout.item_indeterminant_progress_layout);
-        indeterminant_dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.d_round_white_background));
+        indeterminant_dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.d_round_white_background));
 
 
-        if(!outside_touch)
+        if (!outside_touch)
             indeterminant_dialog.setCanceledOnTouchOutside(false);
 
-        if(!cancleable)
+        if (!cancleable)
             indeterminant_dialog.setCancelable(false);
 
         indeterminant_dialog.show();
 
     }
 
-
-    public static void cancel_indeterminent_loader(){
-        if(indeterminant_dialog!=null){
+    public static void cancel_indeterminent_loader() {
+        if (indeterminant_dialog != null) {
             indeterminant_dialog.cancel();
         }
     }
-
-
-
-
-    public static Dialog determinant_dialog;
-   public static ProgressBar determinant_progress;
 
     public static void Show_determinent_loader(Context context, boolean outside_touch, boolean cancleable) {
 
         determinant_dialog = new Dialog(context);
         determinant_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         determinant_dialog.setContentView(R.layout.item_determinant_progress_layout);
-        determinant_dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.d_round_white_background));
+        determinant_dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.d_round_white_background));
 
-        determinant_progress=determinant_dialog.findViewById(R.id.pbar);
+        determinant_progress = determinant_dialog.findViewById(R.id.pbar);
 
-        if(!outside_touch)
+        if (!outside_touch)
             determinant_dialog.setCanceledOnTouchOutside(false);
 
-        if(!cancleable)
+        if (!cancleable)
             determinant_dialog.setCancelable(false);
 
         determinant_dialog.show();
 
     }
 
-    public static void Show_loading_progress(int progress){
-        if(determinant_progress!=null ){
+    public static void Show_loading_progress(int progress) {
+        if (determinant_progress != null) {
             determinant_progress.setProgress(progress);
 
         }
     }
 
 
-    public static void cancel_determinent_loader(){
-        if(determinant_dialog!=null){
-            determinant_progress=null;
-             determinant_dialog.cancel();
+    public static void cancel_determinent_loader() {
+        if (determinant_dialog != null) {
+            determinant_progress = null;
+            determinant_dialog.cancel();
         }
     }
 
 
-    public static boolean Checkstoragepermision(Activity activity){
+    public static boolean Checkstoragepermision(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (activity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -639,7 +602,7 @@ public class Functions {
                 activity.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }else {
+        } else {
 
             return true;
         }
@@ -653,7 +616,9 @@ public class Functions {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -668,7 +633,7 @@ public class Functions {
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
