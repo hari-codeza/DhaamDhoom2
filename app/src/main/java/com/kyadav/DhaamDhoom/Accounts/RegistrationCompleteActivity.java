@@ -1,8 +1,5 @@
 package com.kyadav.DhaamDhoom.Accounts;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,8 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.gmail.samehadar.iosdialog.IOSDialog;
-import com.kyadav.DhaamDhoom.BuildConfig;
 import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
 import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
@@ -65,14 +64,13 @@ public class RegistrationCompleteActivity extends AppCompatActivity {
                 .setSpinnerClockwise(false)
                 .setMessageContentGravity(Gravity.END)
                 .build();
-        if(!getIntent().getExtras().containsKey("parameters"))
-        {
+        if (getIntent() == null || getIntent().getExtras() == null || !getIntent().getExtras().containsKey("parameters")) {
             finish();
-            startActivity(new Intent(getApplicationContext(),LoginSelectionActivity.class));
-        }else try{
-            parameters=new JSONObject(getIntent().getExtras().getString("parameters","{}"));
-        }catch (Exception ex){
-            startActivity(new Intent(getApplicationContext(),LoginSelectionActivity.class));
+            startActivity(new Intent(getApplicationContext(), LoginSelectionActivity.class));
+        } else try {
+            parameters = new JSONObject(getIntent().getExtras().getString("parameters", "{}"));
+        } catch (Exception ex) {
+            startActivity(new Intent(getApplicationContext(), LoginSelectionActivity.class));
         }
     }
 
