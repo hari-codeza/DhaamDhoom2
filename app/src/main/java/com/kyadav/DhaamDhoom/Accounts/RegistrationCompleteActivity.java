@@ -65,7 +65,7 @@ public class RegistrationCompleteActivity extends AppCompatActivity {
                 .setSpinnerClockwise(false)
                 .setMessageContentGravity(Gravity.END)
                 .build();
-        if(!getIntent().getExtras().containsKey("parameters"))
+        if(getIntent().getExtras()!=null&&!getIntent().getExtras().containsKey("parameters"))
         {
             finish();
             startActivity(new Intent(getApplicationContext(),LoginSelectionActivity.class));

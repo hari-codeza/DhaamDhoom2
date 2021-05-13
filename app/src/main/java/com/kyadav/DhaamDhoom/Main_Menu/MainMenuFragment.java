@@ -136,7 +136,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         View view4 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
         ImageView imageView4= view4.findViewById(R.id.image);
         TextView  title4=view4.findViewById(R.id.text);
-        imageView4.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification_gray));
+        imageView4.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification));
         imageView4.setColorFilter(ContextCompat.getColor(context, R.color.colorwhite_50), android.graphics.PorterDuff.Mode.SRC_IN);
         title4.setText("Inbox");
         title4.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
@@ -179,7 +179,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                     case 3:
                         Onother_Tab_Click();
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification_red));
+                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification));
                         image.setColorFilter(ContextCompat.getColor(context, R.color.app_color), android.graphics.PorterDuff.Mode.SRC_IN);
                         title.setTextColor(context.getResources().getColor(R.color.app_color));
                         break;
@@ -210,7 +210,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                         break;
 
                     case 3:
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification_gray));
+                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification));
                         title.setTextColor(context.getResources().getColor(R.color.darkgray));
                         break;
                     case 4:
@@ -428,7 +428,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         TabLayout.Tab tab2=tabLayout.getTabAt(2);
         View view2=tab2.getCustomView();
         ImageView image= view2.findViewById(R.id.image);
-        image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_add_white));
+        image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_tic));
         tab2.setCustomView(view2);
 
         TabLayout.Tab tab3=tabLayout.getTabAt(3);
@@ -469,7 +469,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         TabLayout.Tab tab2=tabLayout.getTabAt(2);
         View view2=tab2.getCustomView();
         ImageView image= view2.findViewById(R.id.image);
-        image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_add_black));
+        image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_tic));
         tab2.setCustomView(view2);
 
         TabLayout.Tab tab3=tabLayout.getTabAt(3);
