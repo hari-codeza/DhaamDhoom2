@@ -12,6 +12,6 @@ public class Home_Get_Set implements Serializable {
 
     public String sound_id,sound_name,sound_pic;
 
-    public String liked,like_count,Disliked,Dis_like_count,video_comment_count,views;
+    public String liked,like_count,Disliked,Dis_like_count,video_comment_count,shared_count,views;
 
 }

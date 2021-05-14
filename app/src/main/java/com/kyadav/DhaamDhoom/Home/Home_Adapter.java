@@ -119,6 +119,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
 
         holder.like_txt.setText(item.like_count);
+        holder.share_count.setText(item.shared_count);
         holder.dislike_txt.setText(item.Dis_like_count);
         holder.comment_txt.setText(item.video_comment_count);
 
@@ -135,7 +136,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
         LinearLayout like_layout,dislike_layout,comment_layout,shared_layout,sound_image_layout;
         ImageView like_image,dislike_image,comment_image;
-        TextView like_txt,dislike_txt,comment_txt;
+        TextView like_txt,dislike_txt,comment_txt,share_count;
 
 
         public CustomViewHolder(View view) {
@@ -156,7 +157,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             dislike_image=view.findViewById(R.id.dislike_image);
             dislike_txt=view.findViewById(R.id.dislike_txt);
 
-
+            share_count=view.findViewById(R.id.share_count);
             desc_txt=view.findViewById(R.id.desc_txt);
 
             comment_layout=view.findViewById(R.id.comment_layout);

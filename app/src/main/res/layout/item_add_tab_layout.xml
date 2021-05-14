@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="-2dp">
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="fitCenter"
         android:id="@+id/image"
         android:src="@drawable/ic_add_white"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"/>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/image"
+                android:src="@drawable/ic_tic"
+                android:tint="@color/colorAccent"
+                android:scaleType="fitCenter"
+                android:layout_centerHorizontal="true"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image"
+                android:id="@+id/text"
+                android:text="Upload"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:gravity="center"/>
+
+        </RelativeLayout>
 
 </RelativeLayout>

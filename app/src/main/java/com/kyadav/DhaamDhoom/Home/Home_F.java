@@ -359,11 +359,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.sound_name = sound_data.optString("sound_name");
                     item.sound_pic = sound_data.optString("thum");
 
-
                     JSONObject count = itemdata.optJSONObject("count");
                     item.like_count = count.optString("like_count");
                     item.Dis_like_count = count.optString("Dis_like_count");
                     item.video_comment_count = count.optString("video_comment_count");
+                    item.shared_count = count.optString("shared_count");
 
 
                     item.video_id = itemdata.optString("id");
@@ -443,7 +443,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.like_count = count.optString("like_count");
                     item.Dis_like_count = count.optString("Dis_like_count");
                     item.video_comment_count = count.optString("video_comment_count");
-
+                    item.shared_count = count.optString("shared_count");
 
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");

@@ -166,11 +166,15 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
             File f = new File("/storage/emulated/0/Tittic/"+video_id+".mp4");
             Uri uriPath = Uri.parse(f.getPath());
 
+            String text="Dhaam Dhoom\n\n"+Variables.base_url+"view.php?id="+video_id+"\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
+
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Dhaam Dhoom");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, text);
             shareIntent.putExtra(Intent.EXTRA_STREAM, uriPath);
             shareIntent.setType("video/*");
+
+            //shareIntent.setType("text/plain");
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(shareIntent, "send"));
 
@@ -197,7 +201,9 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
             case R.id.copy_layout:
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", Variables.base_url+"view.php?id="+video_id);
+
+                String text=Variables.base_url+"view.php?id="+video_id+"\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
+                ClipData clip = ClipData.newPlainText("Copied Text", text);
                 clipboard.setPrimaryClip(clip);
 
                 Toast.makeText(context, "Link Copy in clipboard", Toast.LENGTH_SHORT).show();
