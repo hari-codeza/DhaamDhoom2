@@ -5,17 +5,17 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kyadav.DhaamDhoom.SoundLists.VideoSound_A">
+    tools:context=".SoundLists.VideoSound_A">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
         android:layout_weight="1"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"

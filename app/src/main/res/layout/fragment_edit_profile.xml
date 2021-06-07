@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:paddingTop="24dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Profile.Edit_Profile_F">
+    tools:context=".Profile.Edit_Profile_F">
 
 
     <RelativeLayout

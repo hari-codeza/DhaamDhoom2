@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.SoundLists.Discover_SoundList_F">
+    tools:context=".SoundLists.Discover_SoundList_F">
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,7 +14,7 @@
         android:layout_marginTop="5dp">
 
 
-    <androidx.core.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar"

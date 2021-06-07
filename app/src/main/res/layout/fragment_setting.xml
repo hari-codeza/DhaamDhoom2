@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Settings.Setting_F">
-
+    tools:context=".Settings.Setting_F">
 
 
     <RelativeLayout
@@ -13,7 +12,7 @@
         android:paddingTop="24dp"
         android:background="@color/white">
 
-    <androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"

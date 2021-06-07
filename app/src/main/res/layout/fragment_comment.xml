@@ -7,14 +7,14 @@
     android:fitsSystemWindows="true"
     android:id="@+id/comment_screen"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Comments.Comment_F">
+    tools:context=".Comments.Comment_F">
 
     <androidx.percentlayout.widget.PercentRelativeLayout
-         android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
-           android:layout_width="match_parent"
+            android:layout_width="match_parent"
             app:layout_heightPercent="75%"
             android:background="@drawable/d_top_left_right_radius"
             android:layout_alignParentBottom="true"

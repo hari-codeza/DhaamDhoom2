@@ -5,17 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Inbox.Inbox_F">
+    tools:context=".Inbox.Inbox_F">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="24dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
         android:layout_above="@+id/bannerad">
 
         <androidx.appcompat.widget.Toolbar

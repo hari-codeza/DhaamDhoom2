@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kyadav.DhaamDhoom.Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A">
+    tools:context=".Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/playerview"
-        android:layout_margin="0dp"
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/playerview"
+            android:layout_margin="0dp"
         android:padding="0dp"
         app:show_timeout="1000"
         app:resize_mode="fixed_height"

@@ -5,12 +5,12 @@
     android:id="@+id/MainMenuFragment"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity">
+    tools:context=".Main_Menu.MainMenuActivity">
 
 
-     <RelativeLayout
-         android:layout_width="match_parent"
-         android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
         <com.kyadav.DhaamDhoom.Main_Menu.Custom_ViewPager

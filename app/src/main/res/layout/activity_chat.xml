@@ -9,7 +9,7 @@
     android:id="@+id/Chat_F"
     android:fitsSystemWindows="true"
     android:paddingTop="24dp"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Chat.Chat_Activity">
+    tools:context=".Chat.Chat_Activity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,6 +19,7 @@
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         android:background="@color/white">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

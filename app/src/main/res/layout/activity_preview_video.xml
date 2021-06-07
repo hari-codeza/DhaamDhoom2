@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kyadav.DhaamDhoom.com.kyadav.DhaamDhoom.Video_Recording.Preview_Video_A">
+    tools:context=".Video_Recording.Preview_Video_A">
 
 
-<com.kyadav.DhaamDhoom.Video_Recording.MovieWrapperView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/layout_movie_wrapper"/>
+    <com.kyadav.DhaamDhoom.Video_Recording.MovieWrapperView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_movie_wrapper" />
 
 
     <ImageButton

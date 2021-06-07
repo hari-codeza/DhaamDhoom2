@@ -12,9 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,19 +20,21 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.coremedia.iso.boxes.Container;
-import com.kyadav.DhaamDhoom.SegmentProgress.ProgressBarListener;
-import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.SoundLists.SoundList_Main_A;
-import com.kyadav.DhaamDhoom.Video_Recording.GalleryVideos.GalleryVideos_A;
-import com.kyadav.DhaamDhoom.R;
-import com.kyadav.DhaamDhoom.SegmentProgress.SegmentedProgressBar;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SegmentProgress.ProgressBarListener;
+import com.kyadav.DhaamDhoom.SegmentProgress.SegmentedProgressBar;
+import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
+import com.kyadav.DhaamDhoom.SoundLists.SoundList_Main_A;
+import com.kyadav.DhaamDhoom.Video_Recording.GalleryVideos.GalleryVideos_A;
 import com.wonderkiln.camerakit.CameraKit;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Video_Recoder_A extends AppCompatActivity implements View.OnClickListener {
 
@@ -140,17 +139,22 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
 
         Intent intent=getIntent();
-        if(intent.hasExtra("sound_name")){
+        if (intent.hasExtra("sound_name")) {
             add_sound_txt.setText(intent.getStringExtra("sound_name"));
-            Variables.Selected_sound_id=intent.getStringExtra("sound_id");
+            Variables.Selected_sound_id = intent.getStringExtra("sound_id");
             PreparedAudio();
         }
 
 
-
-       // this is code hold to record the video
+        // this is code hold to record the video
         final Timer[] timer = {new Timer()};
-        record_image.setOnTouchListener(new View.OnTouchListener() {
+        record_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Start_or_Stop_Recording();
+            }
+        });
+/*        record_image.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -183,7 +187,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
 
-        });
+        });*/
 
 
 
