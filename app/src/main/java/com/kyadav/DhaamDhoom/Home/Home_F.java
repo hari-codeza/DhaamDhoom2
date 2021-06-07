@@ -124,6 +124,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     boolean is_visible_to_user;
     // when we swipe for another video this will relaese the privious player
     SimpleExoPlayer privious_player;
+
     public Home_F() {
         // Required empty public constructor
     }
@@ -553,8 +554,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                     if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
                         Show_heart_on_DoubleTap(item, mainlayout, e);
-                        Like_Video(currentPage, item);
-                        DisLike_Video(currentPage, item);
+                        //Like_Video(currentPage, item);
+                        //DisLike_Video(currentPage, item);
+                        Like_Dislike_Video(currentPage, item);
                     } else {
                         Toast.makeText(context, "Please Login into app", Toast.LENGTH_SHORT).show();
                     }
@@ -677,38 +679,179 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     }
 
     // this function will call for like the video and Call an Api for like the video
-    public void DisLike_Video(final int position, final Home_Get_Set home_get_set) {
-        String action = home_get_set.Disliked;
+    public void Like_Dislike_Video(final int position, final Home_Get_Set home_get_set) {
+        String actionDislike = home_get_set.Disliked;
+        String actionLike = home_get_set.liked;
 
-        if (action.equals("1")) {
-            action = "0";
+        if (actionLike.equals("1")) {
+
+            actionLike = "0";
+            home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
+            if (actionDislike.equals("0")) {
+                actionDislike = "1";
+                home_get_set.Dis_like_count = "" + (Integer.parseInt(home_get_set.Dis_like_count) + 1);
+
+                Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionDislike, false, new API_CallBack() {
+
+                    @Override
+                    public void ArrayData(ArrayList arrayList) {
+                    }
+
+                    @Override
+                    public void OnSuccess(String responce) {
+                    }
+
+                    @Override
+                    public void OnFail(String responce) {
+                    }
+                });
+            }
+
+            data_list.remove(position);
+            home_get_set.Disliked = actionDislike;
+            home_get_set.liked = actionLike;
+            data_list.add(position, home_get_set);
+            adapter.notifyDataSetChanged();
+
+            Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionLike, true, new API_CallBack() {
+
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+                }
+
+                @Override
+                public void OnSuccess(String responce) {
+                }
+
+                @Override
+                public void OnFail(String responce) {
+                }
+            });
+
+        } else if (actionDislike.equals("1")) {
+
+            actionDislike = "0";
             home_get_set.Dis_like_count = "" + (Integer.parseInt(home_get_set.Dis_like_count) - 1);
+            if (actionLike.equals("0")) {
+                actionLike = "1";
+                home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
+
+                Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionLike, true, new API_CallBack() {
+
+                    @Override
+                    public void ArrayData(ArrayList arrayList) {
+                    }
+
+                    @Override
+                    public void OnSuccess(String responce) {
+                    }
+
+                    @Override
+                    public void OnFail(String responce) {
+                    }
+                });
+            }
+
+            data_list.remove(position);
+            home_get_set.Disliked = actionDislike;
+            home_get_set.liked = actionLike;
+            data_list.add(position, home_get_set);
+            adapter.notifyDataSetChanged();
+
+            Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionDislike, false, new API_CallBack() {
+
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+                }
+
+                @Override
+                public void OnSuccess(String responce) {
+                }
+
+                @Override
+                public void OnFail(String responce) {
+                }
+            });
         } else {
-            action = "1";
-            home_get_set.Dis_like_count = "" + (Integer.parseInt(home_get_set.Dis_like_count) + 1);
+
+            actionLike = "1";
+            home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
+
+            data_list.remove(position);
+            home_get_set.liked = actionLike;
+            home_get_set.Disliked = actionDislike;
+            data_list.add(position, home_get_set);
+            adapter.notifyDataSetChanged();
+
+            Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionLike, true, new API_CallBack() {
+
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+                }
+
+                @Override
+                public void OnSuccess(String responce) {
+                }
+
+                @Override
+                public void OnFail(String responce) {
+                }
+            });
         }
 
+    }
+
+    // this function will call for like the video and Call an Api for like the video
+    public void DisLike_Video(final int position, final Home_Get_Set home_get_set) {
+        String actionDislike = home_get_set.Disliked;
+        String actionLike = home_get_set.liked;
+
+        if (actionDislike.equals("1")) {
+            actionDislike = "0";
+            home_get_set.Dis_like_count = "" + (Integer.parseInt(home_get_set.Dis_like_count) - 1);
+        } else {
+            actionDislike = "1";
+            home_get_set.Dis_like_count = "" + (Integer.parseInt(home_get_set.Dis_like_count) + 1);
+
+            if (actionLike.equals("1")) {
+                actionLike = "0";
+                home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
+
+                Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionLike, true, new API_CallBack() {
+
+                    @Override
+                    public void ArrayData(ArrayList arrayList) {
+                    }
+
+                    @Override
+                    public void OnSuccess(String responce) {
+                    }
+
+                    @Override
+                    public void OnFail(String responce) {
+                    }
+                });
+            }
+        }
 
         data_list.remove(position);
-        home_get_set.Disliked = action;
+        home_get_set.Disliked = actionDislike;
+        home_get_set.liked = actionLike;
         data_list.add(position, home_get_set);
         adapter.notifyDataSetChanged();
 
-        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, false, new API_CallBack() {
+        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionDislike, false, new API_CallBack() {
 
             @Override
             public void ArrayData(ArrayList arrayList) {
-
             }
 
             @Override
             public void OnSuccess(String responce) {
-
             }
 
             @Override
             public void OnFail(String responce) {
-
             }
         });
 
@@ -716,37 +859,54 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     // this function will call for like the video and Call an Api for like the video
     public void Like_Video(final int position, final Home_Get_Set home_get_set) {
-        String action = home_get_set.liked;
+        String actionDislike = home_get_set.Disliked;
+        String actionLike = home_get_set.liked;
 
-        if (action.equals("1")) {
-            action = "0";
+        if (actionLike.equals("1")) {
+            actionLike = "0";
             home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
         } else {
-            action = "1";
+            actionLike = "1";
             home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
+            if (actionDislike.equals("1")) {
+                actionDislike = "0";
+                home_get_set.Dis_like_count = "" + (Integer.parseInt(home_get_set.Dis_like_count) - 1);
+
+                Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionDislike, false, new API_CallBack() {
+
+                    @Override
+                    public void ArrayData(ArrayList arrayList) {
+                    }
+
+                    @Override
+                    public void OnSuccess(String responce) {
+                    }
+
+                    @Override
+                    public void OnFail(String responce) {
+                    }
+                });
+            }
         }
 
-
         data_list.remove(position);
-        home_get_set.liked = action;
+        home_get_set.liked = actionLike;
+        home_get_set.Disliked = actionDislike;
         data_list.add(position, home_get_set);
         adapter.notifyDataSetChanged();
 
-        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, true, new API_CallBack() {
+        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, actionLike, true, new API_CallBack() {
 
             @Override
             public void ArrayData(ArrayList arrayList) {
-
             }
 
             @Override
             public void OnSuccess(String responce) {
-
             }
 
             @Override
             public void OnFail(String responce) {
-
             }
         });
 
