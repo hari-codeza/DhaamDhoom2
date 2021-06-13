@@ -212,7 +212,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             public void TimeinMill(long mills) {
                 sec_passed = (int) (mills/1000);
 
-                if(sec_passed>(Variables.recording_duration/1000)){
+                if (sec_passed >= (Variables.recording_duration / 1000)) {
                     Start_or_Stop_Recording();
                 }
 

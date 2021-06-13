@@ -19,11 +19,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-
 import android.util.Base64;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -257,13 +257,10 @@ public class Upload_Service extends Service{
             buffer = new byte[bufferSize];
 
             // read file and write it into form...
-            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            ;
 
-            while (bytesRead > 0) {
-                dos.write(buffer, 0, bufferSize);
-                bytesAvailable = fileInputStream.available();
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            while ((bytesRead = fileInputStream.read(buffer, 0, bufferSize)) > 0) {
+                dos.write(buffer, 0, bytesRead);
             }
 
             dos.writeBytes(lineEnd);
