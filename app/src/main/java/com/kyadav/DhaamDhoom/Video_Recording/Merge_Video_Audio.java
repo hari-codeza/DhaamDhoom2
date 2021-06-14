@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.coremedia.iso.IsoFile;
 import com.coremedia.iso.boxes.Container;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
@@ -16,6 +15,7 @@ import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AACTrackImpl;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -76,7 +76,7 @@ public class Merge_Video_Audio extends AsyncTask<String,String,String> {
 
     public void Go_To_preview_Activity(){
         Intent intent =new Intent(context,Preview_Video_A.class);
-        intent.putExtra("path", Variables.root + "/output2.mp4");
+        intent.putExtra("path", Variables.outputfile2);
         context.startActivity(intent);
     }
 

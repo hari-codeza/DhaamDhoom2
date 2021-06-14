@@ -58,8 +58,6 @@ public class Variables {
     public final static int permission_Recording_audio = 790;
     public static String gif_api_key1 = "giphy_api_key_here";
     public static String privacy_policy = "https://www.termsfeed.com/privacy-policy/4dec1a564a01ea0d15ed86c97c4e8253";
-    //public static String domain="http://103.235.105.138//DDAPI/index.php?p=";
-    //public static String base_url="http://103.235.105.138//DDAPI/";
     public static String domain = "http://www.fmatrichy.org/TicTicAPI/index.php?p=";
     public static String base_url = "http://www.fmatrichy.org/TicTicAPI/";
     public static String SignUp = domain + "signup";

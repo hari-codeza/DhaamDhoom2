@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,12 +17,10 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.coremedia.iso.boxes.Container;
-import com.kyadav.DhaamDhoom.R;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.SoundLists.SoundList_Main_A;
-import com.kyadav.DhaamDhoom.Video_Recording.Merge_Video_Audio;
-import com.kyadav.DhaamDhoom.Video_Recording.Preview_Video_A;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -45,6 +41,11 @@ import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
+import com.kyadav.DhaamDhoom.SoundLists.SoundList_Main_A;
+import com.kyadav.DhaamDhoom.Video_Recording.Merge_Video_Audio;
+import com.kyadav.DhaamDhoom.Video_Recording.Preview_Video_A;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -297,17 +298,17 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
 
     // this will add the select audio with the video
-    public void Merge_withAudio(){
+    public void Merge_withAudio() {
 
         String root = Environment.getExternalStorageDirectory().toString();
         String audio_file;
-        audio_file = Variables.app_folder+Variables.SelectedAudio_AAC;
+        audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
 
-        String video = root + "/"+"output.mp4";
-        String finaloutput = root + "/"+"output2.mp4";
+        String video = Variables.outputfile;
+        String finaloutput = Variables.outputfile2;
 
-        Merge_Video_Audio merge_video_audio=new Merge_Video_Audio(GallerySelectedVideo_A.this);
-        merge_video_audio.doInBackground(audio_file,video,finaloutput);
+        Merge_Video_Audio merge_video_audio = new Merge_Video_Audio(GallerySelectedVideo_A.this);
+        merge_video_audio.doInBackground(audio_file, video, finaloutput);
 
     }
 

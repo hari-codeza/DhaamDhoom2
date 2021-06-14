@@ -399,13 +399,13 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
         String root = Environment.getExternalStorageDirectory().toString();
         String audio_file;
-            audio_file =Variables.app_folder+Variables.SelectedAudio_AAC;
+        audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
 
-        String video = root + "/"+"output.mp4";
-        String finaloutput = root + "/"+"output2.mp4";
+        String video = Variables.outputfile;
+        String finaloutput = Variables.outputfile2;
 
-        Merge_Video_Audio merge_video_audio=new Merge_Video_Audio(Video_Recoder_A.this);
-        merge_video_audio.doInBackground(audio_file,video,finaloutput);
+        Merge_Video_Audio merge_video_audio = new Merge_Video_Audio(Video_Recoder_A.this);
+        merge_video_audio.doInBackground(audio_file, video, finaloutput);
 
     }
 
