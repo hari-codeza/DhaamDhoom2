@@ -4,10 +4,6 @@ package com.kyadav.DhaamDhoom.Discover;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.kyadav.DhaamDhoom.Home.Home_Get_Set;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
@@ -44,23 +45,22 @@ public class Discover_F extends RootFragment {
 
 
     SwipeRefreshLayout swiperefresh;
+    ArrayList<Discover_Get_Set> datalist;
+    Discover_Adapter adapter;
 
     public Discover_F() {
         // Required empty public constructor
     }
 
-    ArrayList<Discover_Get_Set> datalist;
-
-    Discover_Adapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_discover, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_discover, container, false);
+        context = getContext();
 
 
-        datalist=new ArrayList<>();
+        datalist = new ArrayList<>();
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
@@ -68,19 +68,18 @@ public class Discover_F extends RootFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        adapter=new Discover_Adapter(context, datalist, new Discover_Adapter.OnItemClickListener() {
+        adapter = new Discover_Adapter(context, datalist, new Discover_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(ArrayList<Home_Get_Set> datalist, int postion) {
-                OpenWatchVideo(postion,datalist);
+                OpenWatchVideo(postion, datalist);
             }
         });
-
 
 
         recyclerView.setAdapter(adapter);
 
 
-        search_edit=view.findViewById(R.id.search_edit);
+        search_edit = view.findViewById(R.id.search_edit);
         search_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,9 +89,9 @@ public class Discover_F extends RootFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String query=search_edit.getText().toString();
-                Log.d("resvfp",query);
-                if(adapter!=null)
+                String query = search_edit.getText().toString();
+                Log.d("resvfp", query);
+                if (adapter != null)
                     adapter.getFilter().filter(query);
 
             }
@@ -104,7 +103,7 @@ public class Discover_F extends RootFragment {
         });
 
 
-        swiperefresh=view.findViewById(R.id.swiperefresh);
+        swiperefresh = view.findViewById(R.id.swiperefresh);
         swiperefresh.setColorSchemeResources(R.color.black);
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -121,7 +120,6 @@ public class Discover_F extends RootFragment {
     }
 
 
-
     // Bottom two function will get the Discover videos
     // from api and parse the json data which is shown in Discover tab
 
@@ -129,13 +127,13 @@ public class Discover_F extends RootFragment {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.d("resp",parameters.toString());
+        Log.d("resp", parameters.toString());
 
         ApiRequest.Call_Api(context, Variables.discover, parameters, new Callback() {
             @Override
@@ -146,26 +144,25 @@ public class Discover_F extends RootFragment {
         });
 
 
-
     }
 
 
-    public void Parse_data(String responce){
+    public void Parse_data(String responce) {
 
         datalist.clear();
 
         try {
-            JSONObject jsonObject=new JSONObject(responce);
-            String code=jsonObject.optString("code");
-            if(code.equals("200")){
-                JSONArray msgArray=jsonObject.getJSONArray("msg");
-                for (int d=0;d<msgArray.length();d++) {
+            JSONObject jsonObject = new JSONObject(responce);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
+                for (int d = 0; d < msgArray.length(); d++) {
 
-                    Discover_Get_Set discover_get_set=new Discover_Get_Set();
-                    JSONObject discover_object=msgArray.optJSONObject(d);
-                    discover_get_set.title=discover_object.optString("section_name");
+                    Discover_Get_Set discover_get_set = new Discover_Get_Set();
+                    JSONObject discover_object = msgArray.optJSONObject(d);
+                    discover_get_set.title = discover_object.optString("section_name");
 
-                    JSONArray video_array=discover_object.optJSONArray("sections_videos");
+                    JSONArray video_array = discover_object.optJSONArray("sections_videos");
 
                     ArrayList<Home_Get_Set> video_list = new ArrayList<>();
                     for (int i = 0; i < video_array.length(); i++) {
@@ -183,24 +180,24 @@ public class Discover_F extends RootFragment {
                         item.like_count = count.optString("like_count");
                         item.video_comment_count = count.optString("video_comment_count");
 
-                        JSONObject sound_data=itemdata.optJSONObject("sound");
-                        item.sound_id=sound_data.optString("id");
-                        item.sound_name=sound_data.optString("sound_name");
-                        item.sound_pic=sound_data.optString("thum");
+                        JSONObject sound_data = itemdata.optJSONObject("sound");
+                        item.sound_id = sound_data.optString("id");
+                        item.sound_name = sound_data.optString("sound_name");
+                        item.sound_pic = sound_data.optString("thum");
 
 
                         item.video_id = itemdata.optString("id");
                         item.liked = itemdata.optString("liked");
                         item.video_url = Variables.base_url + itemdata.optString("video");
                         item.thum = Variables.base_url + itemdata.optString("thum");
-                        item.gif =Variables.base_url+itemdata.optString("gif");
+                        item.gif = Variables.base_url + itemdata.optString("gif");
                         item.created_date = itemdata.optString("created");
-                        item.video_description=itemdata.optString("description");
+                        item.video_description = itemdata.optString("description");
 
                         video_list.add(item);
                     }
 
-                    discover_get_set.arrayList=video_list;
+                    discover_get_set.arrayList = video_list;
 
                     datalist.add(discover_get_set);
 
@@ -208,8 +205,8 @@ public class Discover_F extends RootFragment {
 
                 adapter.notifyDataSetChanged();
 
-            }else {
-                Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -219,18 +216,15 @@ public class Discover_F extends RootFragment {
     }
 
 
-
     // When you click on any Video a new activity is open which will play the Clicked video
-    private void OpenWatchVideo(int postion,ArrayList<Home_Get_Set> data_list) {
+    private void OpenWatchVideo(int postion, ArrayList<Home_Get_Set> data_list) {
 
-        Intent intent=new Intent(getActivity(),WatchVideos_F.class);
+        Intent intent = new Intent(getActivity(), WatchVideos_F.class);
         intent.putExtra("arraylist", data_list);
-        intent.putExtra("position",postion);
+        intent.putExtra("position", postion);
         startActivity(intent);
 
     }
-
-
 
 
 }

@@ -195,7 +195,7 @@ public enum FilterType {
             case ZOOM_BLUR:
                 return new GlZoomBlurFilter();
 
-              default:
+            default:
                 return new GlFilter();
         }
     }

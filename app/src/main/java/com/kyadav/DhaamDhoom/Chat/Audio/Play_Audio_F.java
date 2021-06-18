@@ -4,13 +4,14 @@ package com.kyadav.DhaamDhoom.Chat.Audio;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.kyadav.DhaamDhoom.R;
 
@@ -23,9 +24,9 @@ public class Play_Audio_F extends Fragment {
 
     View view;
     Context context;
-    ImageButton play_btn,pause_btn;
+    ImageButton play_btn, pause_btn;
     SeekBar seekBar;
-    TextView duration_time,total_time;
+    TextView duration_time, total_time;
 
     AudioWife audioWife;
 
@@ -42,29 +43,29 @@ public class Play_Audio_F extends Fragment {
 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_play_audio, container, false);
+        view = inflater.inflate(R.layout.fragment_play_audio, container, false);
 
-        context=getContext();
+        context = getContext();
 
-        close_btn=view.findViewById(R.id.close_btn);
+        close_btn = view.findViewById(R.id.close_btn);
 
-        play_btn=(ImageButton) view.findViewById(R.id.play_btn);
-        pause_btn=(ImageButton)  view.findViewById(R.id.pause_btn);
+        play_btn = (ImageButton) view.findViewById(R.id.play_btn);
+        pause_btn = (ImageButton) view.findViewById(R.id.pause_btn);
 
-        seekBar=(SeekBar) view.findViewById(R.id.seek_bar);
+        seekBar = (SeekBar) view.findViewById(R.id.seek_bar);
 
-        duration_time=(TextView)view.findViewById(R.id.duration_time);
-        total_time=(TextView)view.findViewById(R.id.total_time);
+        duration_time = (TextView) view.findViewById(R.id.duration_time);
+        total_time = (TextView) view.findViewById(R.id.total_time);
 
-        String filepath=getArguments().getString("path");
+        String filepath = getArguments().getString("path");
 
-        Uri uri= Uri.parse(filepath);
+        Uri uri = Uri.parse(filepath);
 
 
         // this is the third partty library that will show get the audio player view
         // and run the audio file and handle the player view itself
 
-        audioWife= AudioWife.getInstance();
+        audioWife = AudioWife.getInstance();
         audioWife.init(context, uri)
                 .setPlayView(play_btn)
                 .setPauseView(pause_btn)
@@ -86,14 +87,12 @@ public class Play_Audio_F extends Fragment {
     }
 
 
-
     @Override
     public void onDetach() {
         super.onDetach();
         audioWife.pause();
         audioWife.release();
     }
-
 
 
 }

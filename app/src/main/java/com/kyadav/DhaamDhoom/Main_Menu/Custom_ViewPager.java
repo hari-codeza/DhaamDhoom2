@@ -1,9 +1,10 @@
 package com.kyadav.DhaamDhoom.Main_Menu;
 
 import android.content.Context;
-import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by AQEEL on 3/30/2018.
@@ -12,7 +13,7 @@ import android.view.MotionEvent;
 
 // this the related to the viewpage that is show into mainscreen tab
 
-    // purpose is only to disable the scroll by fingure option
+// purpose is only to disable the scroll by fingure option
 
 public class Custom_ViewPager extends ViewPager {
 

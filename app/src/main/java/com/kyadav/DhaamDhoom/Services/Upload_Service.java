@@ -57,54 +57,26 @@ import java.net.URL;
 import java.util.ArrayList;
 
 // this the background service which will upload the video into database
-public class Upload_Service extends Service{
+public class Upload_Service extends Service {
 
 
-
+    static int serverResponseCode = 0;
     private final IBinder mBinder = new LocalBinder();
-
-    public class LocalBinder extends Binder {
-        public Upload_Service getService() {
-            return Upload_Service.this;
-        }
-    }
-
     boolean mAllowRebind;
     ServiceCallback Callback;
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return mAllowRebind;
-    }
-
-
-    String result ="";
+    String result = "";
     Uri uri;
-    static int serverResponseCode=0;
-    String video_base64="",thumb_base_64="",Gif_base_64="";
+    String video_base64 = "", thumb_base_64 = "", Gif_base_64 = "";
     String description;
     SharedPreferences sharedPreferences;
+    String sCurrentLine;
+
     public Upload_Service() {
         super();
     }
+
     public Upload_Service(ServiceCallback serviceCallback) {
-        Callback=serviceCallback;
-    }
-
-    public void setCallbacks(ServiceCallback serviceCallback) {
         Callback = serviceCallback;
-    }
-
-    String sCurrentLine;
-
-    @Override
-    public void onCreate() {
-        sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
     }
 
     public static int upLoad2Server(String sourceFileUri) {
@@ -188,6 +160,48 @@ public class Upload_Service extends Service{
 
     } // end upLoad2Server
 
+    private static byte[] loadFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+        long length = file.length();
+        if (length > Integer.MAX_VALUE) {
+            // File is too large
+        }
+        byte[] bytes = new byte[(int) length];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+            offset += numRead;
+        }
+
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+
+        is.close();
+        return bytes;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return mAllowRebind;
+    }
+
+    public void setCallbacks(ServiceCallback serviceCallback) {
+        Callback = serviceCallback;
+    }
+
+    @Override
+    public void onCreate() {
+        sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -197,7 +211,7 @@ public class Upload_Service extends Service{
 
                 String uri_string = intent.getStringExtra("uri");
                 uri = Uri.parse(uri_string);
-                description=intent.getStringExtra("desc");
+                description = intent.getStringExtra("desc");
 
                 new Thread(new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -225,14 +239,14 @@ public class Upload_Service extends Service{
                             frames.add(resized);
                         }
 
-                        Gif_base_64= Base64.encodeToString(generateGIF(frames), Base64.DEFAULT);
+                        Gif_base_64 = Base64.encodeToString(generateGIF(frames), Base64.DEFAULT);
                         JSONObject parameters = new JSONObject();
                         try {
                             video_base64 = encodeFileToBase64Binary(Variables.output_filter_file);
                             parameters.put("fb_id", sharedPreferences.getString(Variables.u_id, ""));
                             parameters.put("sound_id", Variables.Selected_sound_id);
-                            parameters.put("description",description);
-                            JSONObject vidoefiledata=new JSONObject();
+                            parameters.put("description", description);
+                            JSONObject vidoefiledata = new JSONObject();
                             vidoefiledata.put("file_data", video_base64);
                             parameters.put("videobase64", vidoefiledata);
                             JSONObject imagefiledata = new JSONObject();
@@ -246,14 +260,14 @@ public class Upload_Service extends Service{
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        generateNoteOnSD("parameters",parameters.toString());
+                        generateNoteOnSD("parameters", parameters.toString());
                         RequestQueue rq = Volley.newRequestQueue(Upload_Service.this);
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                                 (Request.Method.POST, Variables.uploadVideo, parameters, new Response.Listener<JSONObject>() {
 
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        String respo=response.toString();
+                                        String respo = response.toString();
                                         Log.d("uploadVideo res", respo);
                                         Callback.ShowResponce("Your Video is uploaded Successfully");
                                         stopForeground(true);
@@ -279,22 +293,19 @@ public class Upload_Service extends Service{
                         rq.add(jsonObjectRequest);
 
 
-
-
-
                     }
 
 
                 }).start();
 
-            }
-            else if(intent.getAction().equals("stopservice")){
+            } else if (intent.getAction().equals("stopservice")) {
                 stopForeground(true);
                 stopSelf();
             }
         }
         return Service.START_STICKY;
     }
+
     // this will show the sticky notification during uploading video
     private void showNotification() {
 
@@ -307,9 +318,10 @@ public class Upload_Service extends Service{
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel defaultChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(defaultChannel);        }
+            notificationManager.createNotificationChannel(defaultChannel);
+        }
 
-        androidx.core.app.NotificationCompat.Builder builder = (androidx.core.app.NotificationCompat.Builder) new androidx.core.app.NotificationCompat.Builder(this,CHANNEL_ID)
+        androidx.core.app.NotificationCompat.Builder builder = (androidx.core.app.NotificationCompat.Builder) new androidx.core.app.NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.stat_sys_upload)
                 .setContentTitle("Uploading Video")
                 .setContentText("Please wait! Video is uploading....")
@@ -322,11 +334,11 @@ public class Upload_Service extends Service{
     }
 
     // for thumbnail
-    public  String Bitmap_to_base64( Bitmap imagebitmap){
+    public String Bitmap_to_base64(Bitmap imagebitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imagebitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
-        byte[] byteArray = baos .toByteArray();
-        String base64= Base64.encodeToString(byteArray, Base64.DEFAULT);
+        byte[] byteArray = baos.toByteArray();
+        String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return base64;
     }
 
@@ -339,28 +351,6 @@ public class Upload_Service extends Service{
         byte[] bytes = loadFile(file);
         String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
         return encodedString;
-    }
-
-    private static byte[] loadFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-        long length = file.length();
-        if (length > Integer.MAX_VALUE) {
-            // File is too large
-        }
-        byte[] bytes = new byte[(int)length];
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-                && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
-        }
-
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
-        }
-
-        is.close();
-        return bytes;
     }
 
     //for video gif image
@@ -394,20 +384,25 @@ public class Upload_Service extends Service{
         return bos.toByteArray();
     }
 
-
-    public void generateNoteOnSD( String sFileName, String sBody) {
+    public void generateNoteOnSD(String sFileName, String sBody) {
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "Notes");
             if (!root.exists()) {
                 root.mkdirs();
             }
-            File gpxfile = new File(root, sFileName+".txt");
+            File gpxfile = new File(root, sFileName + ".txt");
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(sBody);
             writer.flush();
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public class LocalBinder extends Binder {
+        public Upload_Service getService() {
+            return Upload_Service.this;
         }
     }
 

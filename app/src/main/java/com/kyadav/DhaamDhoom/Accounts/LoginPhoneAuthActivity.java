@@ -47,11 +47,11 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginPhoneAuthActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
+    IOSDialog iosDialog;
+    SharedPreferences sharedPreferences;
     private LinearLayout linearMobile, linearOtp;
     private AppCompatEditText tMobile;
-    IOSDialog iosDialog;
     private AppCompatEditText tOtp;
-    SharedPreferences sharedPreferences;
     private AppCompatTextView tPhoneCode;
 
     private FirebaseAuth mAuth;
@@ -173,7 +173,7 @@ public class LoginPhoneAuthActivity extends AppCompatActivity {
                         iosDialog.hide();
                         if (task.isSuccessful()) {
                             FirebaseUser cUser = task.getResult().getUser();
-                            if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
                                 JSONObject parameters = new JSONObject();
                                 try {
 
@@ -190,11 +190,11 @@ public class LoginPhoneAuthActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                Intent it=new Intent(getApplicationContext(),RegistrationCompleteActivity.class);
-                                        it.putExtra("parameters",parameters.toString());
+                                Intent it = new Intent(getApplicationContext(), RegistrationCompleteActivity.class);
+                                it.putExtra("parameters", parameters.toString());
                                 startActivity(it);
                                 finish();
-                            }else {
+                            } else {
                                 String pic_url = "https://graph.facebook.com/picture?width=500&width=500";
 
                                 //String id = Profile.getCurrentProfile().getId();

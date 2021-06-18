@@ -265,7 +265,6 @@ public class Functions {
         }
 
 
-
         if (like_call) {
             ApiRequest.Call_Api(activity, Variables.likeDislikeVideo, parameters, new Callback() {
                 @Override

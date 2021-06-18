@@ -25,25 +25,39 @@ import com.kyadav.DhaamDhoom.R;
  */
 public class KeyboardHeightProvider extends PopupWindow {
 
-    /** The tag for logging purposes */
+    /**
+     * The tag for logging purposes
+     */
     private final static String TAG = "sample_KeyboardHeightProvider";
 
-    /** The keyboard height observer */
+    /**
+     * The keyboard height observer
+     */
     private KeyboardHeightObserver observer;
 
-    /** The cached landscape height of the keyboard */
+    /**
+     * The cached landscape height of the keyboard
+     */
     private int keyboardLandscapeHeight;
 
-    /** The cached portrait height of the keyboard */
+    /**
+     * The cached portrait height of the keyboard
+     */
     private int keyboardPortraitHeight;
 
-    /** The view that is used to calculate the keyboard height */
+    /**
+     * The view that is used to calculate the keyboard height
+     */
     private View popupView;
 
-    /** The parent view */
+    /**
+     * The parent view
+     */
     private View parentView;
 
-    /** The root activity_main that uses this KeyboardHeightProvider */
+    /**
+     * The root activity_main that uses this KeyboardHeightProvider
+     */
     private Activity activity;
 
     /**
@@ -141,12 +155,10 @@ public class KeyboardHeightProvider extends PopupWindow {
 
         if (keyboardHeight == 0) {
             notifyKeyboardHeightChanged(0, orientation);
-        }
-        else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             this.keyboardPortraitHeight = keyboardHeight;
             notifyKeyboardHeightChanged(keyboardPortraitHeight, orientation);
-        }
-        else {
+        } else {
             this.keyboardLandscapeHeight = keyboardHeight;
             notifyKeyboardHeightChanged(keyboardLandscapeHeight, orientation);
         }

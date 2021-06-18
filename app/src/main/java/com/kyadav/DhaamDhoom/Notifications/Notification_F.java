@@ -3,19 +3,20 @@ package com.kyadav.DhaamDhoom.Notifications;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.kyadav.DhaamDhoom.Inbox.Inbox_F;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.kyadav.DhaamDhoom.R;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -31,23 +32,22 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     RecyclerView recyclerView;
 
     ArrayList<Notification_Get_Set> datalist;
+    AdView adView;
 
 
     public Notification_F() {
         // Required empty public constructor
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_notification, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_notification, container, false);
+        context = getContext();
 
 
-        datalist=new ArrayList<>();
+        datalist = new ArrayList<>();
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
@@ -56,17 +56,15 @@ public class Notification_F extends RootFragment implements View.OnClickListener
         recyclerView.setHasFixedSize(true);
 
 
-
-        adapter=new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
+        adapter = new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, Notification_Get_Set item) {
 
             }
         }
-    );
+        );
 
         recyclerView.setAdapter(adapter);
-
 
 
         view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
@@ -76,8 +74,6 @@ public class Notification_F extends RootFragment implements View.OnClickListener
         return view;
     }
 
-
-    AdView adView;
     @Override
     public void onStart() {
         super.onStart();
@@ -89,7 +85,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.inbox_btn:
                 Open_inbox_F();
                 break;

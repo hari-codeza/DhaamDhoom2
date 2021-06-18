@@ -1,101 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
     tools:context=".Accounts.RegistrationCompleteActivity">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
-    <RadioGroup
-        android:id="@+id/rgGender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
 
-        <RadioButton
-            android:id="@+id/rbMale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:button="@null"
-            android:drawableTop="@drawable/ic_man"
-            android:fontFamily="@font/baskerville"
-            android:gravity="center"
-            android:text="@string/male"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@drawable/selector_gender" />
-        <RadioButton
-            android:id="@+id/rbFemale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:button="@null"
-            android:drawableTop="@drawable/ic_woman"
-            android:textColor="@drawable/selector_gender"
-            android:text="@string/female"
-            android:gravity="center"
-            android:fontFamily="@font/baskerville"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-        <RadioButton
-            android:id="@+id/rbTrans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:button="@null"
-            android:drawableTop="@drawable/ic_transgender"
-            android:text="@string/transgender"
-            android:textColor="@drawable/selector_gender"
-            android:gravity="center"
-            android:fontFamily="@font/baskerville"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-    </RadioGroup>
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/tName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#80F794E3"
-        android:fontFamily="@font/baskerville"
-        android:hint="@string/enter_your_name"
-        android:inputType="textPersonName"
-        android:padding="12dp"
-        android:text=""
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/tAge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#80F794E3"
-        android:fontFamily="@font/baskerville"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:hint="@string/enter_age"
-        android:inputType="number"
-        android:padding="12dp"
-        android:text=""
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#80F794E3"
-        android:onClick="registerOnClick"
-        android:padding="12dp"
-        android:text="@string/save_continue"
-        android:textAllCaps="false"
-        android:fontFamily="@font/baskerville"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/rgGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_man"
+                android:fontFamily="@font/baskerville"
+                android:gravity="center"
+                android:text="@string/male"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@drawable/selector_gender" />
+
+            <RadioButton
+                android:id="@+id/rbFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_woman"
+                android:fontFamily="@font/baskerville"
+                android:gravity="center"
+                android:text="@string/female"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@drawable/selector_gender" />
+
+            <RadioButton
+                android:id="@+id/rbTrans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_transgender"
+                android:fontFamily="@font/baskerville"
+                android:gravity="center"
+                android:text="@string/transgender"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@drawable/selector_gender" />
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/tName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#80F794E3"
+            android:fontFamily="@font/baskerville"
+            android:hint="@string/enter_your_name"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/tAge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#80F794E3"
+            android:fontFamily="@font/baskerville"
+            android:hint="@string/enter_age"
+            android:inputType="number"
+            android:padding="12dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#80F794E3"
+            android:fontFamily="@font/baskerville"
+            android:onClick="registerOnClick"
+            android:padding="12dp"
+            android:text="@string/save_continue"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </LinearLayout>
 </FrameLayout>

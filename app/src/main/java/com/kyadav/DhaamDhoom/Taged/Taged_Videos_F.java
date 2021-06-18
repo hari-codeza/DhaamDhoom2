@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +16,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.kyadav.DhaamDhoom.Home.Home_Get_Set;
 import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.kyadav.DhaamDhoom.Profile.MyVideos_Adapter;
+import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
 import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
 import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
 import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.kyadav.DhaamDhoom.WatchVideos.WatchVideos_F;
-import com.kyadav.DhaamDhoom.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +61,7 @@ public class Taged_Videos_F extends RootFragment {
 
     String tag_txt;
 
-    TextView tag_txt_view,tag_title_txt;
+    TextView tag_txt_view, tag_title_txt;
 
     ProgressBar progress_bar;
 
@@ -73,34 +74,32 @@ public class Taged_Videos_F extends RootFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_taged_videos, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_taged_videos, container, false);
+        context = getContext();
 
-        if(Variables.sharedPreferences==null){
-            Variables.sharedPreferences=getActivity().getSharedPreferences(Variables.pref_name,Context.MODE_PRIVATE);
+        if (Variables.sharedPreferences == null) {
+            Variables.sharedPreferences = getActivity().getSharedPreferences(Variables.pref_name, Context.MODE_PRIVATE);
         }
 
 
-        Bundle bundle=getArguments();
-        if(bundle!=null){
-            tag_txt=bundle.getString("tag");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            tag_txt = bundle.getString("tag");
         }
 
 
-        tag_txt_view=view.findViewById(R.id.tag_txt_view);
-        tag_title_txt=view.findViewById(R.id.tag_title_txt);
+        tag_txt_view = view.findViewById(R.id.tag_txt_view);
+        tag_title_txt = view.findViewById(R.id.tag_title_txt);
 
         tag_txt_view.setText(tag_txt);
         tag_title_txt.setText(tag_txt);
 
-        recyclerView=view.findViewById(R.id.recylerview);
-        scrollView=view.findViewById(R.id.scrollview);
+        recyclerView = view.findViewById(R.id.recylerview);
+        scrollView = view.findViewById(R.id.scrollview);
 
 
-        top_layout=view.findViewById(R.id.top_layout);
-        recylerview_main_layout=view.findViewById(R.id.recylerview_main_layout);
-
-
+        top_layout = view.findViewById(R.id.top_layout);
+        recylerview_main_layout = view.findViewById(R.id.recylerview_main_layout);
 
 
         ViewTreeObserver observer = top_layout.getViewTreeObserver();
@@ -109,7 +108,7 @@ public class Taged_Videos_F extends RootFragment {
             @Override
             public void onGlobalLayout() {
 
-                final int height=top_layout.getMeasuredHeight();
+                final int height = top_layout.getMeasuredHeight();
 
                 top_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
                         this);
@@ -121,8 +120,8 @@ public class Taged_Videos_F extends RootFragment {
                     public void onGlobalLayout() {
 
                         // TODO Auto-generated method stub
-                        RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) recylerview_main_layout.getLayoutParams();
-                        params.height= (int) (recylerview_main_layout.getMeasuredHeight()+ height);
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) recylerview_main_layout.getLayoutParams();
+                        params.height = (int) (recylerview_main_layout.getMeasuredHeight() + height);
                         recylerview_main_layout.setLayoutParams(params);
                         recylerview_main_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
                                 this);
@@ -132,9 +131,6 @@ public class Taged_Videos_F extends RootFragment {
 
             }
         });
-
-
-
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -147,7 +143,7 @@ public class Taged_Videos_F extends RootFragment {
                         recyclerView.setNestedScrollingEnabled(true);
 
 
-                    }else {
+                    } else {
                         recyclerView.setNestedScrollingEnabled(false);
                     }
 
@@ -156,22 +152,21 @@ public class Taged_Videos_F extends RootFragment {
         }
 
 
-
-        recyclerView=view.findViewById(R.id.recylerview);
-        final GridLayoutManager layoutManager = new GridLayoutManager(context,3);
+        recyclerView = view.findViewById(R.id.recylerview);
+        final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             recyclerView.setNestedScrollingEnabled(false);
-        }else {
+        } else {
             recyclerView.setNestedScrollingEnabled(true);
         }
 
-        data_list=new ArrayList<>();
-        adapter=new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
+        data_list = new ArrayList<>();
+        adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int postion,Home_Get_Set item, View view) {
+            public void onItemClick(int postion, Home_Get_Set item, View view) {
 
                 OpenWatchVideo(postion);
 
@@ -181,8 +176,7 @@ public class Taged_Videos_F extends RootFragment {
         recyclerView.setAdapter(adapter);
 
 
-
-        progress_bar=view.findViewById(R.id.progress_bar);
+        progress_bar = view.findViewById(R.id.progress_bar);
 
         view.findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,8 +188,6 @@ public class Taged_Videos_F extends RootFragment {
         Call_Api_For_get_Allvideos();
 
 
-
-
         return view;
     }
 
@@ -205,7 +197,7 @@ public class Taged_Videos_F extends RootFragment {
         progress_bar.setVisibility(View.VISIBLE);
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,""));
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
             parameters.put("tag", tag_txt);
             parameters.put("token", MainMenuActivity.token);
 
@@ -225,61 +217,60 @@ public class Taged_Videos_F extends RootFragment {
 
     }
 
-    public void Parse_data(String responce){
+    public void Parse_data(String responce) {
 
         data_list.clear();
 
         try {
-            JSONObject jsonObject=new JSONObject(responce);
-            String code=jsonObject.optString("code");
-            if(code.equals("200")){
-                JSONArray msgArray=jsonObject.getJSONArray("msg");
+            JSONObject jsonObject = new JSONObject(responce);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
 
-                    for (int i=0;i<msgArray.length();i++) {
-                        JSONObject itemdata = msgArray.optJSONObject(i);
-                        JSONObject user_info=itemdata.optJSONObject("user_info");
+                for (int i = 0; i < msgArray.length(); i++) {
+                    JSONObject itemdata = msgArray.optJSONObject(i);
+                    JSONObject user_info = itemdata.optJSONObject("user_info");
 
-                        Home_Get_Set item=new Home_Get_Set();
-                        item.fb_id=itemdata.optString("fb_id");
+                    Home_Get_Set item = new Home_Get_Set();
+                    item.fb_id = itemdata.optString("fb_id");
 
-                        Log.d("resp", item.fb_id);
+                    Log.d("resp", item.fb_id);
 
-                        item.first_name=user_info.optString("first_name");
-                        item.last_name=user_info.optString("last_name");
-                        item.profile_pic=user_info.optString("profile_pic");
+                    item.first_name = user_info.optString("first_name");
+                    item.last_name = user_info.optString("last_name");
+                    item.profile_pic = user_info.optString("profile_pic");
 
-                        JSONObject count=itemdata.optJSONObject("count");
-                        item.like_count=count.optString("like_count");
-                        item.video_comment_count=count.optString("video_comment_count");
-                        item.views=count.optString("view");
+                    JSONObject count = itemdata.optJSONObject("count");
+                    item.like_count = count.optString("like_count");
+                    item.video_comment_count = count.optString("video_comment_count");
+                    item.views = count.optString("view");
 
-                        JSONObject sound_data=itemdata.optJSONObject("sound");
-                        item.sound_id=sound_data.optString("id");
-                        item.sound_name=sound_data.optString("sound_name");
-                        item.sound_pic=sound_data.optString("thum");
-
-
-                        item.video_id=itemdata.optString("id");
-                        item.liked=itemdata.optString("liked");
-                        item.gif=Variables.base_url+itemdata.optString("gif");
-                        item.video_url=Variables.base_url+itemdata.optString("video");
-                        item.thum=Variables.base_url+itemdata.optString("thum");
-                        item.created_date=itemdata.optString("created");
-
-                        item.video_description=itemdata.optString("description");
+                    JSONObject sound_data = itemdata.optJSONObject("sound");
+                    item.sound_id = sound_data.optString("id");
+                    item.sound_name = sound_data.optString("sound_name");
+                    item.sound_pic = sound_data.optString("thum");
 
 
-                        data_list.add(item);
-                    }
+                    item.video_id = itemdata.optString("id");
+                    item.liked = itemdata.optString("liked");
+                    item.gif = Variables.base_url + itemdata.optString("gif");
+                    item.video_url = Variables.base_url + itemdata.optString("video");
+                    item.thum = Variables.base_url + itemdata.optString("thum");
+                    item.created_date = itemdata.optString("created");
 
+                    item.video_description = itemdata.optString("description");
+
+
+                    data_list.add(item);
+                }
 
 
                 adapter.notifyDataSetChanged();
                 progress_bar.setVisibility(View.GONE);
 
-            }else {
+            } else {
                 progress_bar.setVisibility(View.GONE);
-                Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -296,9 +287,9 @@ public class Taged_Videos_F extends RootFragment {
     }
 
     private void OpenWatchVideo(int postion) {
-        Intent intent=new Intent(getActivity(), WatchVideos_F.class);
+        Intent intent = new Intent(getActivity(), WatchVideos_F.class);
         intent.putExtra("arraylist", data_list);
-        intent.putExtra("position",postion);
+        intent.putExtra("position", postion);
         startActivity(intent);
     }
 

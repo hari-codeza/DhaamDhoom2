@@ -7,24 +7,23 @@
     android:paddingTop="25dp">
 
     <LinearLayout
+        android:id="@+id/close_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/close_layout"
-        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="5dp"
-        android:layout_alignParentRight="true">
+        android:orientation="horizontal">
 
 
         <ImageButton
+            android:id="@+id/close_gallery"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_cross_white"
             android:layout_marginRight="10dp"
-            android:padding="5dp"
-            android:id="@+id/close_gallery"
-            android:scaleType="fitXY"
             android:background="@color/transparent"
-            />
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_cross_white" />
 
     </LinearLayout>
 
@@ -37,10 +36,10 @@
         android:scaleType="fitCenter" />
 
     <ProgressBar
+        android:id="@+id/p_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:id="@+id/p_bar"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

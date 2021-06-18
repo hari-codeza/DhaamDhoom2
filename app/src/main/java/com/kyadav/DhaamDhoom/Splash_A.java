@@ -3,12 +3,12 @@ package com.kyadav.DhaamDhoom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
-import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 public class Splash_A extends AppCompatActivity {
@@ -35,9 +35,9 @@ public class Splash_A extends AppCompatActivity {
 
             public void onFinish() {
 
-                Intent intent=new Intent(Splash_A.this, MainMenuActivity.class);
+                Intent intent = new Intent(Splash_A.this, MainMenuActivity.class);
 
-                if(getIntent().getExtras()!=null) {
+                if (getIntent().getExtras() != null) {
                     intent.putExtras(getIntent().getExtras());
                     setIntent(null);
                 }
@@ -48,7 +48,6 @@ public class Splash_A extends AppCompatActivity {
 
             }
         }.start();
-
 
 
     }

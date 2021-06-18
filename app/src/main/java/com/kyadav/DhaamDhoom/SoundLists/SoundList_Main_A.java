@@ -2,20 +2,21 @@ package com.kyadav.DhaamDhoom.SoundLists;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kyadav.DhaamDhoom.SoundLists.FavouriteSounds.Favourite_Sound_F;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.google.android.material.tabs.TabLayout;
 import com.kyadav.DhaamDhoom.Main_Menu.Custom_ViewPager;
 import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SoundLists.FavouriteSounds.Favourite_Sound_F;
 
-public class SoundList_Main_A extends AppCompatActivity implements View.OnClickListener{
+public class SoundList_Main_A extends AppCompatActivity implements View.OnClickListener {
 
     protected TabLayout tablayout;
 
@@ -45,16 +46,14 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.Goback:
                 onBackPressed();
                 break;
         }
     }
-
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

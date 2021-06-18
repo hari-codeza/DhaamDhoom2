@@ -56,26 +56,32 @@ import java.util.List;
 
 import static com.kyadav.DhaamDhoom.Video_Recording.Video_Recoder_A.Sounds_list_Request_code;
 
-public class GallerySelectedVideo_A extends AppCompatActivity implements View.OnClickListener,Player.EventListener{
+public class GallerySelectedVideo_A extends AppCompatActivity implements View.OnClickListener, Player.EventListener {
 
     String path;
     TextView add_sound_txt;
+    // this will call when swipe for another video and
+    // this function will set the player to the current video
+    SimpleExoPlayer video_player;
+    // this will play the sound with the video when we select the audio
+    MediaPlayer audio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Hide_navigation();
         setContentView(R.layout.activity_gallery_selected_video);
 
-        Intent intent=getIntent();
-        if(intent!=null){
-            path=intent.getStringExtra("video_path");
+        Intent intent = getIntent();
+        if (intent != null) {
+            path = intent.getStringExtra("video_path");
         }
 
-        Variables.Selected_sound_id="null";
+        Variables.Selected_sound_id = "null";
 
         findViewById(R.id.Goback).setOnClickListener(this);
 
-        add_sound_txt=findViewById(R.id.add_sound_txt);
+        add_sound_txt = findViewById(R.id.add_sound_txt);
         add_sound_txt.setOnClickListener(this);
 
         findViewById(R.id.next_btn).setOnClickListener(this);
@@ -84,10 +90,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
     }
 
-    // this will call when swipe for another video and
-    // this function will set the player to the current video
-     SimpleExoPlayer video_player;
-    public void Set_Player(){
+    public void Set_Player() {
 
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
         video_player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
@@ -103,8 +106,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
         video_player.addListener(this);
 
 
-
-        final PlayerView playerView=findViewById(R.id.playerview);
+        final PlayerView playerView = findViewById(R.id.playerview);
         playerView.setPlayer(video_player);
 
         playerView.setOnTouchListener(new View.OnTouchListener() {
@@ -120,28 +122,27 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
     }
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.Goback:
                 finish();
-                overridePendingTransition(R.anim.in_from_top,R.anim.out_from_bottom);
+                overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                 break;
 
             case R.id.add_sound_txt:
-                Intent intent =new Intent(this, SoundList_Main_A.class);
-                startActivityForResult(intent,Sounds_list_Request_code);
+                Intent intent = new Intent(this, SoundList_Main_A.class);
+                startActivityForResult(intent, Sounds_list_Request_code);
                 overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                 break;
 
             case R.id.next_btn:
 
-                if(video_player!=null) {
+                if (video_player != null) {
                     video_player.setPlayWhenReady(false);
                 }
-                if(audio!=null) {
+                if (audio != null) {
                     audio.pause();
                 }
                 append();
@@ -149,16 +150,15 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==Sounds_list_Request_code){
-            if(data!=null){
+        if (requestCode == Sounds_list_Request_code) {
+            if (data != null) {
 
-                if(data.getStringExtra("isSelected").equals("yes")){
+                if (data.getStringExtra("isSelected").equals("yes")) {
                     add_sound_txt.setText(data.getStringExtra("sound_name"));
-                    Variables.Selected_sound_id=data.getStringExtra("sound_id");
+                    Variables.Selected_sound_id = data.getStringExtra("sound_id");
                     PreparedAudio();
                 }
 
@@ -167,17 +167,14 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
         }
     }
 
-
-    // this will play the sound with the video when we select the audio
-    MediaPlayer audio;
-    public  void PreparedAudio(){
+    public void PreparedAudio() {
         video_player.setVolume(0);
 
-        File file=new File(Variables.app_folder+ Variables.SelectedAudio_AAC);
-        if(file.exists()) {
+        File file = new File(Variables.app_folder + Variables.SelectedAudio_AAC);
+        if (file.exists()) {
             audio = new MediaPlayer();
             try {
-                audio.setDataSource(Variables.app_folder+ Variables.SelectedAudio_AAC);
+                audio.setDataSource(Variables.app_folder + Variables.SelectedAudio_AAC);
                 audio.prepare();
                 audio.setLooping(true);
 
@@ -193,11 +190,9 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     }
 
 
-
-
     // this will apped all the videos parts in one  fullvideo
     private boolean append() {
-        final ProgressDialog progressDialog=new ProgressDialog(GallerySelectedVideo_A.this);
+        final ProgressDialog progressDialog = new ProgressDialog(GallerySelectedVideo_A.this);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -212,27 +207,27 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                 });
 
 
-                ArrayList<String> video_list=new ArrayList<>();
+                ArrayList<String> video_list = new ArrayList<>();
 
-                    File file=new File(path);
+                File file = new File(path);
 
-                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                    retriever.setDataSource(GallerySelectedVideo_A.this, Uri.fromFile(file));
-                    String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
-                    boolean isVideo = "yes".equals(hasVideo);
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(GallerySelectedVideo_A.this, Uri.fromFile(file));
+                String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
+                boolean isVideo = "yes".equals(hasVideo);
 
-                    if(isVideo && file.length()>3000){
-                        video_list.add(path);
-                    }
+                if (isVideo && file.length() > 3000) {
+                    video_list.add(path);
+                }
 
 
                 try {
 
                     Movie[] inMovies = new Movie[video_list.size()];
 
-                    for (int i=0;i<video_list.size();i++){
+                    for (int i = 0; i < video_list.size(); i++) {
 
-                        inMovies[i]= MovieCreator.build(video_list.get(i));
+                        inMovies[i] = MovieCreator.build(video_list.get(i));
                     }
 
 
@@ -258,11 +253,11 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
                     Container out = new DefaultMp4Builder().build(result);
 
-                    String outputFilePath=null;
-                    if(audio!=null){
-                        outputFilePath=Variables.outputfile;
-                    }else {
-                        outputFilePath=Variables.outputfile2;
+                    String outputFilePath = null;
+                    if (audio != null) {
+                        outputFilePath = Variables.outputfile;
+                    } else {
+                        outputFilePath = Variables.outputfile2;
                     }
 
                     FileOutputStream fos = new FileOutputStream(new File(outputFilePath));
@@ -273,7 +268,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                         public void run() {
                             progressDialog.dismiss();
 
-                            if(audio!=null)
+                            if (audio != null)
                                 Merge_withAudio();
                             else {
                                 Go_To_preview_Activity();
@@ -283,7 +278,6 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                     });
 
 
-
                 } catch (Exception e) {
 
                 }
@@ -291,10 +285,8 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
         }).start();
 
 
-
         return true;
     }
-
 
 
     // this will add the select audio with the video
@@ -313,9 +305,8 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     }
 
 
-
-    public void Go_To_preview_Activity(){
-        Intent intent =new Intent(this, Preview_Video_A.class);
+    public void Go_To_preview_Activity() {
+        Intent intent = new Intent(this, Preview_Video_A.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         finish();
@@ -325,38 +316,36 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-        if(video_player!=null){
+        if (video_player != null) {
             video_player.setPlayWhenReady(true);
         }
     }
 
 
-
     @Override
     public void onStop() {
         super.onStop();
-        try{
-        if(video_player!=null){
-            video_player.setPlayWhenReady(false);
-        }
-        if(audio!=null){
-            audio.pause();
-        }
-        }catch (Exception e){
+        try {
+            if (video_player != null) {
+                video_player.setPlayWhenReady(false);
+            }
+            if (audio != null) {
+                audio.pause();
+            }
+        } catch (Exception e) {
 
         }
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(video_player!=null){
+        if (video_player != null) {
             video_player.release();
         }
 
-        if(audio!=null){
+        if (audio != null) {
             audio.pause();
             audio.release();
         }
@@ -385,12 +374,12 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
-        if(playbackState== Player.STATE_ENDED){
+        if (playbackState == Player.STATE_ENDED) {
 
             video_player.seekTo(0);
             video_player.setPlayWhenReady(true);
 
-            if(audio!=null){
+            if (audio != null) {
                 audio.seekTo(0);
                 audio.start();
             }
@@ -429,13 +418,12 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     @Override
     public void onSeekProcessed() {
 
-        Log.d("resp","smmdsmd");
+        Log.d("resp", "smmdsmd");
     }
 
 
-
     // this will hide the bottom mobile navigation controll
-    public void Hide_navigation(){
+    public void Hide_navigation() {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -448,8 +436,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
         // This work only for android 4.4+
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().getDecorView().setSystemUiVisibility(flags);
 
@@ -458,14 +445,11 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
             // show up and won't hide
             final View decorView = getWindow().getDecorView();
             decorView
-                    .setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener()
-                    {
+                    .setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 
                         @Override
-                        public void onSystemUiVisibilityChange(int visibility)
-                        {
-                            if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0)
-                            {
+                        public void onSystemUiVisibilityChange(int visibility) {
+                            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                                 decorView.setSystemUiVisibility(flags);
                             }
                         }
@@ -479,8 +463,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus)
-        {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -490,8 +473,6 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
-
-
 
 
 }

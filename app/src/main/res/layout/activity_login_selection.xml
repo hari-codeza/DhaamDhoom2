@@ -33,13 +33,13 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/rounded_corners"
                 android:backgroundTint="#3D5798"
+                android:fontFamily="@font/baskerville"
                 android:gravity="start|center"
                 android:onClick="loginWithFacebook"
                 android:padding="12dp"
                 android:text="@string/login_with_facebook"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:fontFamily="@font/baskerville"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -66,13 +66,13 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/rounded_corners"
                 android:backgroundTint="#3D5798"
+                android:fontFamily="@font/baskerville"
                 android:gravity="start|center"
                 android:onClick="signinWithGmail"
                 android:padding="12dp"
                 android:text="@string/login_with_google"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:fontFamily="@font/baskerville"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -101,13 +101,13 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/rounded_corners"
                 android:backgroundTint="#3D5798"
+                android:fontFamily="@font/baskerville"
                 android:gravity="start|center"
                 android:onClick="loginWithPhone"
                 android:padding="12dp"
                 android:text="@string/login_with_phone_number"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:fontFamily="@font/baskerville"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
@@ -119,10 +119,10 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center"
         android:layout_margin="20dp"
+        android:fontFamily="@font/baskerville"
         android:gravity="center"
+        android:onClick="termsPrivacyOnClick"
         android:paddingTop="15dp"
         android:text="@string/agree_terms_policy"
-        android:textColor="@color/primaryDark"
-        android:onClick="termsPrivacyOnClick"
-        android:fontFamily="@font/baskerville"/>
+        android:textColor="@color/primaryDark" />
 </FrameLayout>

@@ -4,11 +4,11 @@
 
         <item
             android:id="@+id/edit_Profile_id"
-            android:title="Edit Profile"/>
+            android:title="Edit Profile" />
 
         <item
             android:id="@+id/logout_id"
-            android:title="Logout"/>
+            android:title="Logout" />
 
 
     </group>

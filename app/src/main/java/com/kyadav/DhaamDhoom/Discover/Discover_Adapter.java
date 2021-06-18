@@ -1,9 +1,6 @@
 package com.kyadav.DhaamDhoom.Discover;
 
 import android.content.Context;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +9,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -27,25 +27,18 @@ import java.util.ArrayList;
  * Created by AQEEL on 3/20/2018.
  */
 
-public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.CustomViewHolder > implements Filterable {
+public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.CustomViewHolder> implements Filterable {
     public Context context;
-
+    public Discover_Adapter.OnItemClickListener listener;
     ArrayList<Discover_Get_Set> datalist;
     ArrayList<Discover_Get_Set> datalist_filter;
-
-    public interface OnItemClickListener {
-        void onItemClick(ArrayList<Home_Get_Set> video_list, int postion);
-    }
-
-    public Discover_Adapter.OnItemClickListener listener;
 
     public Discover_Adapter(Context context, ArrayList<Discover_Get_Set> arrayList, Discover_Adapter.OnItemClickListener listener) {
         this.context = context;
         datalist = arrayList;
-        datalist_filter=arrayList;
+        datalist_filter = arrayList;
         this.listener = listener;
     }
-
 
     @Override
     public Discover_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
@@ -55,29 +48,10 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
         return viewHolder;
     }
 
-
     @Override
     public int getItemCount() {
         return datalist_filter.size();
     }
-
-
-    class CustomViewHolder extends RecyclerView.ViewHolder {
-
-        RecyclerView horizontal_reycerview;
-
-        TextView title;
-
-        public CustomViewHolder(View view) {
-            super(view);
-
-            horizontal_reycerview = view.findViewById(R.id.horizontal_recylerview);
-            title = view.findViewById(R.id.title);
-        }
-
-
-    }
-
 
     @Override
     public void onBindViewHolder(final Discover_Adapter.CustomViewHolder holder, final int i) {
@@ -93,7 +67,6 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
     }
 
-
     // that function will filter the result
     @Override
     public Filter getFilter() {
@@ -101,7 +74,7 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
-                Log.d("charString",charString);
+                Log.d("charString", charString);
                 if (charString.isEmpty()) {
                     datalist_filter = datalist;
                 } else {
@@ -123,6 +96,7 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
                 return filterResults;
 
             }
+
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 datalist_filter = (ArrayList<Discover_Get_Set>) filterResults.values;
@@ -131,6 +105,26 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
         };
     }
 
+
+    public interface OnItemClickListener {
+        void onItemClick(ArrayList<Home_Get_Set> video_list, int postion);
+    }
+
+    class CustomViewHolder extends RecyclerView.ViewHolder {
+
+        RecyclerView horizontal_reycerview;
+
+        TextView title;
+
+        public CustomViewHolder(View view) {
+            super(view);
+
+            horizontal_reycerview = view.findViewById(R.id.horizontal_recylerview);
+            title = view.findViewById(R.id.title);
+        }
+
+
+    }
 
     class Horizontal_Adapter extends RecyclerView.Adapter<Horizontal_Adapter.CustomViewHolder> {
         public Context context;
@@ -146,7 +140,7 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
         @Override
         public Horizontal_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_discover_horizontal_layout, viewGroup, false);
-            view.setLayoutParams(new RecyclerView.LayoutParams((Variables.screen_width/3)-20, RecyclerView.LayoutParams.WRAP_CONTENT));
+            view.setLayoutParams(new RecyclerView.LayoutParams((Variables.screen_width / 3) - 20, RecyclerView.LayoutParams.WRAP_CONTENT));
             Horizontal_Adapter.CustomViewHolder viewHolder = new Horizontal_Adapter.CustomViewHolder(view);
             return viewHolder;
         }
@@ -154,6 +148,37 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
         @Override
         public int getItemCount() {
             return datalist.size();
+        }
+
+        @Override
+        public void onBindViewHolder(final Horizontal_Adapter.CustomViewHolder holder, final int i) {
+            holder.setIsRecyclable(false);
+
+            try {
+                Home_Get_Set item = datalist.get(i);
+                holder.bind(i, datalist);
+
+
+                try {
+                    Glide.with(context)
+                            .asGif()
+                            .load(item.gif)
+                            .skipMemoryCache(true)
+                            .thumbnail(new RequestBuilder[]{Glide
+                                    .with(context)
+                                    .load(item.thum)})
+                            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+                                    .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
+                            .into(holder.video_thumbnail);
+
+                } catch (Exception e) {
+
+                }
+
+
+            } catch (Exception e) {
+
+            }
         }
 
         class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -171,44 +196,12 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onItemClick(datalist,pos);
+                        listener.onItemClick(datalist, pos);
                     }
                 });
             }
 
 
-        }
-
-        @Override
-        public void onBindViewHolder(final Horizontal_Adapter.CustomViewHolder holder, final int i) {
-            holder.setIsRecyclable(false);
-
-            try {
-                Home_Get_Set item = datalist.get(i);
-                holder.bind(i, datalist);
-
-
-
-                try {
-                Glide.with(context)
-                        .asGif()
-                        .load(item.gif)
-                        .skipMemoryCache(true)
-                        .thumbnail(new RequestBuilder[]{Glide
-                        .with(context)
-                        .load(item.thum)})
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
-                                .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
-                        .into(holder.video_thumbnail);
-
-            }catch (Exception e){
-
-            }
-
-
-            }catch (Exception e){
-
-            }
         }
 
     }

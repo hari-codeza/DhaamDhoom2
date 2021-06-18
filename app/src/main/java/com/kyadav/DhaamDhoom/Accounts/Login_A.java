@@ -11,8 +11,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -29,11 +27,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
-import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
-import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.R;
+import androidx.annotation.NonNull;
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -57,6 +52,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
+import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,6 +80,27 @@ public class Login_A extends Activity {
     View top_view;
 
     TextView login_title_txt;
+    //google Implimentation
+    GoogleSignInClient mGoogleSignInClient;
+    // Bottom two function are related to Fb implimentation
+    private CallbackManager mCallbackManager;
+
+    public static boolean isValid(String s) {
+        // The given argument to compile() method
+        // is regular expression. With the help of
+        // regular expression we can validate mobile
+        // number.
+        // 1) Begins with 0 or 91
+        // 2) Then contains 7 or 8 or 9.
+        // 3) Then contains 9 digits
+        Pattern p = Pattern.compile("(0/91)?[7-9][0-9]{9}");
+
+        // Pattern class contains matcher() method
+        // to find matching between given number
+        // and regular expression
+        Matcher m = p.matcher(s);
+        return (m.find() && m.group().equals(s));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +121,11 @@ public class Login_A extends Activity {
                         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-
         setContentView(R.layout.activity_login);
 
 
         mAuth = FirebaseAuth.getInstance();
-        firebaseUser=mAuth.getCurrentUser();
+        firebaseUser = mAuth.getCurrentUser();
 
         // if the user is already login trought facebook then we will logout the user automatically
         LoginManager.getInstance().logOut();
@@ -116,7 +136,7 @@ public class Login_A extends Activity {
                 .setMessageContentGravity(Gravity.END)
                 .build();
 
-        sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
 
         findViewById(R.id.facebook_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,25 +152,21 @@ public class Login_A extends Activity {
 
                 EditText txtname = findViewById(R.id.txtmob);
                 EditText txtMobile = findViewById(R.id.txtotp);
-                String fname=txtname.getText().toString();
+                String fname = txtname.getText().toString();
 
-                if(fname.equals("") || fname.equals("null"))
-                {
+                if (fname.equals("") || fname.equals("null")) {
                     Toast.makeText(Login_A.this, "Enter Name!",
                             Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                String lname=txtMobile.getText().toString();
+                String lname = txtMobile.getText().toString();
 
-                if(lname.equals("") || lname.equals("null"))
-                {
+                if (lname.equals("") || lname.equals("null")) {
                     Toast.makeText(Login_A.this, "Enter MobileNo!",
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-
-
 
 
                 String s = txtMobile.getText().toString();
@@ -162,18 +178,13 @@ public class Login_A extends Activity {
                 }
 
 
-
-
-                String pic_url="https://graph.facebook.com/picture?width=500&width=500";
+                String pic_url = "https://graph.facebook.com/picture?width=500&width=500";
                 //String id = Profile.getCurrentProfile().getId();
 
-                Call_Api_For_Signup("123",fname,lname,pic_url,"Default");
+                Call_Api_For_Signup("123", fname, lname, pic_url, "Default");
 
 
-
-
-
-               // Call_Api_For_Signup("12345","Deepak","Kumar","https://graph.facebook.com/picture?width=500&width=500","facebook");
+                // Call_Api_For_Signup("12345","Deepak","Kumar","https://graph.facebook.com/picture?width=500&width=500","facebook");
             }
         });
 
@@ -185,7 +196,6 @@ public class Login_A extends Activity {
         });
 
 
-
         findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,13 +203,11 @@ public class Login_A extends Activity {
             }
         });
 
-        top_view=findViewById(R.id.top_view);
+        top_view = findViewById(R.id.top_view);
 
 
-
-        login_title_txt=findViewById(R.id.login_title_txt);
+        login_title_txt = findViewById(R.id.login_title_txt);
         login_title_txt.setText("Create an Account with DD");
-
 
 
         SpannableString ss = new SpannableString("By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.");
@@ -208,6 +216,7 @@ public class Login_A extends Activity {
             public void onClick(View textView) {
                 Open_Privacy_policy();
             }
+
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
@@ -227,28 +236,10 @@ public class Login_A extends Activity {
 
     }
 
-    public static boolean isValid(String s)
-    {
-        // The given argument to compile() method
-        // is regular expression. With the help of
-        // regular expression we can validate mobile
-        // number.
-        // 1) Begins with 0 or 91
-        // 2) Then contains 7 or 8 or 9.
-        // 3) Then contains 9 digits
-        Pattern p = Pattern.compile("(0/91)?[7-9][0-9]{9}");
-
-        // Pattern class contains matcher() method
-        // to find matching between given number
-        // and regular expression
-        Matcher m = p.matcher(s);
-        return (m.find() && m.group().equals(s));
-    }
-    public void Open_Privacy_policy(){
+    public void Open_Privacy_policy() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Variables.privacy_policy));
         startActivity(browserIntent);
     }
-
 
     @Override
     public void onEnterAnimationComplete() {
@@ -268,24 +259,21 @@ public class Login_A extends Activity {
 
     }
 
-
-    // Bottom two function are related to Fb implimentation
-    private CallbackManager mCallbackManager;
     //facebook implimentation
-    public void Loginwith_FB(){
+    public void Loginwith_FB() {
 
         LoginManager.getInstance()
                 .logInWithReadPermissions(Login_A.this,
-                        Arrays.asList("public_profile","email"));
+                        Arrays.asList("public_profile", "email"));
 
         // initialze the facebook sdk and request to facebook for login
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>()  {
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                Log.d("resp_token",loginResult.getAccessToken()+"");
+                Log.d("resp_token", loginResult.getAccessToken() + "");
             }
 
             @Override
@@ -296,8 +284,8 @@ public class Login_A extends Activity {
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("resp",""+error.toString());
-                Toast.makeText(Login_A.this, "Login Error"+error.toString(), Toast.LENGTH_SHORT).show();
+                Log.d("resp", "" + error.toString());
+                Toast.makeText(Login_A.this, "Login Error" + error.toString(), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -309,7 +297,7 @@ public class Login_A extends Activity {
         // if user is login then this method will call and
         // facebook will return us a token which will user for get the info of user
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        Log.d("resp_token",token.getToken()+"");
+        Log.d("resp_token", token.getToken() + "");
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -321,22 +309,22 @@ public class Login_A extends Activity {
                                 @Override
                                 public void onCompleted(JSONObject user, GraphResponse graphResponse) {
 
-                                    Log.d("resp",user.toString());
+                                    Log.d("resp", user.toString());
                                     //after get the info of user we will pass to function which will store the info in our server
 
-                                    String fname=""+user.optString("first_name");
-                                    String lname=""+user.optString("last_name");
+                                    String fname = "" + user.optString("first_name");
+                                    String lname = "" + user.optString("last_name");
 
 
-                                    if(fname.equals("") || fname.equals("null"))
-                                        fname=getResources().getString(R.string.app_name);
+                                    if (fname.equals("") || fname.equals("null"))
+                                        fname = getResources().getString(R.string.app_name);
 
-                                    if(lname.equals("") || lname.equals("null"))
-                                        lname="";
+                                    if (lname.equals("") || lname.equals("null"))
+                                        lname = "";
 
-                                    Call_Api_For_Signup(""+id,fname
-                                            ,lname,
-                                            "https://graph.facebook.com/"+id+"/picture?width=500&width=500",
+                                    Call_Api_For_Signup("" + id, fname
+                                            , lname,
+                                            "https://graph.facebook.com/" + id + "/picture?width=500&width=500",
                                             "facebook");
 
                                 }
@@ -357,54 +345,46 @@ public class Login_A extends Activity {
                 });
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Pass the activity result back to the Facebook SDK
-        if(requestCode==123){
+        if (requestCode == 123) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
-        }
-        else if(mCallbackManager!=null)
+        } else if (mCallbackManager != null)
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
     }
 
-
-
-    //google Implimentation
-    GoogleSignInClient mGoogleSignInClient;
-    public void Sign_in_with_gmail(){
+    public void Sign_in_with_gmail() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Login_A.this);
         if (account != null) {
-            String id=account.getId();
-            String fname=""+account.getGivenName();
-            String lname=""+account.getFamilyName();
+            String id = account.getId();
+            String fname = "" + account.getGivenName();
+            String lname = "" + account.getFamilyName();
 
             String pic_url;
-            if(account.getPhotoUrl()!=null) {
+            if (account.getPhotoUrl() != null) {
                 pic_url = account.getPhotoUrl().toString();
-            }else {
-                pic_url="null";
+            } else {
+                pic_url = "null";
             }
 
 
+            if (fname.equals("") || fname.equals("null"))
+                fname = getResources().getString(R.string.app_name);
 
-            if(fname.equals("") || fname.equals("null"))
-                fname=getResources().getString(R.string.app_name);
-
-            if(lname.equals("") || lname.equals("null"))
-                lname="User";
-            Call_Api_For_Signup(id,fname,lname,pic_url,"gmail");
+            if (lname.equals("") || lname.equals("null"))
+                lname = "User";
+            Call_Api_For_Signup(id, fname, lname, pic_url, "gmail");
 
 
-        }
-        else {
+        } else {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 123);
         }
@@ -417,27 +397,27 @@ public class Login_A extends Activity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if (account != null) {
-                String id=account.getId();
-                String fname=""+account.getGivenName();
-                String lname=""+account.getFamilyName();
+                String id = account.getId();
+                String fname = "" + account.getGivenName();
+                String lname = "" + account.getFamilyName();
 
                 // if we do not get the picture of user then we will use default profile picture
 
                 String pic_url;
-                if(account.getPhotoUrl()!=null) {
+                if (account.getPhotoUrl() != null) {
                     pic_url = account.getPhotoUrl().toString();
-                }else {
-                    pic_url="null";
+                } else {
+                    pic_url = "null";
                 }
 
 
-                if(fname.equals("") || fname.equals("null"))
-                    fname=getResources().getString(R.string.app_name);
+                if (fname.equals("") || fname.equals("null"))
+                    fname = getResources().getString(R.string.app_name);
 
-                if(lname.equals("") || lname.equals("null"))
-                    lname="";
+                if (lname.equals("") || lname.equals("null"))
+                    lname = "";
 
-                Call_Api_For_Signup(id,fname,lname,pic_url,"gmail");
+                Call_Api_For_Signup(id, fname, lname, pic_url, "gmail");
 
 
             }
@@ -446,8 +426,6 @@ public class Login_A extends Activity {
         }
 
     }
-
-
 
 
     // this function call an Api for Signin
@@ -460,23 +438,23 @@ public class Login_A extends Activity {
 
         PackageInfo packageInfo = null;
         try {
-            packageInfo =getPackageManager().getPackageInfo(getPackageName(), 0);
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String appversion=packageInfo.versionName;
+        String appversion = packageInfo.versionName;
 
         JSONObject parameters = new JSONObject();
         try {
 
             parameters.put("fb_id", id);
-            parameters.put("first_name",""+f_name);
-            parameters.put("last_name", ""+l_name);
-            parameters.put("profile_pic",picture);
-            parameters.put("gender","m");
-            parameters.put("version",appversion);
-            parameters.put("signup_type",singnup_type);
-            parameters.put("device",Variables.device);
+            parameters.put("first_name", "" + f_name);
+            parameters.put("last_name", "" + l_name);
+            parameters.put("profile_pic", picture);
+            parameters.put("gender", "m");
+            parameters.put("version", appversion);
+            parameters.put("signup_type", singnup_type);
+            parameters.put("device", Variables.device);
 
 
         } catch (JSONException e) {
@@ -496,38 +474,35 @@ public class Login_A extends Activity {
     }
 
 
-
-
     // if the signup successfull then this method will call and it store the user info in local
-    public void Parse_signup_data(String loginData){
+    public void Parse_signup_data(String loginData) {
         try {
 
-            JSONObject jsonObject=new JSONObject(loginData);
-            String code=jsonObject.optString("code");
-            if(code.equals("200")){
-                JSONArray jsonArray=jsonObject.getJSONArray("msg");
+            JSONObject jsonObject = new JSONObject(loginData);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("msg");
                 JSONObject userdata = jsonArray.getJSONObject(0);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putString(Variables.u_id,userdata.optString("fb_id"));
-                editor.putString(Variables.f_name,userdata.optString("first_name"));
-                editor.putString(Variables.l_name,userdata.optString("last_name"));
-                editor.putString(Variables.u_name,userdata.optString("first_name")+" "+userdata.optString("last_name"));
-                editor.putString(Variables.gender,userdata.optString("gender"));
-                editor.putString(Variables.u_pic,userdata.optString("profile_pic"));
-                editor.putBoolean(Variables.islogin,true);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(Variables.u_id, userdata.optString("fb_id"));
+                editor.putString(Variables.f_name, userdata.optString("first_name"));
+                editor.putString(Variables.l_name, userdata.optString("last_name"));
+                editor.putString(Variables.u_name, userdata.optString("first_name") + " " + userdata.optString("last_name"));
+                editor.putString(Variables.gender, userdata.optString("gender"));
+                editor.putString(Variables.u_pic, userdata.optString("profile_pic"));
+                editor.putBoolean(Variables.islogin, true);
                 editor.commit();
 
-                Variables.sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
-                Variables.user_id=Variables.sharedPreferences.getString(Variables.u_id,"");
+                Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
+                Variables.user_id = Variables.sharedPreferences.getString(Variables.u_id, "");
 
                 top_view.setVisibility(View.GONE);
                 finish();
                 startActivity(new Intent(this, MainMenuActivity.class));
 
 
-
-            }else {
-                Toast.makeText(this, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -537,17 +512,15 @@ public class Login_A extends Activity {
     }
 
 
-
     // this function will print the keyhash of your project
     // which is very helpfull during Fb login implimentation
-    public void printKeyHash()  {
+    public void printKeyHash() {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName() , PackageManager.GET_SIGNATURES);
-            for(Signature signature:info.signatures)
-            {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.i("keyhash" , Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                Log.i("keyhash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

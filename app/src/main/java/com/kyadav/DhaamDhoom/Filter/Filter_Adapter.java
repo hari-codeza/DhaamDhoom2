@@ -3,14 +3,15 @@ package com.kyadav.DhaamDhoom.Filter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.kyadav.DhaamDhoom.Video_Recording.Preview_Video_A;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.Video_Recording.Preview_Video_A;
 
 import java.util.List;
 
@@ -59,23 +60,15 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageWeakPixelInclusionFilter
 
 public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomViewHolder> {
     public Context context;
-
-    List<FilterType> datalist;
-
-    Bitmap image;
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, int postion, FilterType item);
-    }
-
     public Filter_Adapter.OnItemClickListener listener;
-
+    List<FilterType> datalist;
+    Bitmap image;
 
     public Filter_Adapter(Context context, List<FilterType> arrayList, Filter_Adapter.OnItemClickListener listener) {
         this.context = context;
         datalist = arrayList;
         this.listener = listener;
-         image = BitmapFactory.decodeResource(context.getResources(),
+        image = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ic_bg_filter);
     }
 
@@ -92,28 +85,6 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
         return datalist.size();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder {
-
-        TextView fiter_txt;
-        private GPUImageView ivPhoto;
-
-        public CustomViewHolder(View view) {
-            super(view);
-            fiter_txt = view.findViewById(R.id.filter_txt);
-            ivPhoto = view.findViewById(R.id.iv_photo);
-        }
-
-        public void bind(final int pos, final FilterType item, final Filter_Adapter.OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(v, pos, item);
-                }
-            });
-        }
-    }
-
-
     @Override
     public void onBindViewHolder(final Filter_Adapter.CustomViewHolder holder, final int i) {
         holder.setIsRecyclable(false);
@@ -124,7 +95,7 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
         }
         holder.ivPhoto.setImage(image);
 
-        switch (s){
+        switch (s) {
             case "BRIGHTNESS":
                 holder.ivPhoto.setFilter(new GPUImageBrightnessFilter());
                 break;
@@ -271,6 +242,31 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
 
 
         holder.bind(i, datalist.get(i), listener);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int postion, FilterType item);
+    }
+
+    class CustomViewHolder extends RecyclerView.ViewHolder {
+
+        TextView fiter_txt;
+        private GPUImageView ivPhoto;
+
+        public CustomViewHolder(View view) {
+            super(view);
+            fiter_txt = view.findViewById(R.id.filter_txt);
+            ivPhoto = view.findViewById(R.id.iv_photo);
+        }
+
+        public void bind(final int pos, final FilterType item, final Filter_Adapter.OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(v, pos, item);
+                }
+            });
+        }
     }
 
 }

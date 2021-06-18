@@ -22,29 +22,20 @@ public class SegmentedProgressBar extends View {
 
     private static final String TAG = "SegmentedProgressBar";
     private static final int FPS_IN_MILLI = 16; // 16.66 ~ 60fps
-
+    ProgressBarListener listener;
     private Paint progressPaint = new Paint();
     private Paint dividerPaint = new Paint();
     private int[] gradientColors = new int[3];
-
     private float lastDividerPosition;
     private float percentCompleted;
-
-
     private int progressBarWidth;
     private long maxTimeInMillis;
-
     private int dividerCount = 0;
     private float dividerWidth = 1;
-
     private boolean isDividerEnabled;
-
     private List<Float> dividerPositions;
     private CountDownTimerWithPause countDownTimerWithPause;
-
     private float cornerRadius;
-
-    ProgressBarListener listener;
 
     public SegmentedProgressBar(Context context) {
         super(context);
@@ -98,9 +89,8 @@ public class SegmentedProgressBar extends View {
     }
 
 
-
-    public void SetListener(ProgressBarListener listeter){
-        this.listener=listeter;
+    public void SetListener(ProgressBarListener listeter) {
+        this.listener = listeter;
     }
 
     /**
@@ -125,7 +115,7 @@ public class SegmentedProgressBar extends View {
     }
 
 
-    public float GetPercentComplete(){
+    public float GetPercentComplete() {
         return percentCompleted;
     }
 

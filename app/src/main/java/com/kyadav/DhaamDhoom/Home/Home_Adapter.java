@@ -1,13 +1,14 @@
 package com.kyadav.DhaamDhoom.Home;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.kyadav.DhaamDhoom.R;
 import com.squareup.picasso.Picasso;
@@ -18,20 +19,11 @@ import java.util.ArrayList;
  * Created by AQEEL on 3/20/2018.
  */
 
-public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHolder > {
+public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHolder> {
 
     public Context context;
     private Home_Adapter.OnItemClickListener listener;
     private ArrayList<Home_Get_Set> dataList;
-
-
-
-    // meker the onitemclick listener interface and this interface is impliment in Chatinbox activity
-    // for to do action when user click on item
-    public interface OnItemClickListener {
-        void onItemClick(int positon,Home_Get_Set item, View view);
-    }
-
 
 
     public Home_Adapter(Context context, ArrayList<Home_Get_Set> dataList, Home_Adapter.OnItemClickListener listener) {
@@ -43,138 +35,137 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
     @Override
     public Home_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home_layout,null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home_layout, null);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
         Home_Adapter.CustomViewHolder viewHolder = new Home_Adapter.CustomViewHolder(view);
         return viewHolder;
     }
 
-
     @Override
     public int getItemCount() {
-       return dataList.size();
+        return dataList.size();
     }
-
-
 
     @Override
     public void onBindViewHolder(final Home_Adapter.CustomViewHolder holder, final int i) {
-        final Home_Get_Set item= dataList.get(i);
+        final Home_Get_Set item = dataList.get(i);
         holder.setIsRecyclable(false);
 
         try {
 
-        holder.bind(i,item,listener);
+            holder.bind(i, item, listener);
 
-        holder.username.setText(item.first_name);
+            holder.username.setText(item.first_name);
 
 
-            if((item.sound_name==null || item.sound_name.equals("") || item.sound_name.equals("null"))){
-                holder.sound_name.setText("original sound - "+item.first_name);
-            }else {
+            if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
+                holder.sound_name.setText("original sound - " + item.first_name);
+            } else {
                 holder.sound_name.setText(item.sound_name);
             }
-           holder.sound_name.setSelected(true);
+            holder.sound_name.setSelected(true);
 
 
-        holder.desc_txt.setText(item.video_description);
+            holder.desc_txt.setText(item.video_description);
 
-        Picasso.with(context).
-                load(item.profile_pic)
-                .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                .resize(100,100).into(holder.user_pic);
+            Picasso.with(context).
+                    load(item.profile_pic)
+                    .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
+                    .resize(100, 100).into(holder.user_pic);
 
 
+            if ((item.sound_name == null || item.sound_name.equals(""))
+                    || item.sound_name.equals("null")) {
 
-            if((item.sound_name==null || item.sound_name.equals(""))
-                    || item.sound_name.equals("null")){
+                item.sound_pic = item.profile_pic;
 
-                item.sound_pic=item.profile_pic;
-
-            }
-            else if(item.sound_pic.equals(""))
-                item.sound_pic="Null";
+            } else if (item.sound_pic.equals(""))
+                item.sound_pic = "Null";
 
 
             Picasso.with(context).
-                load(item.sound_pic)
-                .placeholder(context.getResources().getDrawable(R.drawable.ic_round_music))
-                .resize(100,100).into(holder.sound_image);
+                    load(item.sound_pic)
+                    .placeholder(context.getResources().getDrawable(R.drawable.ic_round_music))
+                    .resize(100, 100).into(holder.sound_image);
 
 
+            if (item.liked.equals("1")) {
+                holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
+            } else {
+                holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
+            }
 
-        if(item.liked.equals("1")){
-            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
-        }
-       else {
-            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
-        }
-
-        if(item.Disliked.equals("1")){
-            holder.dislike_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_dislike_fill));
-        }
-       else {
-            holder.dislike_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_dislike));
-        }
+            if (item.Disliked.equals("1")) {
+                holder.dislike_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_dislike_fill));
+            } else {
+                holder.dislike_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_dislike));
+            }
 
 
-        holder.like_txt.setText(item.like_count);
-        holder.share_count.setText(item.shared_count);
-        holder.dislike_txt.setText(item.Dis_like_count);
-        holder.comment_txt.setText(item.video_comment_count);
+            holder.like_txt.setText(item.like_count);
+            holder.share_count.setText(item.shared_count);
+            holder.dislike_txt.setText(item.Dis_like_count);
+            holder.comment_txt.setText(item.video_comment_count);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-   }
+    }
+
+
+    // meker the onitemclick listener interface and this interface is impliment in Chatinbox activity
+    // for to do action when user click on item
+    public interface OnItemClickListener {
+        void onItemClick(int positon, Home_Get_Set item, View view);
+    }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-      //  PlayerView playerview;
-        TextView username,desc_txt,sound_name;
-        ImageView user_pic,sound_image;
+        //  PlayerView playerview;
+        TextView username, desc_txt, sound_name;
+        ImageView user_pic, sound_image;
 
-        LinearLayout like_layout,dislike_layout,comment_layout,shared_layout,sound_image_layout;
-        ImageView like_image,dislike_image,comment_image;
-        TextView like_txt,dislike_txt,comment_txt,share_count;
+        LinearLayout like_layout, dislike_layout, comment_layout, shared_layout, sound_image_layout;
+        ImageView like_image, dislike_image, comment_image;
+        TextView like_txt, dislike_txt, comment_txt, share_count;
 
 
         public CustomViewHolder(View view) {
             super(view);
 
-           // playerview=view.findViewById(R.id.playerview);
+            // playerview=view.findViewById(R.id.playerview);
 
-            username=view.findViewById(R.id.username);
-            user_pic=view.findViewById(R.id.user_pic);
-            sound_name=view.findViewById(R.id.sound_name);
-            sound_image=view.findViewById(R.id.sound_image);
+            username = view.findViewById(R.id.username);
+            user_pic = view.findViewById(R.id.user_pic);
+            sound_name = view.findViewById(R.id.sound_name);
+            sound_image = view.findViewById(R.id.sound_image);
 
-            like_layout=view.findViewById(R.id.like_layout);
-            like_image=view.findViewById(R.id.like_image);
-            like_txt=view.findViewById(R.id.like_txt);
+            like_layout = view.findViewById(R.id.like_layout);
+            like_image = view.findViewById(R.id.like_image);
+            like_txt = view.findViewById(R.id.like_txt);
 
-            dislike_layout=view.findViewById(R.id.dislike_layout);
-            dislike_image=view.findViewById(R.id.dislike_image);
-            dislike_txt=view.findViewById(R.id.dislike_txt);
+            dislike_layout = view.findViewById(R.id.dislike_layout);
+            dislike_image = view.findViewById(R.id.dislike_image);
+            dislike_txt = view.findViewById(R.id.dislike_txt);
 
-            share_count=view.findViewById(R.id.share_count);
-            desc_txt=view.findViewById(R.id.desc_txt);
+            share_count = view.findViewById(R.id.share_count);
+            desc_txt = view.findViewById(R.id.desc_txt);
 
-            comment_layout=view.findViewById(R.id.comment_layout);
-            comment_image=view.findViewById(R.id.comment_image);
-            comment_txt=view.findViewById(R.id.comment_txt);
+            comment_layout = view.findViewById(R.id.comment_layout);
+            comment_image = view.findViewById(R.id.comment_image);
+            comment_txt = view.findViewById(R.id.comment_txt);
 
 
-            sound_image_layout=view.findViewById(R.id.sound_image_layout);
-            shared_layout=view.findViewById(R.id.shared_layout);
+            sound_image_layout = view.findViewById(R.id.sound_image_layout);
+            shared_layout = view.findViewById(R.id.shared_layout);
         }
 
-        public void bind(final int postion,final Home_Get_Set item, final Home_Adapter.OnItemClickListener listener) {
+        public void bind(final int postion, final Home_Get_Set item, final Home_Adapter.OnItemClickListener listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
@@ -183,7 +174,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
@@ -191,7 +182,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
@@ -200,7 +191,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
@@ -208,7 +199,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
@@ -217,7 +208,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
@@ -225,14 +216,14 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 @Override
                 public void onClick(View v) {
 
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 
             sound_image_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(postion,item,v);
+                    listener.onItemClick(postion, item, v);
                 }
             });
 

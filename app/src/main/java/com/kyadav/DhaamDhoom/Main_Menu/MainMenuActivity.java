@@ -2,54 +2,51 @@ package com.kyadav.DhaamDhoom.Main_Menu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 
 public class MainMenuActivity extends AppCompatActivity {
     public static MainMenuActivity mainMenuActivity;
-    private MainMenuFragment mainMenuFragment;
-    long mBackPressed;
-
-
     public static String token;
-
     public static Intent intent;
+    long mBackPressed;
+    private MainMenuFragment mainMenuFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        mainMenuActivity=this;
+        mainMenuActivity = this;
 
-        intent=getIntent();
+        intent = getIntent();
 
         setIntent(null);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        Variables.screen_height= displayMetrics.heightPixels;
-        Variables.screen_width= displayMetrics.widthPixels;
+        Variables.screen_height = displayMetrics.heightPixels;
+        Variables.screen_width = displayMetrics.widthPixels;
 
-        Variables.sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+        Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
 
-        Variables.user_id=Variables.sharedPreferences.getString(Variables.u_id,"");
-        Variables.user_name=Variables.sharedPreferences.getString(Variables.u_name,"");
-        Variables.user_pic=Variables.sharedPreferences.getString(Variables.u_pic,"");
+        Variables.user_id = Variables.sharedPreferences.getString(Variables.u_id, "");
+        Variables.user_name = Variables.sharedPreferences.getString(Variables.u_name, "");
+        Variables.user_pic = Variables.sharedPreferences.getString(Variables.u_pic, "");
 
 
-        token= FirebaseInstanceId.getInstance().getToken();
-        if(token==null || (token.equals("")||token.equals("null")))
-            token=Variables.sharedPreferences.getString(Variables.device_token,"null");
+        token = FirebaseInstanceId.getInstance().getToken();
+        if (token == null || (token.equals("") || token.equals("null")))
+            token = Variables.sharedPreferences.getString(Variables.device_token, "null");
 
 
         if (savedInstanceState == null) {
@@ -59,8 +56,6 @@ public class MainMenuActivity extends AppCompatActivity {
         } else {
             mainMenuFragment = (MainMenuFragment) getSupportFragmentManager().getFragments().get(0);
         }
-
-
 
 
     }
@@ -79,10 +74,6 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
 
 
     @Override
@@ -104,12 +95,6 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
-
 
 
 }

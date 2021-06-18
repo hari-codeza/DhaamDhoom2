@@ -6,7 +6,7 @@ package com.kyadav.DhaamDhoom.Inbox;
 
 public class Inbox_Get_Set {
 
-    String id,name,msg,pic,type,date,status,block;
+    String id, name, msg, pic, type, date, status, block;
 
     public String getId() {
         return id;

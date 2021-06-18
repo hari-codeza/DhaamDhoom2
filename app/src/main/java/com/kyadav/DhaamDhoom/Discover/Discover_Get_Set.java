@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Discover_Get_Set {
 
-    String title,discription;
+    String title, discription;
 
     ArrayList<Home_Get_Set> arrayList;
 

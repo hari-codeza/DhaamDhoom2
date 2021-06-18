@@ -26,11 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegistrationCompleteActivity extends AppCompatActivity {
+    IOSDialog iosDialog;
+    JSONObject parameters = new JSONObject();
     private RadioGroup rgGender;
     private RadioButton rbMale, rbFemale, rbTrans;
     private AppCompatEditText tName, tAge;
-    IOSDialog iosDialog;
-    JSONObject parameters = new JSONObject();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +116,6 @@ public class RegistrationCompleteActivity extends AppCompatActivity {
             });
         }
     }
-
 
 
     public void Parse_signup_data(String loginData) {

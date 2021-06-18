@@ -52,42 +52,45 @@ public class Inbox_F extends RootFragment {
 
     ProgressBar pbar;
 
-    boolean isview_created=false;
+    boolean isview_created = false;
+    AdView adView;
+    // on start we will get the Inbox Message of user  which is show in bottom list of third tab
+    ValueEventListener eventListener2;
+    Query inbox_query;
 
     public Inbox_F() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_inbox, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_inbox, container, false);
+        context = getContext();
         try {
             root_ref = FirebaseDatabase.getInstance().getReference().getRoot();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        pbar=view.findViewById(R.id.pbar);
-        inbox_list=view.findViewById(R.id.inboxlist);
+        pbar = view.findViewById(R.id.pbar);
+        inbox_list = view.findViewById(R.id.inboxlist);
 
         // intialize the arraylist and and inboxlist
-        inbox_arraylist=new ArrayList<>();
+        inbox_arraylist = new ArrayList<>();
 
         inbox_list = (RecyclerView) view.findViewById(R.id.inboxlist);
         LinearLayoutManager layout = new LinearLayoutManager(context);
         inbox_list.setLayoutManager(layout);
         inbox_list.setHasFixedSize(false);
-        inbox_adapter=new Inbox_Adapter(context, inbox_arraylist, new Inbox_Adapter.OnItemClickListener() {
+        inbox_adapter = new Inbox_Adapter(context, inbox_arraylist, new Inbox_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(Inbox_Get_Set item) {
 
                 // if user allow the stroage permission then we open the chat view
-                if(check_ReadStoragepermission())
-                chatFragment(item.getId(),item.getName(),item.getPic());
+                if (check_ReadStoragepermission())
+                    chatFragment(item.getId(), item.getName(), item.getPic());
 
 
             }
@@ -101,9 +104,6 @@ public class Inbox_F extends RootFragment {
         inbox_list.setAdapter(inbox_adapter);
 
 
-
-
-
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,14 +112,11 @@ public class Inbox_F extends RootFragment {
         });
 
 
-
-        isview_created=true;
+        isview_created = true;
 
         return view;
     }
 
-
-    AdView adView;
     @Override
     public void onStart() {
         super.onStart();
@@ -128,32 +125,24 @@ public class Inbox_F extends RootFragment {
         adView.loadAd(adRequest);
     }
 
-
-
     // whenever there is focus in the third tab we will get the match list
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if(view!=null) {
+        if (view != null) {
             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false) && inbox_arraylist.isEmpty())
                 getData();
-             }
+        }
 
     }
 
-
-
-    // on start we will get the Inbox Message of user  which is show in bottom list of third tab
-    ValueEventListener eventListener2;
-
-    Query inbox_query;
     public void getData() {
 
         pbar.setVisibility(View.VISIBLE);
 
-        inbox_query=root_ref.child("Inbox").child(Variables.user_id).orderByChild("date");
-        eventListener2=new ValueEventListener() {
+        inbox_query = root_ref.child("Inbox").child(Variables.user_id).orderByChild("date");
+        eventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 inbox_arraylist.clear();
@@ -177,6 +166,7 @@ public class Inbox_F extends RootFragment {
                 }
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -189,28 +179,26 @@ public class Inbox_F extends RootFragment {
     }
 
 
-
     // on stop we will remove the listener
     @Override
     public void onStop() {
         super.onStop();
-        if(inbox_query!=null)
-        inbox_query.removeEventListener(eventListener2);
+        if (inbox_query != null)
+            inbox_query.removeEventListener(eventListener2);
     }
-
 
 
     //open the chat fragment and on item click and pass your id and the other person id in which
     //you want to chat with them and this parameter is that is we move from match list or inbox list
-    public void chatFragment(String receiverid, String name, String picture){
+    public void chatFragment(String receiverid, String name, String picture) {
         Chat_Activity chat_activity = new Chat_Activity();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
         Bundle args = new Bundle();
         args.putString("user_id", receiverid);
-        args.putString("user_name",name);
-        args.putString("user_pic",picture);
+        args.putString("user_name", name);
+        args.putString("user_pic", picture);
 
         chat_activity.setArguments(args);
         transaction.addToBackStack(null);
@@ -218,18 +206,16 @@ public class Inbox_F extends RootFragment {
     }
 
 
-
     //this method will check there is a storage permission given or not
-    private boolean check_ReadStoragepermission(){
+    private boolean check_ReadStoragepermission() {
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED){
+                == PackageManager.PERMISSION_GRANTED) {
             return true;
-        }
-        else {
+        } else {
             try {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        Variables.permission_Read_data );
+                        Variables.permission_Read_data);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw e;
@@ -237,7 +223,6 @@ public class Inbox_F extends RootFragment {
         }
         return false;
     }
-
 
 
 }

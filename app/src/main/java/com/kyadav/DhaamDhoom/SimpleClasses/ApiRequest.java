@@ -15,36 +15,36 @@ import org.json.JSONObject;
 
 public class ApiRequest {
 
-    public static void Call_Api (final Context context, String url, JSONObject jsonObject,
-                                 final Callback callback){
+    public static void Call_Api(final Context context, String url, JSONObject jsonObject,
+                                final Callback callback) {
 
-        final String [] urlsplit=url.split("/");
-        Log.d(Variables.tag,urlsplit[urlsplit.length-1]);
+        final String[] urlsplit = url.split("/");
+        Log.d(Variables.tag, urlsplit[urlsplit.length - 1]);
 
-        if(jsonObject!=null)
-        Log.d(Variables.tag+urlsplit[urlsplit.length-1],jsonObject.toString());
+        if (jsonObject != null)
+            Log.d(Variables.tag + urlsplit[urlsplit.length - 1], jsonObject.toString());
 
-         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Log.d(Variables.tag+urlsplit[urlsplit.length-1],response.toString());
+                        Log.d(Variables.tag + urlsplit[urlsplit.length - 1], response.toString());
 
-                        if(callback!=null)
-                        callback .Responce(response.toString());
+                        if (callback != null)
+                            callback.Responce(response.toString());
 
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(Variables.tag+urlsplit[urlsplit.length-1],error.toString());
-               // Toast.makeText(context, "Api run timeout", Toast.LENGTH_SHORT).show();
-                if(callback!=null)
-                  callback .Responce(error.toString());
+                Log.d(Variables.tag + urlsplit[urlsplit.length - 1], error.toString());
+                // Toast.makeText(context, "Api run timeout", Toast.LENGTH_SHORT).show();
+                if (callback != null)
+                    callback.Responce(error.toString());
 
             }
         });

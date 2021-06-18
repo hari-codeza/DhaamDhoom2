@@ -9,20 +9,17 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.coremedia.iso.boxes.Container;
 import com.coremedia.iso.boxes.MovieHeaderBox;
 import com.daasuu.gpuv.composer.GPUMp4Composer;
-import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A;
-import com.kyadav.DhaamDhoom.R;
 import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
@@ -31,6 +28,10 @@ import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
 import com.googlecode.mp4parser.util.Matrix;
 import com.googlecode.mp4parser.util.Path;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
+import com.kyadav.DhaamDhoom.Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,8 +43,8 @@ import java.util.List;
 
 public class GalleryVideos_A extends AppCompatActivity {
 
+    public RecyclerView recyclerView;
     ArrayList<GalleryVideo_Get_Set> data_list;
-    public  RecyclerView recyclerView;
     GalleryVideos_Adapter adapter;
 
     @Override
@@ -55,35 +56,34 @@ public class GalleryVideos_A extends AppCompatActivity {
         data_list = new ArrayList();
 
 
-       recyclerView=findViewById(R.id.recylerview);
-        final GridLayoutManager layoutManager = new GridLayoutManager(this,3);
+        recyclerView = findViewById(R.id.recylerview);
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
 
-        data_list=new ArrayList<>();
-        adapter=new GalleryVideos_Adapter(this, data_list, new GalleryVideos_Adapter.OnItemClickListener() {
+        data_list = new ArrayList<>();
+        adapter = new GalleryVideos_Adapter(this, data_list, new GalleryVideos_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(int postion, GalleryVideo_Get_Set item, View view) {
-                MediaMetadataRetriever retriever = new  MediaMetadataRetriever();
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 Bitmap bmp = null;
                 try {
                     retriever.setDataSource(item.video_path);
                     bmp = retriever.getFrameAtTime();
-                    int videoHeight=bmp.getHeight();
-                    int videoWidth=bmp.getWidth();
+                    int videoHeight = bmp.getHeight();
+                    int videoWidth = bmp.getWidth();
 
-                    Log.d("resp",""+videoWidth+"---"+videoHeight);
+                    Log.d("resp", "" + videoWidth + "---" + videoHeight);
+
+                } catch (Exception e) {
 
                 }
-                catch (Exception e){
 
-                }
-
-                if(item.video_duration_ms<19500){
+                if (item.video_duration_ms < 19500) {
                     Chnage_Video_size(item.video_path, Variables.gallery_resize_video);
 
-                }else {
+                } else {
                     try {
                         startTrim(new File(item.video_path), new File(Variables.gallery_trimed_video), 1000, 18000);
                     } catch (IOException e) {
@@ -103,7 +103,7 @@ public class GalleryVideos_A extends AppCompatActivity {
             public void onClick(View v) {
 
                 finish();
-                overridePendingTransition(R.anim.in_from_top,R.anim.out_from_bottom);
+                overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
 
             }
         });
@@ -111,33 +111,30 @@ public class GalleryVideos_A extends AppCompatActivity {
     }
 
 
-
-
-    public  void  getAllVideoPath(Context context) {
+    public void getAllVideoPath(Context context) {
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = { MediaStore.Video.VideoColumns.DATA };
+        String[] projection = {MediaStore.Video.VideoColumns.DATA};
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
 
         if (cursor != null) {
-             while (cursor.moveToNext()) {
-                GalleryVideo_Get_Set item=new GalleryVideo_Get_Set();
-                item.video_path=cursor.getString(0);
-                 item.video_duration_ms=getfileduration(Uri.parse(cursor.getString(0)));
+            while (cursor.moveToNext()) {
+                GalleryVideo_Get_Set item = new GalleryVideo_Get_Set();
+                item.video_path = cursor.getString(0);
+                item.video_duration_ms = getfileduration(Uri.parse(cursor.getString(0)));
 
-                 Log.d("resp",""+item.video_duration_ms);
+                Log.d("resp", "" + item.video_duration_ms);
 
-                 if(item.video_duration_ms>5000){
-                     item.video_time=change_sec_to_time(item.video_duration_ms);
-                     data_list.add(item);
-                 }
+                if (item.video_duration_ms > 5000) {
+                    item.video_time = change_sec_to_time(item.video_duration_ms);
+                    data_list.add(item);
+                }
 
             }
-             adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             cursor.close();
         }
 
     }
-
 
 
     // get the audio file duration that is store in our directory
@@ -150,15 +147,14 @@ public class GalleryVideos_A extends AppCompatActivity {
             final int file_duration = Integer.parseInt(durationStr);
 
             return file_duration;
-            }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
         return 0;
     }
 
 
-    public String change_sec_to_time(long file_duration){
+    public String change_sec_to_time(long file_duration) {
         long second = (file_duration / 1000) % 60;
         long minute = (file_duration / (1000 * 60)) % 60;
 
@@ -167,9 +163,9 @@ public class GalleryVideos_A extends AppCompatActivity {
     }
 
 
-    public void Chnage_Video_size(String src_path,String destination_path){
+    public void Chnage_Video_size(String src_path, String destination_path) {
 
-        Functions.Show_determinent_loader(this,false,false);
+        Functions.Show_determinent_loader(this, false, false);
         new GPUMp4Composer(src_path, destination_path)
                 .size(720, 1280)
                 .videoBitrate((int) (0.25 * 16 * 540 * 960))
@@ -177,8 +173,8 @@ public class GalleryVideos_A extends AppCompatActivity {
                     @Override
                     public void onProgress(double progress) {
 
-                        Log.d("resp",""+(int) (progress*100));
-                        Functions.Show_loading_progress((int)(progress*100));
+                        Log.d("resp", "" + (int) (progress * 100));
+                        Functions.Show_loading_progress((int) (progress * 100));
 
                     }
 
@@ -191,8 +187,8 @@ public class GalleryVideos_A extends AppCompatActivity {
 
                                 Functions.cancel_determinent_loader();
 
-                                Intent intent=new Intent(GalleryVideos_A.this, GallerySelectedVideo_A.class);
-                                intent.putExtra("video_path",Variables.gallery_resize_video);
+                                Intent intent = new Intent(GalleryVideos_A.this, GallerySelectedVideo_A.class);
+                                intent.putExtra("video_path", Variables.gallery_resize_video);
                                 startActivity(intent);
 
                             }
@@ -209,7 +205,7 @@ public class GalleryVideos_A extends AppCompatActivity {
                     @Override
                     public void onFailed(Exception exception) {
 
-                        Log.d("resp",exception.toString());
+                        Log.d("resp", exception.toString());
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -219,7 +215,7 @@ public class GalleryVideos_A extends AppCompatActivity {
                                     Functions.cancel_determinent_loader();
 
                                     Toast.makeText(GalleryVideos_A.this, "Try Again", Toast.LENGTH_SHORT).show();
-                                }catch (Exception e){
+                                } catch (Exception e) {
 
                                 }
                             }
@@ -231,9 +227,9 @@ public class GalleryVideos_A extends AppCompatActivity {
 
     }
 
-    public  void startTrim(final File src, final File dst, final int startMs, final int endMs) throws IOException {
+    public void startTrim(final File src, final File dst, final int startMs, final int endMs) throws IOException {
 
-        new AsyncTask<String,Void,String>() {
+        new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
                 try {
@@ -295,7 +291,7 @@ public class GalleryVideos_A extends AppCompatActivity {
 
                     file.close();
                     return "Ok";
-                }catch (IOException e){
+                } catch (IOException e) {
                     return "error";
                 }
 
@@ -304,14 +300,14 @@ public class GalleryVideos_A extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                Functions.Show_indeterminent_loader(GalleryVideos_A.this,true,true);
+                Functions.Show_indeterminent_loader(GalleryVideos_A.this, true, true);
             }
 
             @Override
             protected void onPostExecute(String result) {
-                if(result.equals("error")){
+                if (result.equals("error")) {
                     Toast.makeText(GalleryVideos_A.this, "Try Again", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Functions.cancel_indeterminent_loader();
                     Chnage_Video_size(Variables.gallery_trimed_video, Variables.gallery_resize_video);
                 }
@@ -332,35 +328,34 @@ public class GalleryVideos_A extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-       DeleteFile();
+        DeleteFile();
     }
 
-    public void DeleteFile(){
+    public void DeleteFile() {
         File output = new File(Variables.outputfile);
         File output2 = new File(Variables.outputfile2);
         File output_filter_file = new File(Variables.output_filter_file);
         File gallery_trim_video = new File(Variables.gallery_trimed_video);
         File gallery_resize_video = new File(Variables.gallery_resize_video);
 
-        if(output.exists()){
+        if (output.exists()) {
             output.delete();
         }
-        if(output2.exists()){
+        if (output2.exists()) {
 
             output2.delete();
         }
-        if(output_filter_file.exists()){
+        if (output_filter_file.exists()) {
             output_filter_file.delete();
         }
 
-        if(gallery_trim_video.exists()){
+        if (gallery_trim_video.exists()) {
             gallery_trim_video.delete();
         }
 
-        if(gallery_resize_video.exists()){
+        if (gallery_resize_video.exists()) {
             gallery_resize_video.delete();
         }
-
 
 
     }

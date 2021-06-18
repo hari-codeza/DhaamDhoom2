@@ -13,21 +13,21 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-
-import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.Fragment_Callback;
+import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 import java.io.File;
 import java.util.Collections;
@@ -48,25 +48,26 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
     String video_id;
 
     ProgressBar progressBar;
+    VideoSharingApps_Adapter adapter;
 
     public VideoAction_F() {
     }
 
+
     @SuppressLint("ValidFragment")
     public VideoAction_F(String id, Fragment_Callback fragment_callback) {
-        video_id=id;
-        this.fragment_callback=fragment_callback;
+        video_id = id;
+        this.fragment_callback = fragment_callback;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_video_action, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_video_action, container, false);
+        context = getContext();
 
-        progressBar=view.findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progress_bar);
         view.findViewById(R.id.save_video_layout).setOnClickListener(this);
         view.findViewById(R.id.copy_layout).setOnClickListener(this);
 
@@ -76,13 +77,12 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
                 Get_Shared_app();
             }
-        },1000);
+        }, 1000);
 
         return view;
     }
 
-    VideoSharingApps_Adapter adapter;
-    public void Get_Shared_app(){
+    public void Get_Shared_app() {
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
         final GridLayoutManager layoutManager = new GridLayoutManager(context, 5);
         recyclerView.setLayoutManager(layoutManager);
@@ -94,16 +94,16 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
                 try {
 
-                    PackageManager pm=getActivity().getPackageManager();
+                    PackageManager pm = getActivity().getPackageManager();
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_TEXT, "https://google.com");
 
-                    List<ResolveInfo> launchables=pm.queryIntentActivities(intent, 0);
+                    List<ResolveInfo> launchables = pm.queryIntentActivities(intent, 0);
 
-                    for (int i=0; i<launchables.size(); i++){
+                    for (int i = 0; i < launchables.size(); i++) {
 
-                        if(launchables.get(i).activityInfo.name.contains("SendTextToClipboardActivity")){
+                        if (launchables.get(i).activityInfo.name.contains("SendTextToClipboardActivity")) {
                             launchables.remove(i);
                             break;
                         }
@@ -113,10 +113,10 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     Collections.sort(launchables,
                             new ResolveInfo.DisplayNameComparator(pm));
 
-                    adapter=new VideoSharingApps_Adapter(context, launchables, new VideoSharingApps_Adapter.OnItemClickListener() {
+                    adapter = new VideoSharingApps_Adapter(context, launchables, new VideoSharingApps_Adapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(int positon, ResolveInfo item, View view) {
-                            Toast.makeText(context, ""+item.activityInfo.name, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "" + item.activityInfo.name, Toast.LENGTH_SHORT).show();
                             Open_App(item);
                         }
                     });
@@ -130,13 +130,11 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     });
 
 
-                }
-                catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
         }).start();
-
 
 
     }
@@ -155,7 +153,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             i.setComponent(name);
 
-            if(Functions.Checkstoragepermision(getActivity())) {
+            if (Functions.Checkstoragepermision(getActivity())) {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("action", "save");
@@ -163,10 +161,10 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                 fragment_callback.Responce(bundle);
             }
 
-            File f = new File("/storage/emulated/0/Tittic/"+video_id+".mp4");
+            File f = new File("/storage/emulated/0/Tittic/" + video_id + ".mp4");
             Uri uriPath = Uri.parse(f.getPath());
 
-            String text="Dhaam Dhoom\n\n"+Variables.base_url+"view.php?id="+video_id+"\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
+            String text = "Dhaam Dhoom\n\n" + Variables.base_url + "view.php?id=" + video_id + "\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
 
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
@@ -179,17 +177,17 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
             startActivity(Intent.createChooser(shareIntent, "send"));
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.save_video_layout:
 
-                if(Functions.Checkstoragepermision(getActivity())) {
+                if (Functions.Checkstoragepermision(getActivity())) {
 
                     Bundle bundle = new Bundle();
                     bundle.putString("action", "save");
@@ -202,7 +200,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
             case R.id.copy_layout:
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 
-                String text=Variables.base_url+"view.php?id="+video_id+"\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
+                String text = Variables.base_url + "view.php?id=" + video_id + "\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
                 ClipData clip = ClipData.newPlainText("Copied Text", text);
                 clipboard.setPrimaryClip(clip);
 

@@ -18,15 +18,15 @@ import android.widget.TextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
-import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
-import com.kyadav.DhaamDhoom.Main_Menu.MainMenuFragment;
-import com.kyadav.DhaamDhoom.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.kyadav.DhaamDhoom.Chat.Chat_Activity;
+import com.kyadav.DhaamDhoom.Main_Menu.MainMenuActivity;
+import com.kyadav.DhaamDhoom.Main_Menu.MainMenuFragment;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,16 +42,15 @@ public class Notification_Receive extends FirebaseMessagingService {
 
 
     SharedPreferences sharedPreferences;
-    String  pic;
-    String  title;
-    String  message;
+    String pic;
+    String title;
+    String message;
     String senderid;
     String receiverid;
     String action_type;
 
 
-
-    Handler handler=new Handler();
+    Handler handler = new Handler();
     Runnable runnable;
 
     Snackbar snackbar;
@@ -63,17 +62,17 @@ public class Notification_Receive extends FirebaseMessagingService {
 
 
         if (remoteMessage.getData().size() > 0) {
-            sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+            sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
             title = remoteMessage.getData().get("title");
             message = remoteMessage.getData().get("body");
-            pic=remoteMessage.getData().get("icon");
-            senderid=remoteMessage.getData().get("senderid");
-            receiverid=remoteMessage.getData().get("receiverid");
-            action_type=remoteMessage.getData().get("action_type");
+            pic = remoteMessage.getData().get("icon");
+            senderid = remoteMessage.getData().get("senderid");
+            receiverid = remoteMessage.getData().get("receiverid");
+            action_type = remoteMessage.getData().get("action_type");
 
-            if(!Chat_Activity.senderid_for_check_notification.equals(senderid)){
+            if (!Chat_Activity.senderid_for_check_notification.equals(senderid)) {
 
-                sendNotification sendNotification=new sendNotification(this);
+                sendNotification sendNotification = new sendNotification(this);
                 sendNotification.execute(pic);
 
             }
@@ -84,31 +83,52 @@ public class Notification_Receive extends FirebaseMessagingService {
     }
 
 
-        // this will store the user firebase token in local storage
+    // this will store the user firebase token in local storage
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
 
-        if(s==null){
+        if (s == null) {
 
-        }else if(s.equals("null")){
+        } else if (s.equals("null")) {
 
-        }
-        else if(s.equals("")){
+        } else if (s.equals("")) {
 
-        }
-        else if(s.length()<6){
+        } else if (s.length() < 6) {
 
-        }
-        else {
+        } else {
             sharedPreferences.edit().putString(Variables.device_token, s).commit();
         }
 
     }
 
+    public void chatFragment(String receiverid, String name, String picture) {
+
+        if (sharedPreferences.getBoolean(Variables.islogin, false)) {
+
+            if (MainMenuFragment.tabLayout != null) {
+                TabLayout.Tab tab3 = MainMenuFragment.tabLayout.getTabAt(3);
+                tab3.select();
+            }
+
+            Chat_Activity chat_activity = new Chat_Activity();
+            FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+
+            Bundle args = new Bundle();
+            args.putString("user_id", receiverid);
+            args.putString("user_name", name);
+            args.putString("user_pic", picture);
+
+            chat_activity.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
+
+        }
 
 
+    }
 
     private class sendNotification extends AsyncTask<String, Void, Bitmap> {
 
@@ -154,33 +174,33 @@ public class Notification_Receive extends FirebaseMessagingService {
             super.onPostExecute(result);
 
 
-            if(MainMenuActivity.mainMenuActivity!=null){
+            if (MainMenuActivity.mainMenuActivity != null) {
 
 
-                if(snackbar !=null){
+                if (snackbar != null) {
                     snackbar.getView().setVisibility(View.INVISIBLE);
                     snackbar.dismiss();
                 }
 
-                if(handler!=null && runnable!=null) {
+                if (handler != null && runnable != null) {
                     handler.removeCallbacks(runnable);
                 }
 
 
-                View layout = MainMenuActivity.mainMenuActivity.getLayoutInflater().inflate(R.layout.item_layout_custom_notification,null);
-                TextView titletxt= layout.findViewById(R.id.username);
-                TextView messagetxt=layout.findViewById(R.id.message);
-                ImageView imageView=layout.findViewById(R.id.user_image);
+                View layout = MainMenuActivity.mainMenuActivity.getLayoutInflater().inflate(R.layout.item_layout_custom_notification, null);
+                TextView titletxt = layout.findViewById(R.id.username);
+                TextView messagetxt = layout.findViewById(R.id.message);
+                ImageView imageView = layout.findViewById(R.id.user_image);
                 titletxt.setText(title);
                 messagetxt.setText(message);
 
-                if(result!=null)
-                imageView.setImageBitmap(result);
+                if (result != null)
+                    imageView.setImageBitmap(result);
 
 
                 snackbar = Snackbar.make(MainMenuActivity.mainMenuActivity.findViewById(R.id.container), "", Snackbar.LENGTH_LONG);
 
-                Snackbar.SnackbarLayout snackbarLayout= (Snackbar.SnackbarLayout) snackbar.getView();
+                Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
                 TextView textView = (TextView) snackbarLayout.findViewById(R.id.snackbar_text);
                 textView.setVisibility(View.INVISIBLE);
 
@@ -191,13 +211,13 @@ public class Notification_Receive extends FirebaseMessagingService {
                     ((FrameLayout.LayoutParams) params).gravity = Gravity.TOP;
                 }
 
-                snackbarLayout.setPadding(0,0,0,0);
+                snackbarLayout.setPadding(0, 0, 0, 0);
                 snackbarLayout.addView(layout, 0);
 
 
                 snackbar.getView().setVisibility(View.INVISIBLE);
 
-                snackbar.setCallback(new Snackbar.Callback(){
+                snackbar.setCallback(new Snackbar.Callback() {
                     @Override
                     public void onShown(Snackbar sb) {
                         super.onShown(sb);
@@ -207,7 +227,7 @@ public class Notification_Receive extends FirebaseMessagingService {
                 });
 
 
-                runnable=new Runnable() {
+                runnable = new Runnable() {
                     @Override
                     public void run() {
                         snackbar.getView().setVisibility(View.INVISIBLE);
@@ -222,7 +242,6 @@ public class Notification_Receive extends FirebaseMessagingService {
                 snackbar.show();
 
 
-
                 layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -230,8 +249,8 @@ public class Notification_Receive extends FirebaseMessagingService {
                         snackbar.dismiss();
                         snackbar.getView().setVisibility(View.INVISIBLE);
 
-                        if(action_type.equals("message"))
-                        chatFragment(senderid,title,pic);
+                        if (action_type.equals("message"))
+                            chatFragment(senderid, title, pic);
 
                     }
                 });
@@ -243,37 +262,6 @@ public class Notification_Receive extends FirebaseMessagingService {
         }
 
     }
-
-
-
-    public void chatFragment(String receiverid, String name, String picture){
-
-        if(sharedPreferences.getBoolean(Variables.islogin,false)) {
-
-            if (MainMenuFragment.tabLayout != null) {
-                TabLayout.Tab tab3 = MainMenuFragment.tabLayout.getTabAt(3);
-                tab3.select();
-            }
-
-            Chat_Activity chat_activity = new Chat_Activity();
-            FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-
-            Bundle args = new Bundle();
-            args.putString("user_id", receiverid);
-            args.putString("user_name", name);
-            args.putString("user_pic", picture);
-
-            chat_activity.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
-
-        }
-
-
-    }
-
-
 
 
 }

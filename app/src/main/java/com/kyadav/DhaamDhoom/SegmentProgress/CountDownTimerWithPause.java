@@ -20,35 +20,62 @@ import android.os.SystemClock;
  */
 public abstract class CountDownTimerWithPause {
 
-    /**
-     * Millis since boot when alarm should stop.
-     */
-    private long mStopTimeInFuture;
-
-    /**
-     * Real time remaining until timer completes
-     */
-    private long mMillisInFuture;
-
+    private static final int MSG = 1;
     /**
      * Total time on timer at start
      */
     private final long mTotalCountdown;
-
     /**
      * The interval in millis that the user receives callbacks
      */
     private final long mCountdownInterval;
-
+    /**
+     * Millis since boot when alarm should stop.
+     */
+    private long mStopTimeInFuture;
+    /**
+     * Real time remaining until timer completes
+     */
+    private long mMillisInFuture;
     /**
      * The time remaining on the timer when it was paused, if it is currently paused; 0 otherwise.
      */
     private long mPauseTimeRemaining;
-
     /**
      * True if timer was started running, false if not.
      */
     private boolean mRunAtStart;
+    // handles counting down
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            synchronized (CountDownTimerWithPause.this) {
+                long millisLeft = timeLeft();
+
+                if (millisLeft <= 0) {
+                    cancel();
+                    onFinish();
+                } else if (millisLeft < mCountdownInterval) {
+                    // no tick, just delay until done
+                    sendMessageDelayed(obtainMessage(MSG), millisLeft);
+                } else {
+                    long lastTickStart = SystemClock.elapsedRealtime();
+                    onTick(millisLeft);
+
+                    // take into account user's onTick taking time to execute
+                    long delay = mCountdownInterval - (SystemClock.elapsedRealtime() - lastTickStart);
+
+                    // special case: user's onTick took more than mCountdownInterval to
+                    // complete, skip to next interval
+                    while (delay < 0) delay += mCountdownInterval;
+
+                    sendMessageDelayed(obtainMessage(MSG), delay);
+                }
+            }
+        }
+    };
 
     /**
      * @param millisInFuture    The number of millis in the future from the call
@@ -183,40 +210,4 @@ public abstract class CountDownTimerWithPause {
      * Callback fired when the time is up.
      */
     public abstract void onFinish();
-
-
-    private static final int MSG = 1;
-
-
-    // handles counting down
-    private Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-
-            synchronized (CountDownTimerWithPause.this) {
-                long millisLeft = timeLeft();
-
-                if (millisLeft <= 0) {
-                    cancel();
-                    onFinish();
-                } else if (millisLeft < mCountdownInterval) {
-                    // no tick, just delay until done
-                    sendMessageDelayed(obtainMessage(MSG), millisLeft);
-                } else {
-                    long lastTickStart = SystemClock.elapsedRealtime();
-                    onTick(millisLeft);
-
-                    // take into account user's onTick taking time to execute
-                    long delay = mCountdownInterval - (SystemClock.elapsedRealtime() - lastTickStart);
-
-                    // special case: user's onTick took more than mCountdownInterval to
-                    // complete, skip to next interval
-                    while (delay < 0) delay += mCountdownInterval;
-
-                    sendMessageDelayed(obtainMessage(MSG), delay);
-                }
-            }
-        }
-    };
 }

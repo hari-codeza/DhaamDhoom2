@@ -14,7 +14,9 @@ import android.widget.ImageView;
 // this is the spacial type of imageview with round cornners
 
 @SuppressLint("AppCompatCustomView")
-public class RoundCornersImageView extends ImageView {;
+public class RoundCornersImageView extends ImageView {
+    ;
+
     public RoundCornersImageView(Context context) {
         super(context);
     }

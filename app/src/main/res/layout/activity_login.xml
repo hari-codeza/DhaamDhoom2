@@ -8,15 +8,13 @@
 
 
     <LinearLayout
+        android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/top_view"
-        android:visibility="gone"
-        android:background="@color/black"
         android:alpha="0.4"
-        android:orientation="horizontal">
-
-
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
 
     </LinearLayout>
@@ -26,8 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="701dp"
         android:layout_marginTop="30dp"
-        android:background="@color/white"
-       >
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/Goback"
@@ -102,7 +99,6 @@
             </HorizontalScrollView>
 
             <TextView
-                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_below="@+id/btnlog"
@@ -111,7 +107,8 @@
                 android:layout_marginTop="15dp"
                 android:text="--OR--"
                 android:textColor="@color/primaryDark"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/login_title_txt"
@@ -157,7 +154,6 @@
             android:visibility="visible" />
 
         <ImageView
-            android:visibility="visible"
             android:id="@+id/facebook_btn"
             android:layout_width="66dp"
             android:layout_height="66dp"
@@ -165,7 +161,8 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="13dp"
             android:padding="2dp"
-            android:src="@drawable/ic_facebook" />
+            android:src="@drawable/ic_facebook"
+            android:visibility="visible" />
 
 
     </RelativeLayout>

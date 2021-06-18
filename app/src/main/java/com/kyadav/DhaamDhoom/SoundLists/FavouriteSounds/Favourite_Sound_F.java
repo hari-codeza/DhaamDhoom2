@@ -6,24 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
-import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
-import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
-import com.kyadav.DhaamDhoom.R;
-import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
-import com.kyadav.DhaamDhoom.SoundLists.Sounds_GetSet;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -48,6 +42,12 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.ApiRequest;
+import com.kyadav.DhaamDhoom.SimpleClasses.Callback;
+import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
+import com.kyadav.DhaamDhoom.SoundLists.Sounds_GetSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,38 +63,35 @@ import static android.app.Activity.RESULT_OK;
 public class Favourite_Sound_F extends RootFragment implements Player.EventListener {
 
 
+    public static String running_sound_id;
+    static boolean active = false;
     Context context;
     View view;
-
     ArrayList<Sounds_GetSet> datalist;
     Favourite_Sound_Adapter adapter;
-
-    static boolean active = false;
-
     RecyclerView listview;
-
     DownloadRequest prDownloader;
-
     IOSDialog iosDialog;
-    public static String running_sound_id;
-
-
     SwipeRefreshLayout swiperefresh;
+    View previous_view;
+    Thread thread;
+    SimpleExoPlayer player;
+    String previous_url = "none";
+
 
     public Favourite_Sound_F() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.activity_sound_list, container, false);
+        view = inflater.inflate(R.layout.activity_sound_list, container, false);
 
-        context=getContext();
+        context = getContext();
 
-        running_sound_id="none";
+        running_sound_id = "none";
 
         iosDialog = new IOSDialog.Builder(context)
                 .setCancelable(false)
@@ -108,7 +105,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
         listview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         listview.setNestedScrollingEnabled(false);
 
-        swiperefresh=view.findViewById(R.id.swiperefresh);
+        swiperefresh = view.findViewById(R.id.swiperefresh);
         swiperefresh.setColorSchemeResources(R.color.black);
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -123,21 +120,18 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
         return view;
     }
 
+    public void Set_adapter() {
 
-    public void Set_adapter(){
-
-        adapter=new Favourite_Sound_Adapter(context, datalist, new Favourite_Sound_Adapter.OnItemClickListener() {
+        adapter = new Favourite_Sound_Adapter(context, datalist, new Favourite_Sound_Adapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view,int postion, Sounds_GetSet item) {
+            public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
-                if(view.getId()==R.id.done){
+                if (view.getId() == R.id.done) {
                     StopPlaying();
-                    Down_load_mp3(item.id,item.sound_name,item.acc_path);
-                }
-                else if(view.getId()==R.id.fav_btn){
+                    Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                } else if (view.getId() == R.id.fav_btn) {
                     Call_Api_For_Fav_sound(item.id);
-                }
-                else {
+                } else {
                     if (thread != null && !thread.isAlive()) {
                         StopPlaying();
                         playaudio(view, item);
@@ -155,13 +149,11 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
     }
 
-
-
     private void Call_Api_For_get_allsound() {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -178,35 +170,34 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
     }
 
+    public void Parse_data(String responce) {
 
-    public void Parse_data(String responce){
-
-        datalist=new ArrayList<>();
+        datalist = new ArrayList<>();
 
         try {
-            JSONObject jsonObject=new JSONObject(responce);
-            String code=jsonObject.optString("code");
-            if(code.equals("200")){
+            JSONObject jsonObject = new JSONObject(responce);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
 
-                JSONArray msgArray=jsonObject.getJSONArray("msg");
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
 
-                for(int i=0;i<msgArray.length();i++){
+                for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
 
-                    Sounds_GetSet item=new Sounds_GetSet();
+                    Sounds_GetSet item = new Sounds_GetSet();
 
-                    item.id=itemdata.optString("id");
+                    item.id = itemdata.optString("id");
 
-                    JSONObject audio_path=itemdata.optJSONObject("audio_path");
+                    JSONObject audio_path = itemdata.optJSONObject("audio_path");
 
-                    item.acc_path=audio_path.optString("acc");
+                    item.acc_path = audio_path.optString("acc");
 
 
-                    item.sound_name=itemdata.optString("sound_name");
-                    item.description=itemdata.optString("description");
-                    item.section=itemdata.optString("section");
-                    item.thum=itemdata.optString("thum");
-                    item.date_created=itemdata.optString("created");
+                    item.sound_name = itemdata.optString("sound_name");
+                    item.description = itemdata.optString("description");
+                    item.section = itemdata.optString("section");
+                    item.thum = itemdata.optString("thum");
+                    item.date_created = itemdata.optString("created");
 
                     datalist.add(item);
                 }
@@ -214,8 +205,8 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
                 Set_adapter();
 
 
-            }else {
-                Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -225,31 +216,23 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
     }
 
-
     @Override
     public boolean onBackPressed() {
         getActivity().onBackPressed();
         return super.onBackPressed();
     }
 
+    public void playaudio(View view, final Sounds_GetSet item) {
+        previous_view = view;
 
+        if (previous_url.equals(item.acc_path)) {
 
+            previous_url = "none";
+            running_sound_id = "none";
+        } else {
 
-    View previous_view;
-    Thread thread;
-    SimpleExoPlayer player;
-    String previous_url="none";
-    public void playaudio(View view, final Sounds_GetSet item){
-        previous_view=view;
-
-        if(previous_url.equals(item.acc_path)){
-
-            previous_url="none";
-            running_sound_id="none";
-        }else {
-
-            previous_url=item.acc_path;
-            running_sound_id=item.id;
+            previous_url = item.acc_path;
+            running_sound_id = item.id;
 
             DefaultTrackSelector trackSelector = new DefaultTrackSelector();
             player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
@@ -268,14 +251,13 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             player.setPlayWhenReady(true);
 
 
-
         }
 
     }
 
 
-    public void StopPlaying(){
-        if(player!=null){
+    public void StopPlaying() {
+        if (player != null) {
             player.setPlayWhenReady(false);
             player.removeListener(this);
             player.release();
@@ -284,24 +266,22 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
         show_Stop_state();
 
     }
-
-
 
 
     @Override
     public void onStart() {
         super.onStart();
-        active=true;
+        active = true;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        active=false;
+        active = false;
 
-        running_sound_id="null";
+        running_sound_id = "null";
 
-        if(player!=null){
+        if (player != null) {
             player.setPlayWhenReady(false);
             player.removeListener(this);
             player.release();
@@ -312,9 +292,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     }
 
 
-
-
-    public void Show_Run_State(){
+    public void Show_Run_State() {
 
         if (previous_view != null) {
             previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
@@ -325,13 +303,13 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     }
 
 
-    public void Show_loading_state(){
+    public void Show_loading_state() {
         previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
         previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
     }
 
 
-    public void show_Stop_state(){
+    public void show_Stop_state() {
 
         if (previous_view != null) {
             previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
@@ -340,20 +318,18 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             previous_view.findViewById(R.id.done).setVisibility(View.GONE);
         }
 
-        running_sound_id="none";
+        running_sound_id = "none";
 
     }
 
 
+    public void Down_load_mp3(final String id, final String sound_name, String url) {
 
-
-    public void Down_load_mp3(final String id,final String sound_name, String url){
-
-        final ProgressDialog progressDialog=new ProgressDialog(context);
+        final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
 
-        prDownloader= PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)
+        prDownloader = PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)
                 .build()
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
@@ -385,9 +361,9 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             public void onDownloadComplete() {
                 progressDialog.dismiss();
                 Intent output = new Intent();
-                output.putExtra("isSelected","yes");
-                output.putExtra("sound_name",sound_name);
-                output.putExtra("sound_id",id);
+                output.putExtra("isSelected", "yes");
+                output.putExtra("sound_name", sound_name);
+                output.putExtra("sound_id", id);
                 getActivity().setResult(RESULT_OK, output);
                 getActivity().finish();
                 getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
@@ -402,15 +378,14 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     }
 
 
-
     private void Call_Api_For_Fav_sound(String video_id) {
 
         iosDialog.show();
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("sound_id",video_id);
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("sound_id", video_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -444,12 +419,11 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
-        if(playbackState==Player.STATE_BUFFERING){
+        if (playbackState == Player.STATE_BUFFERING) {
             Show_loading_state();
-        }
-        else if(playbackState==Player.STATE_READY){
+        } else if (playbackState == Player.STATE_READY) {
             Show_Run_State();
-        }else if(playbackState==Player.STATE_ENDED){
+        } else if (playbackState == Player.STATE_ENDED) {
             show_Stop_state();
         }
 
@@ -484,9 +458,6 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     public void onSeekProcessed() {
 
     }
-
-
-
 
 
 }

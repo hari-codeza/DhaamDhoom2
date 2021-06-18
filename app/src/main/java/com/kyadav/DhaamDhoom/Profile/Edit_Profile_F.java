@@ -72,27 +72,27 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     View view;
     Context context;
+    Fragment_Callback fragment_callback;
+    ImageView profile_image;
+    EditText firstname_edit, lastname_edit, user_bio_edit;
+    RadioButton male_btn, female_btn;
+    String imageFilePath;
+    byte[] image_byte_array;
 
     public Edit_Profile_F() {
 
     }
 
-    Fragment_Callback fragment_callback;
     public Edit_Profile_F(Fragment_Callback fragment_callback) {
-        this.fragment_callback=fragment_callback;
+        this.fragment_callback = fragment_callback;
     }
-
-    ImageView profile_image;
-    EditText firstname_edit,lastname_edit,user_bio_edit;
-
-    RadioButton male_btn,female_btn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_edit_profile, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        context = getContext();
 
 
         view.findViewById(R.id.Goback).setOnClickListener(this);
@@ -136,7 +136,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.Goback:
 
@@ -144,7 +144,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 break;
 
             case R.id.save_btn:
-                if(Check_Validation()){
+                if (Check_Validation()) {
 
                     Call_Api_For_Edit_profile();
                 }
@@ -156,16 +156,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         }
     }
 
-
-
     // this method will show the dialog of selete the either take a picture form camera or pick the image from gallary
     private void selectImage() {
 
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
 
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustom);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
 
         builder.setTitle("Add Photo!");
 
@@ -175,25 +172,17 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
             public void onClick(DialogInterface dialog, int item) {
 
-                if (options[item].equals("Take Photo"))
-
-                {
-                    if(check_permissions())
+                if (options[item].equals("Take Photo")) {
+                    if (check_permissions())
                         openCameraIntent();
 
-                }
+                } else if (options[item].equals("Choose from Gallery")) {
 
-                else if (options[item].equals("Choose from Gallery"))
-
-                {
-
-                    if(check_permissions()) {
+                    if (check_permissions()) {
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
                     }
-                }
-
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
 
                     dialog.dismiss();
 
@@ -207,7 +196,6 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     }
 
-
     public boolean check_permissions() {
 
         String[] PERMISSIONS = {
@@ -218,7 +206,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
         if (!MainMenuFragment.hasPermissions(context, PERMISSIONS)) {
             requestPermissions(PERMISSIONS, 2);
-        }else {
+        } else {
 
             return true;
         }
@@ -226,14 +214,11 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         return false;
     }
 
-
-
-
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {
         Intent pictureIntent = new Intent(
                 MediaStore.ACTION_IMAGE_CAPTURE);
-        if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
+        if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             //Create a file to store the image
             File photoFile = null;
             try {
@@ -243,14 +228,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
             }
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(context.getApplicationContext(), getActivity().getPackageName()+".fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(context.getApplicationContext(), getActivity().getPackageName() + ".fileprovider", photoFile);
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(pictureIntent, 1);
             }
         }
     }
 
-    String imageFilePath;
     private File createImageFile() throws IOException {
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss",
@@ -268,25 +252,22 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         return image;
     }
 
-    public  String getPath(Uri uri ) {
+    public String getPath(Uri uri) {
         String result = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
-        if(cursor != null){
-            if ( cursor.moveToFirst( ) ) {
-                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
-                result = cursor.getString( column_index );
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
             }
-            cursor.close( );
+            cursor.close();
         }
-        if(result == null) {
+        if (result == null) {
             result = "Not found";
         }
         return result;
     }
-
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -315,18 +296,18 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Uri selectedImage =(Uri.fromFile(new File(imageFilePath)));
+                Uri selectedImage = (Uri.fromFile(new File(imageFilePath)));
 
                 InputStream imageStream = null;
                 try {
-                    imageStream =getActivity().getContentResolver().openInputStream(selectedImage);
+                    imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
                 final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
 
-                Bitmap  resized = Bitmap.createScaledBitmap(rotatedBitmap,(int)(rotatedBitmap.getWidth()*0.7), (int)(rotatedBitmap.getHeight()*0.7), true);
+                Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.7), (int) (rotatedBitmap.getHeight() * 0.7), true);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
 
@@ -334,19 +315,17 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
                 Save_Image();
 
-            }
-
-            else if (requestCode == 2) {
+            } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 InputStream imageStream = null;
                 try {
-                    imageStream =getActivity().getContentResolver().openInputStream(selectedImage);
+                    imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
                 final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
 
-                String path=getPath(selectedImage);
+                String path = getPath(selectedImage);
                 Matrix matrix = new Matrix();
                 ExifInterface exif = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -372,7 +351,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
 
 
-                Bitmap  resized = Bitmap.createScaledBitmap(rotatedBitmap,(int)(rotatedBitmap.getWidth()*0.5), (int)(rotatedBitmap.getHeight()*0.5), true);
+                Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.5), (int) (rotatedBitmap.getHeight() * 0.5), true);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
@@ -387,32 +366,26 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     }
 
-
-
     // this will check the validations like none of the field can be the empty
-    public boolean Check_Validation(){
-        String firstname=firstname_edit.getText().toString();
-        String lastname=lastname_edit.getText().toString();
+    public boolean Check_Validation() {
+        String firstname = firstname_edit.getText().toString();
+        String lastname = lastname_edit.getText().toString();
 
-        if(TextUtils.isEmpty(firstname)){
+        if (TextUtils.isEmpty(firstname)) {
             return false;
-        }
-        else if(TextUtils.isEmpty(lastname)){
+        } else if (TextUtils.isEmpty(lastname)) {
             return false;
         }
 
         return true;
     }
 
+    public void Save_Image() {
 
+        Functions.Show_loader(context, false, false);
 
-    byte [] image_byte_array;
-    public void Save_Image(){
-
-        Functions.Show_loader(context,false,false);
-
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
-        String key=reference.push().getKey();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        String key = reference.push().getKey();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         final StorageReference filelocation = storageReference.child("User_image")
                 .child(key + ".jpg");
@@ -420,14 +393,14 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         filelocation.putBytes(image_byte_array).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     filelocation.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             Call_Api_For_image(uri.toString());
                         }
                     });
-                }else {
+                } else {
                     Functions.cancel_loader();
                 }
             }
@@ -437,14 +410,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     }
 
 
-    public  void Call_Api_For_image(final String image_link) {
-
+    public void Call_Api_For_image(final String image_link) {
 
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("image_link",image_link);
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("image_link", image_link);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -455,19 +427,18 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")){
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
 
-                        Variables.sharedPreferences.edit().putString(Variables.u_pic,image_link).commit();
-                        Profile_F.pic_url=image_link;
-                        Variables.user_pic=image_link;
+                        Variables.sharedPreferences.edit().putString(Variables.u_pic, image_link).commit();
+                        Profile_F.pic_url = image_link;
+                        Variables.user_pic = image_link;
 
                         Picasso.with(context)
                                 .load(Profile_F.pic_url)
                                 .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                                .resize(200,200).centerCrop().into(profile_image);
-
+                                .resize(200, 200).centerCrop().into(profile_image);
 
 
                         Toast.makeText(context, "Image Update Successfully", Toast.LENGTH_SHORT).show();
@@ -481,31 +452,28 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         });
 
 
-
     }
 
 
-
-
     // this will update the latest info of user in database
-    public  void Call_Api_For_Edit_profile() {
+    public void Call_Api_For_Edit_profile() {
 
-        Functions.Show_loader(context,false,false);
+        Functions.Show_loader(context, false, false);
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("first_name",firstname_edit.getText().toString());
-            parameters.put("last_name",lastname_edit.getText().toString());
+            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("first_name", firstname_edit.getText().toString());
+            parameters.put("last_name", lastname_edit.getText().toString());
 
-            if(male_btn.isChecked()){
-                parameters.put("gender","Male");
+            if (male_btn.isChecked()) {
+                parameters.put("gender", "Male");
 
-            }else if(female_btn.isChecked()){
-                parameters.put("gender","Female");
+            } else if (female_btn.isChecked()) {
+                parameters.put("gender", "Female");
             }
 
-            parameters.put("bio",user_bio_edit.getText().toString());
+            parameters.put("bio", user_bio_edit.getText().toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -516,9 +484,9 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 try {
-                    JSONObject response=new JSONObject(resp);
-                    String code=response.optString("code");
-                    if(code.equals("200")) {
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
 
                         SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
 
@@ -531,7 +499,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                         getActivity().onBackPressed();
                     }
 
-                    } catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -540,12 +508,9 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     }
 
 
-
-
-
     // this will get the user data and parse the data and show the data into views
-    public void Call_Api_For_User_Details(){
-        Functions.Show_loader(getActivity(),false,false);
+    public void Call_Api_For_User_Details() {
+        Functions.Show_loader(getActivity(), false, false);
         Functions.Call_Api_For_Get_User_data(getActivity(),
                 Variables.sharedPreferences.getString(Variables.u_id, ""),
                 new API_CallBack() {
@@ -567,13 +532,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 });
     }
 
-    public void Parse_user_data(String responce){
+    public void Parse_user_data(String responce) {
         try {
-            JSONObject jsonObject=new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(responce);
 
-            String code=jsonObject.optString("code");
+            String code = jsonObject.optString("code");
 
-            if(code.equals("200")) {
+            if (code.equals("200")) {
                 JSONArray msg = jsonObject.optJSONArray("msg");
                 JSONObject data = msg.getJSONObject(0);
 
@@ -595,9 +560,8 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 }
 
                 user_bio_edit.setText(data.optString("bio"));
-            }
-            else {
-                Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
 
             }
         } catch (JSONException e) {
@@ -610,7 +574,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     public void onDetach() {
         super.onDetach();
 
-        if(fragment_callback!=null)
+        if (fragment_callback != null)
             fragment_callback.Responce(new Bundle());
     }
 }

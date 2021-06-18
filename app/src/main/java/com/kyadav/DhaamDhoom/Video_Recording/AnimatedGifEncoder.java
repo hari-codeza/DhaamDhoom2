@@ -58,8 +58,7 @@ public class AnimatedGifEncoder {
      * Sets the delay time between each frame, or changes it for subsequent frames
      * (applies to last frame added).
      *
-     * @param ms
-     *          int delay time in milliseconds
+     * @param ms int delay time in milliseconds
      */
     public void setDelay(int ms) {
         delay = ms / 10;
@@ -70,8 +69,7 @@ public class AnimatedGifEncoder {
      * subsequent frames. Default is 0 if no transparent color has been set,
      * otherwise 2.
      *
-     * @param code
-     *          int disposal code.
+     * @param code int disposal code.
      */
     public void setDispose(int code) {
         if (code >= 0) {
@@ -84,8 +82,7 @@ public class AnimatedGifEncoder {
      * 1; 0 means play indefinitely. Must be invoked before the first image is
      * added.
      *
-     * @param iter
-     *          int number of iterations.
+     * @param iter int number of iterations.
      * @return
      */
     public void setRepeat(int iter) {
@@ -101,8 +98,7 @@ public class AnimatedGifEncoder {
      * color becomes the transparent color for that frame. May be set to null to
      * indicate no transparent color.
      *
-     * @param c
-     *          Color to be treated as transparent on display.
+     * @param c Color to be treated as transparent on display.
      */
     public void setTransparent(int c) {
         transparent = c;
@@ -115,8 +111,7 @@ public class AnimatedGifEncoder {
      * <code>setSize</code> was not invoked, the size of the first image is used
      * for all subsequent frames.
      *
-     * @param im
-     *          BufferedImage containing frame to write.
+     * @param im BufferedImage containing frame to write.
      * @return true if successful.
      */
     public boolean addFrame(Bitmap im) {
@@ -190,12 +185,11 @@ public class AnimatedGifEncoder {
      * Sets frame rate in frames per second. Equivalent to
      * <code>setDelay(1000/fps)</code>.
      *
-     * @param fps
-     *          float frame rate (frames per second)
+     * @param fps float frame rate (frames per second)
      */
     public void setFrameRate(float fps) {
         if (fps != 0f) {
-            delay = (int)(100 / fps);
+            delay = (int) (100 / fps);
         }
     }
 
@@ -206,8 +200,7 @@ public class AnimatedGifEncoder {
      * default, and produces good color mapping at reasonable speeds. Values
      * greater than 20 do not yield significant improvements in speed.
      *
-     * @param quality
-     *          int greater than 0.
+     * @param quality int greater than 0.
      * @return
      */
     public void setQuality(int quality) {
@@ -220,10 +213,8 @@ public class AnimatedGifEncoder {
      * Sets the GIF frame size. The default size is the size of the first frame
      * added if this method is not invoked.
      *
-     * @param w
-     *          int frame width.
-     * @param h
-     *          int frame width.
+     * @param w int frame width.
+     * @param h int frame width.
      */
     public void setSize(int w, int h) {
         width = w;
@@ -245,8 +236,7 @@ public class AnimatedGifEncoder {
      * Initiates GIF file creation on the given stream. The stream is not closed
      * automatically.
      *
-     * @param os
-     *          OutputStream on which GIF images are written.
+     * @param os OutputStream on which GIF images are written.
      * @return false if initial write failed.
      */
     public boolean start(OutputStream os) {
@@ -298,7 +288,6 @@ public class AnimatedGifEncoder {
 
     /**
      * Returns index of palette color closest to c
-     *
      */
     protected int findClosest(int c) {
         if (colorTab == null)
@@ -309,7 +298,7 @@ public class AnimatedGifEncoder {
         int minpos = 0;
         int dmin = 256 * 256 * 256;
         int len = colorTab.length;
-        for (int i = 0; i < len;) {
+        for (int i = 0; i < len; ) {
             int dr = r - (colorTab[i++] & 0xff);
             int dg = g - (colorTab[i++] & 0xff);
             int db = b - (colorTab[i] & 0xff);
@@ -347,6 +336,7 @@ public class AnimatedGifEncoder {
             pixels[tind] = (byte) ((td >> 16) & 0xFF);
         }
     }
+
     protected int[] getImageData(Bitmap img) {
         int w = img.getWidth();
         int h = img.getHeight();
@@ -478,26 +468,26 @@ public class AnimatedGifEncoder {
     }
 }
 
-	/*
-	 * NeuQuant Neural-Net Quantization Algorithm
-	 * ------------------------------------------
-	 *
-	 * Copyright (c) 1994 Anthony Dekker
-	 *
-	 * NEUQUANT Neural-Net quantization algorithm by Anthony Dekker, 1994. See
-	 * "Kohonen neural networks for optimal colour quantization" in "Network:
-	 * Computation in Neural Systems" Vol. 5 (1994) pp 351-367. for a discussion of
-	 * the algorithm.
-	 *
-	 * Any party obtaining a copy of these files from the author, directly or
-	 * indirectly, is granted, free of charge, a full and unrestricted irrevocable,
-	 * world-wide, paid up, royalty-free, nonexclusive right and license to deal in
-	 * this software and documentation files (the "Software"), including without
-	 * limitation the rights to use, copy, modify, merge, publish, distribute,
-	 * sublicense, and/or sell copies of the Software, and to permit persons who
-	 * receive copies from any such party to do so, with the only requirement being
-	 * that this copyright notice remain intact.
-	 */
+/*
+ * NeuQuant Neural-Net Quantization Algorithm
+ * ------------------------------------------
+ *
+ * Copyright (c) 1994 Anthony Dekker
+ *
+ * NEUQUANT Neural-Net quantization algorithm by Anthony Dekker, 1994. See
+ * "Kohonen neural networks for optimal colour quantization" in "Network:
+ * Computation in Neural Systems" Vol. 5 (1994) pp 351-367. for a discussion of
+ * the algorithm.
+ *
+ * Any party obtaining a copy of these files from the author, directly or
+ * indirectly, is granted, free of charge, a full and unrestricted irrevocable,
+ * world-wide, paid up, royalty-free, nonexclusive right and license to deal in
+ * this software and documentation files (the "Software"), including without
+ * limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons who
+ * receive copies from any such party to do so, with the only requirement being
+ * that this copyright notice remain intact.
+ */
 
 //	 Ported to Java 12/00 K Weiner
 class NeuQuant {
@@ -505,7 +495,7 @@ class NeuQuant {
     protected static final int netsize = 256; /* number of colours used */
 
     /* four primes near 500 - assume no image has a length so large */
-	  /* that it is divisible by all four primes */
+    /* that it is divisible by all four primes */
     protected static final int prime1 = 499;
 
     protected static final int prime2 = 491;
@@ -516,19 +506,19 @@ class NeuQuant {
 
     protected static final int minpicturebytes = (3 * prime4);
 
-	  /* minimum size for input image */
+    /* minimum size for input image */
 
-	  /*
-	   * Program Skeleton ---------------- [select samplefac in range 1..30] [read
-	   * image from input file] pic = (unsigned char*) malloc(3*width*height);
-	   * initnet(pic,3*width*height,samplefac); learn(); unbiasnet(); [write output
-	   * image header, using writecolourmap(f)] inxbuild(); write output image using
-	   * inxsearch(b,g,r)
-	   */
+    /*
+     * Program Skeleton ---------------- [select samplefac in range 1..30] [read
+     * image from input file] pic = (unsigned char*) malloc(3*width*height);
+     * initnet(pic,3*width*height,samplefac); learn(); unbiasnet(); [write output
+     * image header, using writecolourmap(f)] inxbuild(); write output image using
+     * inxsearch(b,g,r)
+     */
 
-	  /*
-	   * Network Definitions -------------------
-	   */
+    /*
+     * Network Definitions -------------------
+     */
 
     protected static final int maxnetpos = (netsize - 1);
 
@@ -553,19 +543,19 @@ class NeuQuant {
 
     /* defs for decreasing radius factor */
     protected static final int initrad = (netsize >> 3); /*
-	                                                         * for 256 cols, radius
-	                                                         * starts
-	                                                         */
+     * for 256 cols, radius
+     * starts
+     */
 
     protected static final int radiusbiasshift = 6; /* at 32.0 biased by 6 bits */
 
     protected static final int radiusbias = (((int) 1) << radiusbiasshift);
 
     protected static final int initradius = (initrad * radiusbias); /*
-	                                                                   * and
-	                                                                   * decreases
-	                                                                   * by a
-	                                                                   */
+     * and
+     * decreases
+     * by a
+     */
 
     protected static final int radiusdec = 30; /* factor of 1/30 each cycle */
 
@@ -573,22 +563,16 @@ class NeuQuant {
     protected static final int alphabiasshift = 10; /* alpha starts at 1.0 */
 
     protected static final int initalpha = (((int) 1) << alphabiasshift);
-
-    protected int alphadec; /* biased by 10 bits */
-
     /* radbias and alpharadbias used for radpower calculation */
     protected static final int radbiasshift = 8;
-
     protected static final int radbias = (((int) 1) << radbiasshift);
-
     protected static final int alpharadbshift = (alphabiasshift + radbiasshift);
-
     protected static final int alpharadbias = (((int) 1) << alpharadbshift);
+    protected int alphadec; /* biased by 10 bits */
 
-	  /*
-	   * Types and Global Variables --------------------------
-	   */
-
+    /*
+     * Types and Global Variables --------------------------
+     */
     protected byte[] thepicture; /* the input image itself */
 
     protected int lengthcount; /* lengthcount = H*W*3 */
@@ -600,7 +584,7 @@ class NeuQuant {
 
     protected int[] netindex = new int[256];
 
-	  /* for network lookup - really 256 */
+    /* for network lookup - really 256 */
 
     protected int[] bias = new int[netsize];
 
@@ -609,7 +593,7 @@ class NeuQuant {
 
     protected int[] radpower = new int[initrad];
 
-	  /* radpower for precomputation */
+    /* radpower for precomputation */
 
     /*
      * Initialise network in range (0,0,0) to (255,255,255) and set parameters
@@ -667,7 +651,7 @@ class NeuQuant {
             p = network[i];
             smallpos = i;
             smallval = p[1]; /* index on g */
-	      /* find smallest in i..netsize-1 */
+            /* find smallest in i..netsize-1 */
             for (j = i + 1; j < netsize; j++) {
                 q = network[j];
                 if (q[1] < smallval) { /* index on g */
@@ -676,7 +660,7 @@ class NeuQuant {
                 }
             }
             q = network[smallpos];
-	      /* swap p (i) and q (smallpos) entries */
+            /* swap p (i) and q (smallpos) entries */
             if (i != smallpos) {
                 j = q[0];
                 q[0] = p[0];
@@ -691,7 +675,7 @@ class NeuQuant {
                 q[3] = p[3];
                 p[3] = j;
             }
-	      /* smallval entry is now in position i */
+            /* smallval entry is now in position i */
             if (smallval != previouscol) {
                 netindex[previouscol] = (startpos + i) >> 1;
                 for (j = previouscol + 1; j < smallval; j++)
@@ -925,7 +909,7 @@ class NeuQuant {
      */
     protected void altersingle(int alpha, int i, int b, int g, int r) {
 
-	    /* alter hit neuron */
+        /* alter hit neuron */
         int[] n = network[i];
         n[0] -= (alpha * (n[0] - b)) / initalpha;
         n[1] -= (alpha * (n[1] - g)) / initalpha;
@@ -937,10 +921,10 @@ class NeuQuant {
      */
     protected int contest(int b, int g, int r) {
 
-	    /* finds closest neuron (min dist) and updates freq */
-	    /* finds best neuron (min dist-bias) and returns position */
-	    /* for frequently chosen neurons, freq[i] is high and bias[i] is negative */
-	    /* bias[i] = gamma*((1/netsize)-freq[i]) */
+        /* finds closest neuron (min dist) and updates freq */
+        /* finds best neuron (min dist-bias) and returns position */
+        /* for frequently chosen neurons, freq[i] is high and bias[i] is negative */
+        /* bias[i] = gamma*((1/netsize)-freq[i]) */
 
         int i, dist, a, biasdist, betafreq;
         int bestpos, bestbiaspos, bestd, bestbiasd;
@@ -989,17 +973,12 @@ class NeuQuant {
 
 class LZWEncoder {
 
+    static final int BITS = 12;
+    static final int HSIZE = 5003; // 80% occupancy
     private static final int EOF = -1;
-
-    private int imgW, imgH;
-
-    private byte[] pixAry;
-
-    private int initCodeSize;
-
-    private int remaining;
-
-    private int curPixel;
+    int n_bits; // number of bits/code
+    int maxbits = BITS; // user settable max # bits/code
+    int maxcode; // maximum code, given n_bits
 
     // GIFCOMPR.C - GIF Image compression routines
     //
@@ -1007,10 +986,8 @@ class LZWEncoder {
     // David Rowley (mgardi@watdcsu.waterloo.edu)
 
     // General DEFINEs
-
-    static final int BITS = 12;
-
-    static final int HSIZE = 5003; // 80% occupancy
+    int maxmaxcode = 1 << BITS; // should NEVER generate this code
+    int[] htab = new int[HSIZE];
 
     // GIF Image compression - modified 'compress'
     //
@@ -1022,26 +999,17 @@ class LZWEncoder {
     // Ken Turkowski (decvax!decwrl!turtlevax!ken)
     // James A. Woods (decvax!ihnp4!ames!jaw)
     // Joe Orost (decvax!vax135!petsd!joe)
-
-    int n_bits; // number of bits/code
-
-    int maxbits = BITS; // user settable max # bits/code
-
-    int maxcode; // maximum code, given n_bits
-
-    int maxmaxcode = 1 << BITS; // should NEVER generate this code
-
-    int[] htab = new int[HSIZE];
-
     int[] codetab = new int[HSIZE];
-
     int hsize = HSIZE; // for dynamic table sizing
-
     int free_ent = 0; // first unused entry
-
     // block compression parameters -- after all codes are used up,
     // and compression rate changes, start over.
     boolean clear_flg = false;
+    int g_init_bits;
+    int ClearCode;
+    int EOFCode;
+    int cur_accum = 0;
+    int cur_bits = 0;
 
     // Algorithm: use open addressing double hashing (no chaining) on the
     // prefix code / next character combination. We do a variant of Knuth's
@@ -1054,12 +1022,12 @@ class LZWEncoder {
     // for the decompressor. Late addition: construct the table according to
     // file size for noticeable speed improvement on small files. Please direct
     // questions about this implementation to ames!jaw.
-
-    int g_init_bits;
-
-    int ClearCode;
-
-    int EOFCode;
+    int masks[] = {0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF,
+            0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF};
+    // Number of characters so far in this 'packet'
+    int a_count;
+    // Define the storage for the packet accumulator
+    byte[] accum = new byte[256];
 
     // output
     //
@@ -1075,19 +1043,11 @@ class LZWEncoder {
     // Maintain a BITS character long buffer (so that 8 codes will
     // fit in it exactly). Use the VAX insv instruction to insert each
     // code in turn. When the buffer fills up empty it and start over.
-
-    int cur_accum = 0;
-
-    int cur_bits = 0;
-
-    int masks[] = { 0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF,
-            0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF };
-
-    // Number of characters so far in this 'packet'
-    int a_count;
-
-    // Define the storage for the packet accumulator
-    byte[] accum = new byte[256];
+    private int imgW, imgH;
+    private byte[] pixAry;
+    private int initCodeSize;
+    private int remaining;
+    private int curPixel;
 
     // ----------------------------------------------------------------------------
     LZWEncoder(int width, int height, byte[] pixels, int color_depth) {
@@ -1157,7 +1117,8 @@ class LZWEncoder {
 
         output(ClearCode, outs);
 
-        outer_loop: while ((c = nextPixel()) != EOF) {
+        outer_loop:
+        while ((c = nextPixel()) != EOF) {
             fcode = (c << maxbits) + ent;
             i = (c << hshift) ^ ent; // xor hashing
 
