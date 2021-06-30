@@ -1,4 +1,4 @@
-package com.kyadav.DhaamDhoom.SoundLists.FavouriteSounds;
+package com.kyadav.DhaamDhoom.SoundLists.GallerySounds;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.kyadav.DhaamDhoom.SoundLists.Sounds_GetSet;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -22,22 +21,22 @@ import java.util.ArrayList;
  */
 
 
-public class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Sound_Adapter.CustomViewHolder> {
+public class GallerySoundAdapter extends RecyclerView.Adapter<GallerySoundAdapter.CustomViewHolder> {
     public Context context;
-    public Favourite_Sound_Adapter.OnItemClickListener listener;
+    public GallerySoundAdapter.OnItemClickListener listener;
     ArrayList<Sounds_GetSet> datalist;
 
-    public Favourite_Sound_Adapter(Context context, ArrayList<Sounds_GetSet> arrayList, Favourite_Sound_Adapter.OnItemClickListener listener) {
+    public GallerySoundAdapter(Context context, ArrayList<Sounds_GetSet> arrayList, GallerySoundAdapter.OnItemClickListener listener) {
         this.context = context;
         datalist = arrayList;
         this.listener = listener;
     }
 
     @Override
-    public Favourite_Sound_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+    public GallerySoundAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_sound_layout, viewGroup, false);
         view.setLayoutParams(new RecyclerView.LayoutParams(Variables.screen_width - 50, RecyclerView.LayoutParams.WRAP_CONTENT));
-        Favourite_Sound_Adapter.CustomViewHolder viewHolder = new Favourite_Sound_Adapter.CustomViewHolder(view);
+        GallerySoundAdapter.CustomViewHolder viewHolder = new GallerySoundAdapter.CustomViewHolder(view);
         return viewHolder;
     }
 
@@ -47,15 +46,13 @@ public class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Soun
     }
 
     @Override
-    public void onBindViewHolder(final Favourite_Sound_Adapter.CustomViewHolder holder, final int i) {
+    public void onBindViewHolder(final GallerySoundAdapter.CustomViewHolder holder, final int i) {
         holder.setIsRecyclable(false);
 
         try {
 
             holder.sound_name.setText(datalist.get(i).sound_name);
             holder.description_txt.setText(datalist.get(i).description);
-            Picasso.with(context).load(datalist.get(i).thum)
-                    .into(holder.sound_image);
             holder.bind(i, datalist.get(i), listener);
 
            /* if(SoundList_A.running_sound_id.equals(datalist.get(i).id)){
@@ -85,7 +82,7 @@ public class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Soun
             //  image=view.findViewById(R.id.image);
             done = view.findViewById(R.id.done);
             fav_btn = view.findViewById(R.id.fav_btn);
-
+            fav_btn.setVisibility(View.GONE);
 
             sound_name = view.findViewById(R.id.sound_name);
             description_txt = view.findViewById(R.id.description_txt);
@@ -93,7 +90,7 @@ public class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Soun
 
         }
 
-        public void bind(final int pos, final Sounds_GetSet item, final Favourite_Sound_Adapter.OnItemClickListener listener) {
+        public void bind(final int pos, final Sounds_GetSet item, final GallerySoundAdapter.OnItemClickListener listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
