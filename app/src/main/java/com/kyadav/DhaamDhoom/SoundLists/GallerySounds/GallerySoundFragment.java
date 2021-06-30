@@ -1,12 +1,10 @@
 package com.kyadav.DhaamDhoom.SoundLists.GallerySounds;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -14,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +39,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.kyadav.DhaamDhoom.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.kyadav.DhaamDhoom.R;
+import com.kyadav.DhaamDhoom.SimpleClasses.Functions;
 import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.kyadav.DhaamDhoom.SoundLists.Sounds_GetSet;
 import com.kyadav.DhaamDhoom.SoundLists.VideoSound_A;
@@ -48,6 +48,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import cafe.adriel.androidaudioconverter.AndroidAudioConverter;
+import cafe.adriel.androidaudioconverter.callback.IConvertCallback;
+import cafe.adriel.androidaudioconverter.callback.ILoadCallback;
+import cafe.adriel.androidaudioconverter.model.AudioFormat;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -172,7 +177,7 @@ public class GallerySoundFragment extends RootFragment implements Player.EventLi
 
                 if (view.getId() == R.id.done) {
                     StopPlaying();
-                    Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                    Convert_Mp3_to_acc(item.id, item.sound_name, item.acc_path);
                 } else {
                     if (thread != null && !thread.isAlive()) {
                         StopPlaying();
@@ -189,39 +194,57 @@ public class GallerySoundFragment extends RootFragment implements Player.EventLi
         listview.setAdapter(adapter);
     }
 
-    public void Down_load_mp3(final String id, final String sound_name, String url) {
-
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.show();
-        new AsyncTask<String, Void, Boolean>() {
+    public void Convert_Mp3_to_acc(final String id, final String sound_name, String url) {
+        Functions.Show_loader(context, false, false);
+        AndroidAudioConverter.load(context, new ILoadCallback() {
             @Override
-            protected Boolean doInBackground(String[] objects) {
-                try {
-                    VideoSound_A.copyFile(new File(url),
-                            new File(Variables.app_folder + Variables.SelectedAudio_AAC));
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    return false;
-                }
-                return true;
+            public void onSuccess() {
+                File flacFile = new File(url);
+                IConvertCallback callback = new IConvertCallback() {
+                    @Override
+                    public void onSuccess(File convertedFile) {
+                        Log.d("copyaudio", "" + convertedFile.getAbsolutePath() + "");
+                        Functions.cancel_loader();
+                        try {
+                            VideoSound_A.copyFile(convertedFile, new File(Variables.app_folder + Variables.SelectedAudio_AAC));
+                            Open_video_recording(id, sound_name);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Exception error) {
+                        Functions.cancel_loader();
+                        Toast.makeText(context, "" + error, Toast.LENGTH_SHORT).show();
+                    }
+                };
+                AndroidAudioConverter.with(context)
+                        .setFile(flacFile)
+                        .setFormat(AudioFormat.AAC)
+                        .setCallback(callback)
+                        .convert();
             }
 
             @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                progressDialog.dismiss();
-                Intent output = new Intent();
-                output.putExtra("isSelected", "yes");
-                output.putExtra("sound_name", sound_name);
-                output.putExtra("sound_id", id);
-                getActivity().setResult(RESULT_OK, output);
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
-                Log.d("copyaudio", "success");
+            public void onFailure(Exception error) {
+                Functions.cancel_loader();
             }
-        }.execute(url);
+        });
 
+
+    }
+
+    public void Open_video_recording(final String id, final String sound_name) {
+        Intent output = new Intent();
+        output.putExtra("isSelected", "yes");
+        output.putExtra("sound_name", sound_name);
+        output.putExtra("sound_id", id);
+        getActivity().setResult(RESULT_OK, output);
+        getActivity().finish();
+        getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+        Log.d("copyaudio", "success");
 
     }
 
