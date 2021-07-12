@@ -70,8 +70,7 @@ public class SendAudio {
         this.Receiverid = receiverid;
         this.Receiver_name = receiver_name;
         this.Receiver_pic = receiver_pic;
-        mFileName = context.getExternalCacheDir().getAbsolutePath();
-        mFileName += "/audiorecordtest.mp3";
+        mFileName = context.getExternalCacheDir().getAbsolutePath() + "/audiorecordtest.mp3";
 
     }
 

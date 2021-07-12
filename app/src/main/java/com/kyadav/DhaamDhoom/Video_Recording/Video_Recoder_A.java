@@ -11,7 +11,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -219,8 +218,8 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             is_recording = true;
 
-            File file = new File(Variables.root + "/" + "myvideo" + (number) + ".mp4");
-            videopaths.add(Variables.root + "/" + "myvideo" + (number) + ".mp4");
+            File file = new File(Variables.root + "myvideo" + (number) + ".mp4");
+            videopaths.add(Variables.root + "myvideo" + (number) + ".mp4");
             cameraView.captureVideo(file);
 
 
@@ -373,9 +372,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     // this will add the select audio with the video
     public void Merge_withAudio() {
 
-        String root = Environment.getExternalStorageDirectory().toString();
-        String audio_file;
-        audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
+        String audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
 
         String video = Variables.outputfile;
         String finaloutput = Variables.outputfile2;
@@ -558,7 +555,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             output_filter_file.delete();
         }
 
-        File file = new File(Variables.root + "/" + "myvideo" + (delete_count) + ".mp4");
+        File file = new File(Variables.root + "myvideo" + (delete_count) + ".mp4");
         if (file.exists()) {
             file.delete();
             DeleteFile();

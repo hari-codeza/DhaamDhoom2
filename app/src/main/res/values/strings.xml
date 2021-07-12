@@ -20,5 +20,6 @@
     <string name="enter_your_name">Enter Your Name</string>
     <string name="enter_age">Enter Age</string>
     <string name="save_continue">Save &amp; Continue</string>
-
+    <string name="grant">Grant</string>
+    <string name="require_storage_permission">Require storage permission</string>
 </resources>

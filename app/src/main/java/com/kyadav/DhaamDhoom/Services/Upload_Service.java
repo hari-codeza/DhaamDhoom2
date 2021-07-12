@@ -16,7 +16,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -386,7 +385,7 @@ public class Upload_Service extends Service {
 
     public void generateNoteOnSD(String sFileName, String sBody) {
         try {
-            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+            File root = new File(Variables.root, "Notes");
             if (!root.exists()) {
                 root.mkdirs();
             }

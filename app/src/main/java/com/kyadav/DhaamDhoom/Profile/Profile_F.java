@@ -328,10 +328,11 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 username.setText(user_info.optString("first_name"));
 
                 Profile_F.pic_url = user_info.optString("profile_pic");
-                Picasso.with(context)
-                        .load(Profile_F.pic_url)
-                        .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                        .resize(200, 200).centerCrop().into(imageView);
+                if ()
+                    Picasso.with(context)
+                            .load(Profile_F.pic_url)
+                            .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
+                            .resize(200, 200).centerCrop().into(imageView);
 
                 follow_count_txt.setText(data.optString("total_following"));
                 fans_count_txt.setText(data.optString("total_fans"));

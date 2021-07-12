@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -292,7 +291,6 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     // this will add the select audio with the video
     public void Merge_withAudio() {
 
-        String root = Environment.getExternalStorageDirectory().toString();
         String audio_file;
         audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
 

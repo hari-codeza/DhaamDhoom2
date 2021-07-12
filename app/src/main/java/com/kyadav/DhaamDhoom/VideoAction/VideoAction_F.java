@@ -153,7 +153,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             i.setComponent(name);
 
-            if (Functions.Checkstoragepermision(getActivity())) {
+            if (Functions.checkStoragePermision(getActivity())) {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("action", "save");
@@ -161,7 +161,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                 fragment_callback.Responce(bundle);
             }
 
-            File f = new File("/storage/emulated/0/Tittic/" + video_id + ".mp4");
+            File f = new File(Variables.app_folder + video_id + ".mp4");
             Uri uriPath = Uri.parse(f.getPath());
 
             String text = "Dhaam Dhoom\n\n" + Variables.base_url + "view.php?id=" + video_id + "\n\n\nConnect with us\n\nhttps://play.google.com/store/apps/details?id=com.kyadav.DhaamDhoom";
@@ -187,7 +187,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
         switch (view.getId()) {
             case R.id.save_video_layout:
 
-                if (Functions.Checkstoragepermision(getActivity())) {
+                if (Functions.checkStoragePermision(getActivity())) {
 
                     Bundle bundle = new Bundle();
                     bundle.putString("action", "save");

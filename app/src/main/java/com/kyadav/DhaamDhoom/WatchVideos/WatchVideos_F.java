@@ -11,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -861,7 +860,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Save Video")) {
-                    if (Functions.Checkstoragepermision(WatchVideos_F.this))
+                    if (Functions.checkStoragePermision(WatchVideos_F.this))
                         Save_Video(home_get_set);
 
                 } else if (options[item].equals("Delete Video")) {
@@ -905,7 +904,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
         Functions.Show_determinent_loader(context, false, false);
         PRDownloader.initialize(getApplicationContext());
-        DownloadRequest prDownloader = PRDownloader.download(item.video_url, Environment.getExternalStorageDirectory() + "/Tittic/", item.video_id + "no_watermark" + ".mp4")
+        DownloadRequest prDownloader = PRDownloader.download(item.video_url, Variables.app_folder, item.video_id + "no_watermark" + ".mp4")
                 .build()
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
@@ -960,8 +959,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         Bitmap myLogo = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_watermark_image)).getBitmap();
         Bitmap bitmap_resize = Bitmap.createScaledBitmap(myLogo, 50, 50, false);
         GlWatermarkFilter filter = new GlWatermarkFilter(bitmap_resize, GlWatermarkFilter.Position.LEFT_TOP);
-        new GPUMp4Composer(Environment.getExternalStorageDirectory() + "/DDVideo/" + item.video_id + "no_watermark" + ".mp4",
-                Environment.getExternalStorageDirectory() + "/DDVideo/" + item.video_id + ".mp4")
+        new GPUMp4Composer(Variables.app_folder + "DDVideo/" + item.video_id + "no_watermark" + ".mp4",
+                Variables.app_folder + "DDVideo/" + item.video_id + ".mp4")
                 .filter(filter)
 
                 .listener(new GPUMp4Composer.Listener() {
@@ -1022,7 +1021,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
     public void Delete_file_no_watermark(Home_Get_Set item) {
-        File file = new File(Environment.getExternalStorageDirectory() + "/DDVideo/" + item.video_id + "no_watermark" + ".mp4");
+        File file = new File(Variables.app_folder + "DDVideo/" + item.video_id + "no_watermark" + ".mp4");
         if (file.exists()) {
             file.delete();
         }
@@ -1030,7 +1029,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     public void Scan_file(Home_Get_Set item) {
         MediaScannerConnection.scanFile(WatchVideos_F.this,
-                new String[]{Environment.getExternalStorageDirectory() + "/DDVideo/" + item.video_id + ".mp4"},
+                new String[]{Variables.app_folder + "DDVideo/" + item.video_id + ".mp4"},
                 null,
                 new MediaScannerConnection.OnScanCompletedListener() {
 

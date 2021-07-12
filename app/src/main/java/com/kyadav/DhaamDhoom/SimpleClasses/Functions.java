@@ -14,18 +14,24 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.gmail.samehadar.iosdialog.CamomileSpinner;
+import com.google.android.material.snackbar.Snackbar;
 import com.googlecode.mp4parser.authoring.Track;
 import com.kyadav.DhaamDhoom.Comments.Comment_Get_Set;
 import com.kyadav.DhaamDhoom.R;
@@ -592,15 +598,17 @@ public class Functions {
     }
 
 
-    public static boolean Checkstoragepermision(Activity activity) {
+    public static boolean checkStoragePermision(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (activity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 return true;
-
             } else {
-
-                activity.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    askPermisionSetting(activity.findViewById(android.R.id.content), activity.getString(R.string.require_storage_permission));
+                } else {
+                    ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
                 return false;
             }
         } else {
@@ -609,6 +617,19 @@ public class Functions {
         }
     }
 
+    private static void askPermisionSetting(@NonNull View view, @NonNull String msg) {
+        Snackbar sb = Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
+        TextView tv = sb.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setGravity(Gravity.LEFT);
+        tv.setMaxLines(5);
+        sb.setAction(R.string.grant, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", view.getContext().getPackageName(), null)));
+            }
+        });
+        sb.show();
+    }
 
     // these function are remove the cache memory which is very helpfull in memmory managmet
     public static void deleteCache(Context context) {
