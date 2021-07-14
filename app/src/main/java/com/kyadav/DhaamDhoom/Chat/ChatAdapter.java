@@ -252,7 +252,7 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             chataudioviewholder.seekBar.setEnabled(false);
 
-            File fullpath = new File(Variables.root + "Binder/" + chat.chat_id + ".mp3");
+            File fullpath = new File(Variables.app_folder + "Binder/" + chat.chat_id + ".mp3");
             if (fullpath.exists()) {
                 chataudioviewholder.total_time.setText(getfileduration(Uri.parse(fullpath.getAbsolutePath())));
 

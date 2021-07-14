@@ -371,7 +371,7 @@ public class Upload_Service extends Service {
         encoder.finish();
 
 
-        File filePath = new File(Variables.root, "sample.gif");
+        File filePath = new File(Variables.app_folder, "sample.gif");
         FileOutputStream outputStream;
         try {
             outputStream = new FileOutputStream(filePath);
@@ -385,7 +385,7 @@ public class Upload_Service extends Service {
 
     public void generateNoteOnSD(String sFileName, String sBody) {
         try {
-            File root = new File(Variables.root, "Notes");
+            File root = new File(Variables.app_folder, "Notes");
             if (!root.exists()) {
                 root.mkdirs();
             }

@@ -39,6 +39,22 @@
           }
         },
         {
+          "client_id": "790939580759-fo0v1g5p7n1o4nk1lj7nf37l61jj1akq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyadav.DhaamDhoom",
+            "certificate_hash": "1ff683253711957d11a391f86a7c5ce94df9e88e"
+          }
+        },
+        {
+          "client_id": "790939580759-ih36i0ln43l6i71s26llpjkphakc09h8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyadav.DhaamDhoom",
+            "certificate_hash": "158dcc2d5561fa12608f42302b8067b50e8df478"
+          }
+        },
+        {
           "client_id": "790939580759-7vqqp0dibhihl4gcr4upqq22rfihh20b.apps.googleusercontent.com",
           "client_type": 3
         }

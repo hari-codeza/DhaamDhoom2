@@ -184,7 +184,7 @@ public class Chat_Activity extends Fragment {
 
         context = getContext();
 
-        direct = new File(Variables.root + "Binder/");
+        direct = new File(Variables.app_folder + "Binder/");
 
         // intialize the database refer
         rootref = FirebaseDatabase.getInstance().getReference();
@@ -258,7 +258,7 @@ public class Chat_Activity extends Fragment {
                 if (v.getId() == R.id.audio_bubble) {
                     RelativeLayout mainlayout = (RelativeLayout) v.getParent();
 
-                    File fullpath = new File(Variables.root + "Binder/" + item.chat_id + ".mp3");
+                    File fullpath = new File(Variables.app_folder + "Binder/" + item.chat_id + ".mp3");
                     if (fullpath.exists()) {
 
                         OpenAudio(fullpath.getAbsolutePath());

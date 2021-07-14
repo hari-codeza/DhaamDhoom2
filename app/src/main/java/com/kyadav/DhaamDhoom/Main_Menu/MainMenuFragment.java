@@ -38,6 +38,8 @@ import com.kyadav.DhaamDhoom.R;
 import com.kyadav.DhaamDhoom.SimpleClasses.Variables;
 import com.kyadav.DhaamDhoom.Video_Recording.Video_Recoder_A;
 
+import java.io.File;
+
 
 public class MainMenuFragment extends RootFragment implements View.OnClickListener {
 
@@ -241,8 +243,15 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             public void onClick(View v) {
 
                 if (check_permissions()) {
+                    try {
+                        File dir = new File(Variables.app_folder);
+                        if (!dir.exists()) dir.mkdirs();
+                        dir = new File(dir, ".nomedia");
+                        if (!dir.exists()) dir.createNewFile();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                     if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
-
                         Intent intent = new Intent(getActivity(), Video_Recoder_A.class);
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
